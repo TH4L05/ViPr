@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81159e6ba01480747b60367c317ad4a3, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: 
+  dontCreateConfigFile: 0
+  usePersistentDataPath: 0
+  configname: settings.cfg
+  doAudioSetup: 1
+  doVideoSetup: 1
+  doGraphicSetup: 1
+  defaultUseVR: 0
+  defaultShowFPS: 0
+  defaultShowLog: 0
+  defaultMasterVolume: 0.65
+  defaultVsync: 1
+  defaultFullScreen: 0
+  defaultFullScreenMode: 3
+  defaultResolutionWidth: 1600
+  defaultResolutionHeight: 900
+  defaultFramerateLimitEnabled: 1
+  defaultFramerateLimit: 90
+  defaultMsaaQuality: 4
+  defaultAntialiasingMode: 0
+  defaultAntialiasingQuality: 2
+  defaultAnisotropicFiltering: 1
+  defaultLang: 1
+  defaultNetIP: 127.0.0.1
+  defaultNetPort: 7777
+  loadDone: 0
