@@ -16,6 +16,8 @@ namespace eccon_lab.vipr.experiment.editor
     {
         #region SerializedFields
 
+        [SerializeField] private string defaultSaveDirectory;
+
         [Header("References")]
         [SerializeField] private ExperimentEditorUI editorUI;
         [SerializeField] private EditorHierachy editorHierarchy;
@@ -85,6 +87,11 @@ namespace eccon_lab.vipr.experiment.editor
 
         public void CreateExperiment(string experimentName, ExperimentType experimentType, string assignedVideo = "none", bool isNewExperiment = true)
         {
+            if (!Serialization.DirectoryExists(defaultSaveDirectory))
+            {
+                Serialization.CreateDirectory(defaultSaveDirectory);
+            }
+
             experiment = ScriptableObject.CreateInstance<Experiment>();
             experiment.Initialize();
             experiment.name = experimentName;
@@ -110,13 +117,11 @@ namespace eccon_lab.vipr.experiment.editor
 
             CreateExperiment(experimentData.experimentName, (ExperimentType)experimentData.experimentType, experimentData.assignedVideoFile, false);
 
-            Debug.Log("Load pages");
             foreach (var page in experimentData.pages)
             {
                 CreatePage(page.pageId, page.pageName, page.backgroundColor);
             }
 
-            Debug.Log("Load questions");
             foreach (var question in experimentData.questions)
             {
                 CreateQuestion(question.questionId, question.questionName, question.questionType, question.questionText, question.textValues,  question.radioOptions, question.sliderOptions, question.referencePageId);
@@ -184,6 +189,7 @@ namespace eccon_lab.vipr.experiment.editor
             experiment.AddPage(newPage);
             editorHierarchy.AddItem(newPage, EditorHierachyItem.ItemType.Page, "");
             currentPageId = id;
+            Debug.Log("Create new Page, name = " + newPage.Name);
             editorUI.UpdateLogLabelText("Create new Page, name = " + newPage.Name);
             experiment.UpdatePageVisibility(id);
         }
@@ -261,6 +267,7 @@ namespace eccon_lab.vipr.experiment.editor
 
             experiment.AddQuestion(newQuestion);
             editorHierarchy.AddItem(newQuestion, EditorHierachyItem.ItemType.Question, pageReferenceId);
+            Debug.Log("Create new Question, name = " + newQuestion.Name);
             editorUI.UpdateLogLabelText("Create new Question, name = " + newQuestion.Name);
             return;
         }
