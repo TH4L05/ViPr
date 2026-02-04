@@ -50,6 +50,18 @@ namespace eecon_lab.Network
             Level.Instance.NetworkManagement.UpdateVideoPlayerState(state, prams.Receive.SenderClientId);
         }
 
+        [Rpc(SendTo.NotServer)]
+        public void ToggleXrRPc(bool enabled)
+        {
+            Level.Instance.ToggleXr(enabled);
+        }
+
+        //[Rpc(SendTo.NotServer)]
+        /*public void StopXrRpc()
+        {
+            Level.Instance.ToggleXr(false);
+        }*/
+
         public void UpdateVideoPlayerState(CustomVideoPlayer.VideoPlayerState state)
         {
             UpdateVideoPlayerStatusRpc(state);

@@ -35,6 +35,8 @@ namespace eecon_lab.Main
 
         [Header("Dev")]
         [SerializeField] private GameObject testCamera;
+
+        [SerializeField] private bool networkModeActive;
     
         #region PublicFields
 
@@ -71,8 +73,6 @@ namespace eecon_lab.Main
         private void Initialize()
         {
             Game.Instance.SetLevel(this);
-            if (testCamera != null) testCamera.SetActive(false);
-
             if (skipXrSetup || Game.Instance.ActiveGameMode == Game.GameMode.host || Game.Instance.ActiveGameMode == Game.GameMode.editor)
             {
                 XRInitFinished(false);
@@ -84,6 +84,12 @@ namespace eecon_lab.Main
 
         public void SetupXR()
         {
+            if (Game.Instance.ActiveGameMode != Game.GameMode.normal)
+            {
+                XRInitFinished(false);
+                return;
+            }
+
             if (skipXrSetup)
             {
                 XRInitFinished(false);
@@ -108,12 +114,44 @@ namespace eecon_lab.Main
             XRInitFinished(false);
         }
 
+        public void ToggleXr(bool enable)
+        {
+            if (skipXrSetup || !Game.Instance.GameOptions.GetConfig().UseVR)
+            {
+                return;
+            }
+            if (enable)
+            {
+                xrSetup.Initialize(this);
+            }
+            else
+            {
+
+                xrSetup.StopXR();
+            }
+        }
+
+        public void SetNetworkMode(bool active)
+        {
+            networkModeActive = active;
+        }
+
         private void XRInitFinished(bool isInitialized)
         {
             Debug.Log($"<color=#AF870C>XR is initialized = {isInitialized}</color>");
             Game.Instance.VRactive = isInitialized;
+            if (networkModeActive)
+            {
+                if (isInitialized)
+                {
+                    if (testCamera != null) testCamera.SetActive(false);
+                }
+
+                return;
+            }
             StartSetup();
             NetworkSetup();
+            if (testCamera != null) testCamera.SetActive(false);
             OnLevelStart?.Invoke();
         }
 

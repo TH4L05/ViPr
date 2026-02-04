@@ -79,6 +79,7 @@ namespace eecon_lab.Network
                 Level.Instance.SceneLoader.PlayDirectorLoadSpecificScene(0);
                 return;
             }
+            Level.Instance.SetNetworkMode(true);
             StartCoroutine(Test());
         }
 
@@ -95,9 +96,7 @@ namespace eecon_lab.Network
             {
                 Debug.Log("HostShutDown");
                 networkManager.Shutdown();
-            }
-
-            
+            } 
         }
 
         private IEnumerator Test()
@@ -127,6 +126,7 @@ namespace eecon_lab.Network
             if (textFieldIp != null) textFieldIp.text = "IP=" + GetLocalIp();
             currentState = CustomVideoPlayer.VideoPlayerState.stopped;
             Debug.Log("H2");
+            Level.Instance.SetNetworkMode(true);
         }
 
         public void DisconnectClient(ulong clientId)
@@ -322,6 +322,10 @@ namespace eecon_lab.Network
             networkManager.Shutdown();
         }
 
+        public void ToggleClientXr(bool enabled)
+        {
+            networkConnector.ToggleXrRPc(enabled);
+        }
     }
 }
 
