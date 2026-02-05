@@ -11,6 +11,7 @@ using Unity.Netcode.Transports.UTP;
 using eecon_lab.UI.Network;
 using UnityEngine.UI;
 using eecon_lab.vipr.video;
+using eccon_lab.vipr.experiment;
 
 namespace eecon_lab.Network
 {
@@ -26,7 +27,6 @@ namespace eecon_lab.Network
         public Transform clientListUiRoot;
         public TextMeshProUGUI textFieldClientsTotal;
         public InfoMessageHandler messageHandler;
-        //public TextMeshProUGUI textFieldInfo;
         public TextMeshProUGUI textFieldIp;
         public Button playButton;
         public TextMeshProUGUI textFieldButtonPlay;
@@ -182,7 +182,6 @@ namespace eecon_lab.Network
             switch (arg2.EventType)
             {
                 case ConnectionEvent.ClientConnected:
-                    Debug.Log("ClientConnected");
                     break;
 
                 case ConnectionEvent.PeerConnected:
@@ -294,6 +293,17 @@ namespace eecon_lab.Network
                 textFieldButtonPlay.text = "Play";
             } 
         }
+
+
+
+        public void StartExperiment()
+        {
+            
+            string data = Level.Instance.ExperimentPlayer.GetSaveDataFromFileByDropDownValue();
+            networkConnector.StartExperimentRpc(data);
+            Debug.Log("StartExperiment");
+        }
+
 
         public void TogglePlayerState()
         {

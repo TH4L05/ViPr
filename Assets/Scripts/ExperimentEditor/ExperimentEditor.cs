@@ -63,13 +63,13 @@ namespace eccon_lab.vipr.experiment.editor
         private void Start()
         {
             Initialize();
-            ExperimentPlayer.OnExperimentFinished += ExperimentTestFinished;
+            ExperimentPlayer.OnExperimentStateChanged += ExperimentTestFinished;
         }
 
         private void OnDestroy()
         {
             if(experiment != null) Destroy(experiment);
-            ExperimentPlayer.OnExperimentFinished -= ExperimentTestFinished;
+            ExperimentPlayer.OnExperimentStateChanged -= ExperimentTestFinished;
         }
 
         #endregion
@@ -330,7 +330,9 @@ namespace eccon_lab.vipr.experiment.editor
                 default:
                     break;
             }
-            elementInspector.ShowPageWindow(obj, type);
+            editorUI.ToggleInMenuWindowObject(true);
+            editorUI.ToggleElementInspectorObject(true);
+            elementInspector.ShowContent(obj, type);
             OnHierarchyItemClick(referenceID, type);
         }
 
@@ -366,11 +368,11 @@ namespace eccon_lab.vipr.experiment.editor
 
         public void CancelExperimentTest()
         {
-            ExperimentTestFinished();
+            ExperimentTestFinished(ExperimentState.Canceled);
             experimentPlayer.DestroyElements();
         }
 
-        public void ExperimentTestFinished()
+        public void ExperimentTestFinished(ExperimentState state)
         {
             editorUI.ToggleExperimentPlayerUi(false);
             editorUI.UpdateLogLabelText("Experiment Test finished");

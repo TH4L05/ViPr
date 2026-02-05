@@ -85,5 +85,12 @@ namespace TK.Util
             string jsonData = JsonUtility.ToJson(obj, true);
             SaveText(jsonData, path);
         }
+
+        public static FileInfo[] GetFileInfosFromFolder(string path)
+        {
+            DirectoryInfo dir = new DirectoryInfo(path);
+            FileInfo[] fileInfos = dir.GetFiles("*.*");
+            return fileInfos;
+        }
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 using Unity.Netcode;
 using eecon_lab.Main;
 using eecon_lab.vipr.video;
+using eccon_lab.vipr.experiment;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace eecon_lab.Network
 {
@@ -56,11 +58,15 @@ namespace eecon_lab.Network
             Level.Instance.ToggleXr(enabled);
         }
 
-        //[Rpc(SendTo.NotServer)]
-        /*public void StopXrRpc()
+        [Rpc(SendTo.NotServer)]
+        public void StartExperimentRpc(string jsonString) 
         {
-            Level.Instance.ToggleXr(false);
-        }*/
+            Debug.Log("StartExperimentRPC");
+            Level.Instance.ExperimentPlayer.CreateExperimentJson(jsonString);
+
+        }
+
+
 
         public void UpdateVideoPlayerState(CustomVideoPlayer.VideoPlayerState state)
         {

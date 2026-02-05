@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -88,7 +89,7 @@ namespace eccon_lab.vipr.experiment
     }
 
     [System.Serializable]
-    public struct ExperimentSaveData
+    public struct ExperimentSaveData : INetworkSerializeByMemcpy
     {
         public string experimentName;
         public ExperimentType experimentType;
@@ -98,7 +99,7 @@ namespace eccon_lab.vipr.experiment
     }
 
     [System.Serializable]
-    public struct ExperimentSaveDataPage
+    public struct ExperimentSaveDataPage : INetworkSerializeByMemcpy
     {
         public string pageName;
         public string pageId;
@@ -106,7 +107,7 @@ namespace eccon_lab.vipr.experiment
     }
 
     [System.Serializable]
-    public struct ExperimentSaveDataQuestion
+    public struct ExperimentSaveDataQuestion : INetworkSerializeByMemcpy
     {
         public string questionName;
         public string questionId;

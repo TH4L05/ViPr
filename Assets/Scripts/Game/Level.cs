@@ -45,6 +45,7 @@ namespace eecon_lab.Main
         public Player Player => player;
         public NetworkManagement NetworkManagement => networkManagement;
         public CustomVideoPlayer CustomVideoPlayer => customVideoPlayer;
+        public ExperimentPlayer ExperimentPlayer => experimentPlayer;
 
         #endregion
 
@@ -151,8 +152,11 @@ namespace eecon_lab.Main
             }
             StartSetup();
             NetworkSetup();
-            if (testCamera != null) testCamera.SetActive(false);
             OnLevelStart?.Invoke();
+            if (Game.Instance.ActiveGameMode == Game.GameMode.normal)
+            {
+                if (testCamera != null) testCamera.SetActive(false);
+            }
         }
 
         private void StartSetup()

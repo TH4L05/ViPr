@@ -9,7 +9,6 @@ namespace eccon_lab.vipr.experiment.editor
 { 
     public class EditorElementInspector : MonoBehaviour
     {
-        [SerializeField] private GameObject elementInspectorWindow;
         [SerializeField] private TextMeshProUGUI elementNameLabel;
         [SerializeField] private EditorElementInspectorItem colorPickerItem;
         [SerializeField] private EditorElementInspectorItem textInputItem;
@@ -33,9 +32,8 @@ namespace eccon_lab.vipr.experiment.editor
             deleteButton.onClick.AddListener(OnRemoveButtonClick);
         }
         
-        public void ShowPageWindow(object obj, EditorHierachyItem.ItemType type)
+        public void ShowContent(object obj, EditorHierachyItem.ItemType type)
         {
-            elementInspectorWindow.SetActive(true);
             if (obj == null) return;
             HideAllItems();
             currentType = type;
@@ -129,14 +127,12 @@ namespace eccon_lab.vipr.experiment.editor
                 default:
                     break;
             }
-            elementInspectorWindow.SetActive(false);
         }
 
         public void OnRemoveButtonClick()
         {
             ExperimentEditor.Instance.RemoveItem(currentId, currentType);
             currentId = string.Empty;
-            elementInspectorWindow.SetActive(false);
         }
 
     }

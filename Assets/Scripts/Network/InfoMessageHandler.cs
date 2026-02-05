@@ -5,30 +5,58 @@ using TMPro;
 
 public class InfoMessageHandler : MonoBehaviour
 {
-    [SerializeField] private List<TextMeshProUGUI> messasges = new List<TextMeshProUGUI>();
-    [SerializeField] private int maxMessages;
-    [SerializeField] private int index = 0;
+    [System.Serializable]
+    public struct InfoMessage
+    {
+        public string text;
+
+        public InfoMessage(string text)
+        {
+            this.text = text;
+        }
+    }
+
+    [SerializeField] private List<InfoMessage> messages = new List<InfoMessage>();
+    [SerializeField] private TextMeshProUGUI messageTextField;
+    [SerializeField] private int maxMessages = 100;
 
     void Start()
     {
-        maxMessages = messasges.Count;
-        ClearMessages();
+        messageTextField.text = "";
     }
 
     public void AddMessage(string text)
     {
-        messasges[index].text = text;
-        index++;
-
-        if (index > maxMessages) index = 0;
-
+        InfoMessage message = new InfoMessage(text);
+        messages.Add(message);
+        if (messages.Count > maxMessages)
+        {
+            DeleteFirstMessage();
+            return;
+        }
+        UpdateTextField();
     }
 
-    public void ClearMessages()
+    private void DeleteFirstMessage()
     {
-        foreach (var message in messasges)
+        messages.RemoveAt(0);
+        UpdateTextField();
+    }
+
+    private void UpdateTextField()
+    {
+        string text = "";
+        foreach (var message in messages)
         {
-            message.text = "";
+            text += message.text;
+            text += "\n";
         }
+        messageTextField.text = text;
+    }
+
+    private void ClearMessages()
+    {
+        messages.Clear();
+        messageTextField.text = "";
     }
 }

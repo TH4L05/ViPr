@@ -1,14 +1,24 @@
 
 
 using eecon_lab.vipr.video;
+using System;
+using System.IO;
 using TK.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
-using System;
 
 namespace eccon_lab.vipr.experiment
 {
+    public enum ExperimentState
+    {
+        Invalid = -1,
+        Running,
+        Finished,
+        Canceled = 999,
+
+    }
+
     public class ExperimentPlayer : MonoBehaviour
     {
         [SerializeField] private string folderPath = "Experiments";
@@ -20,8 +30,11 @@ namespace eccon_lab.vipr.experiment
         [SerializeField] private Transform experimentRootTransform;
         [SerializeField] private TMP_Dropdown dropdown;
         [SerializeField] private PlayableDirector fadeIn;
+        [SerializeField] private ExperimentState experimentState = ExperimentState.Invalid;
 
-        public static Action OnExperimentFinished;
+        public ExperimentState ExperimentState => experimentState;
+        public static Action<ExperimentState> OnExperimentStateChanged;
+        public static Action<int> OnExperimentPageChanged;
 
         private int currentPageIndex;
 
@@ -37,8 +50,36 @@ namespace eccon_lab.vipr.experiment
             CreateExperimentElements(saveData);
         }
 
-        public void CreateExperiment(ExperimentSaveData saveData)
+       public void DropdownSetup()
+       {
+            if (dropdown == null) return;
+
+            FileInfo[] files = Serialization.GetFileInfosFromFolder(folderPath);
+
+            foreach (FileInfo file in files)
+            {
+                string extension = file.Extension;
+                dropdown.options.Add(new TMP_Dropdown.OptionData(file.Name.Replace(extension, "")));
+            }
+            dropdown.value = 0;
+        }
+
+        public int GetDropdownValue()
         {
+            return dropdown.value;
+        }
+
+        public string GetSaveDataFromFileByDropDownValue()
+        {
+            int index = GetDropdownValue();
+            string fileContent = Serialization.LoadText(folderPath + "\\" + dropdown.options[index].text + ".json");
+            return fileContent;
+        }
+
+        public void CreateExperimentJson(string jsonString)
+        {
+            ExperimentSaveData saveData = JsonUtility.FromJson<ExperimentSaveData>(jsonString);
+
             if (fadeIn != null) fadeIn.Play();
 
             if (experiment == null)
@@ -57,7 +98,7 @@ namespace eccon_lab.vipr.experiment
         public void StartExperiment()
         {
             currentPageIndex = 0; 
-
+            experimentState = ExperimentState.Running;
 
             if (testMode)
             {
@@ -68,9 +109,11 @@ namespace eccon_lab.vipr.experiment
             switch (experiment.ExperimentType)
             {
                 case ExperimentType.QuestionaireOnly:
+                    experimentRootTransform.gameObject.SetActive(true);
+                    experiment.UpdatePageVisibility(currentPageIndex);
                     break;
                 case ExperimentType.VideoPlusQuestionaire:
-                    //videoPlayer.
+                    videoPlayer.PrepareVideo(experiment.AssignedVideoFile);
                     break;
                 default:
                     break;
@@ -81,18 +124,23 @@ namespace eccon_lab.vipr.experiment
         {
             currentPageIndex++;
             experiment.UpdatePageVisibility(currentPageIndex);
+            OnExperimentPageChanged?.Invoke(currentPageIndex);
         }
 
         public void FinishExperiment()
         {
+            if(experimentState != ExperimentState.Canceled) experimentState = ExperimentState.Finished;
             Debug.Log("ExperimentFinished");
             DestroyElements();
-            OnExperimentFinished?.Invoke();
-            if (testMode && !saveResultsInTestMode)
+            OnExperimentStateChanged?.Invoke(experimentState);
+            if (!saveResultsInTestMode)
             {
+                Destroy(experiment);
                 return;
             }
             SaveResults();
+            Destroy(experiment);
+            experimentRootTransform.gameObject.SetActive(false);
         }
 
         public void DestroyElements()
@@ -106,11 +154,15 @@ namespace eccon_lab.vipr.experiment
             {
                 item.OnDestroy();
             }
-            Destroy(experiment);
         }
 
         public void CreateExperimentElements(ExperimentSaveData saveData)
         {
+            if (saveData.experimentName == string.Empty)
+            {
+                Debug.Log("No save data !!");
+                return;
+            }
             experiment.Setup(saveData.experimentName, saveData.experimentType);
 
             foreach (var item in saveData.pages)

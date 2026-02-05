@@ -115,6 +115,11 @@ namespace eecon_lab.vipr.video
             videoSlider.onValueChanged.AddListener(SliderHandleUpdate);
             videoPlayer.loopPointReached += OnLoopPointReched;
             videoPlayer.prepareCompleted += StartVideo;
+
+            if (Game.Instance.ActiveGameMode != Game.GameMode.normal && Game.Instance.ActiveGameMode != Game.GameMode.unset)
+            {
+                ToogleSelectionUiPermanent();
+            }
         }
 
         private void LoadFromFolder(string path)
@@ -173,6 +178,18 @@ namespace eecon_lab.vipr.video
         {
             if (videoPlayer == null) return;
             Prepare(videoFiles[listindex]);
+        }
+
+        public void PrepareVideo(string filename)
+        {
+            foreach (var item in videoFiles)
+            {
+                if (item.Value.Contains(filename))
+                {
+                    Prepare(item.Value);
+                    return;
+                }
+            }
         }
 
         public void PrepareVideo()

@@ -102,7 +102,6 @@ namespace eccon_lab.vipr.experiment.editor
             {
                 ResetHeight();
             }
-            //ToggleContentItemVisibility(active);
             contentObject.SetActive(active);
             toggleButton.ToggleContent(active);
         }
@@ -124,15 +123,6 @@ namespace eccon_lab.vipr.experiment.editor
 
                 }
             }
-        }
-
-        private void ToggleContentItemVisibility(bool active)
-        {
-            contentObject.SetActive(active);
-            /*foreach (var item in contentItems)
-            {
-                item.gameObject.SetActive(active);
-            }*/
         }
 
         public void UnselectItem()

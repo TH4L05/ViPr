@@ -32,11 +32,11 @@ namespace eccon_lab.vipr.experiment
         #region PublicFields
 
         public string ExperimentName => experimentName;
-
         public ExperimentType ExperimentType => experimentType;
-
         public Color DefaultPageBackgroundColor => defaultPageBackgroundColor;
         public TextValues DefaultTextValues => defaultTextValues;
+
+        public string AssignedVideoFile => assignedVideoFileName;
 
         #endregion
 
