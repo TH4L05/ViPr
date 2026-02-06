@@ -2,36 +2,63 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ToggleButton : MonoBehaviour
+public class ToggleButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private TextMeshProUGUI buttonLabel;
-    [SerializeField] private bool useText;
-    [SerializeField] private string button_state_closed;
-    [SerializeField] private string button_state_open;
-    [SerializeField] private bool useImage;
+    [SerializeField] private GameObject contentObject;
     [SerializeField] private Image toggleImage;
-    [SerializeField] private Sprite toggleDefault;
-    [SerializeField] private Sprite toggleToggled;
+    [SerializeField] private Sprite untoggled;
+    [SerializeField] private Sprite toggled;
+    private bool isToggled;
 
     private void OnEnable()
     {
-        if (buttonLabel != null && useText) buttonLabel.text = button_state_closed;
-        if (toggleImage != null && useImage) toggleImage.sprite = toggleDefault;
+        if (toggleImage != null) toggleImage.sprite = untoggled;
+        if(contentObject != null) contentObject.SetActive(false);
     }
 
     public void ToggleContent(bool active)
     {
-        if(active)
+        isToggled = active;
+        if(isToggled)
         {
-            if (useText) buttonLabel.text = button_state_open;
-            if (useImage) toggleImage.sprite = toggleToggled;
+            toggleImage.sprite = toggled;
         }
         else
         {
-            if (useText) buttonLabel.text = button_state_closed;
-            if (useImage) toggleImage.sprite = toggleDefault;
+            toggleImage.sprite = untoggled;
         }
+        if (contentObject != null) contentObject.SetActive(isToggled);
+    }
+
+    public void ToggleContent()
+    {
+        isToggled = !isToggled;
+        if (isToggled)
+        {
+            toggleImage.sprite = toggled;
+        }
+        else
+        {
+            toggleImage.sprite = untoggled;
+        }
+        if (contentObject != null) contentObject.SetActive(isToggled);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        ToggleContent();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        throw new System.NotImplementedException();
     }
 }
