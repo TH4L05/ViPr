@@ -7,13 +7,19 @@ using UnityEngine.UI;
 
 namespace eccon_lab.vipr.experiment
 {
-    public class QuestionSliderHandler : MonoBehaviour
+    public class CustomSlider : MonoBehaviour
     {
         [SerializeField] private SliderOptions sliderOptions;
         [SerializeField] private Slider slider;
         [SerializeField] private TextMeshProUGUI sliderLabel;
 
         private string labelFormat;
+
+        public void Start()
+        {
+            if (slider == null) return;
+            Setup(sliderOptions);
+        }
 
         public void Setup(SliderOptions sliderOptions)
         {

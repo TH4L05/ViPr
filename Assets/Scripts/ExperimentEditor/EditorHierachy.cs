@@ -120,7 +120,7 @@ namespace eccon_lab.vipr.experiment.editor
             {
                 if (item.Type == EditorHierachyItem.ItemType.Page && item.ReferenceID == pageId)
                 {
-                    item.IncreaseHeight();
+                    item.ToggleContent(true);
                     return;
                 }
             }

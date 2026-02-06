@@ -181,7 +181,7 @@ namespace eccon_lab.vipr.experiment
 
         public void SetupAssignedObjectSlider()
         {
-            QuestionSliderHandler slider = assigendUiElement.transform.GetChild(1).GetChild(0).GetComponent<QuestionSliderHandler>();
+            CustomSlider slider = assigendUiElement.transform.GetChild(1).GetChild(0).GetComponent<CustomSlider>();
             if (slider == null) return;
             slider.Setup(sliderOptions);
             slider.SetSliderLabelTextValues(textValues);
@@ -208,7 +208,7 @@ namespace eccon_lab.vipr.experiment
                     answer = assigendUiElement.transform.GetChild(1).GetComponentInChildren<TMP_InputField>().text;
                     break;
                 case QuestionType.Slider:
-                    answer = assigendUiElement.transform.GetChild(1).GetComponentInChildren<QuestionSliderHandler>().GetSliderValue().ToString();
+                    answer = assigendUiElement.transform.GetChild(1).GetComponentInChildren<CustomSlider>().GetSliderValue().ToString();
                     break;
                 default:
                     break;

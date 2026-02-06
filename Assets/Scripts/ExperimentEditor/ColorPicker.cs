@@ -8,7 +8,7 @@ namespace vipr.experiment.editor
 {
     public class ColorPicker : MonoBehaviour
     {
-        [SerializeField] private Slider silderRed;
+        [SerializeField] private Slider sliderRed;
         [SerializeField] private Slider sliderGreen;
         [SerializeField] private Slider sliderBlue;
         [SerializeField] private TMP_InputField inputRed;
@@ -19,8 +19,12 @@ namespace vipr.experiment.editor
         [SerializeField] private TextMeshProUGUI labelBlue;
         [SerializeField] private Image previewImage;
         [SerializeField] private TMP_InputField hexColorInput;
+        [SerializeField] private Color defaultColor = new Color(0.1538461f, 0.06153846f, 0.2f, 1f);
 
-        private Color defaultColor = new Color(0.1538461f, 0.06153846f, 0.2f, 1f);
+        private void Start()
+        {
+            Setup(defaultColor);
+        }
 
         public void Setup(Color color)
         {
@@ -31,7 +35,7 @@ namespace vipr.experiment.editor
 
         private void UpdateSliderValues(float r, float g, float b)
         {
-            silderRed.value = r;
+            sliderRed.value = r;
             sliderGreen.value = g;
             sliderBlue.value = b;
             OnColorRedChanged(r);
@@ -57,35 +61,61 @@ namespace vipr.experiment.editor
 
         private void SetHexColor()
         {
-            string r = Mathf.RoundToInt(silderRed.value * 255f).ToString("X");
-            string g = Mathf.RoundToInt(sliderGreen.value * 255f).ToString("X");
-            string b = Mathf.RoundToInt(sliderBlue.value * 255f ).ToString("X");
+            string r = Mathf.RoundToInt(sliderRed.value * 255f).ToString("X2");
+            string g = Mathf.RoundToInt(sliderGreen.value * 255f).ToString("X2");
+            string b = Mathf.RoundToInt(sliderBlue.value * 255f ).ToString("X2");
 
             hexColorInput.text = r + g + b; 
         }
 
         public Color GetColor()
         {
-            return new Color(silderRed.value, sliderGreen.value, sliderBlue.value);
+            return new Color(sliderRed.value, sliderGreen.value, sliderBlue.value);
+        }
+
+        
+
+        public void OnRedInputChanged(string value)
+        {
+            float v = float.Parse(value) / 255f;
+            labelRed.text = value;
+            sliderRed.value = v;
+            UpdatePreview();
+            SetHexColor();
+        }
+
+        public void OnGreenInputChanged(string value)
+        {
+            float v = float.Parse(value) / 255f;
+            labelGreen.text = value;
+            sliderGreen.value = v;
+            UpdatePreview();
+            SetHexColor();
+        }
+
+        public void OnBlueInputChanged(string value)
+        {
+            float v = float.Parse(value) / 255f;
+            labelBlue.text = value;
+            sliderBlue.value = v;
+            UpdatePreview();
+            SetHexColor();
         }
 
         public void OnColorRedChanged(float value)
         {
             string v = Mathf.RoundToInt(value * 255f).ToString();
             labelRed.text = v.ToString();
+            inputRed.text = v.ToString();
             UpdatePreview();
             SetHexColor();
-        }
-
-        public void OnRedInputChanged(string value)
-        {
-            OnColorRedChanged(float.Parse(value) / 255f);
         }
 
         public void OnColorGreenChanged(float value)
         {
             string v = Mathf.RoundToInt(value * 255f).ToString();
             labelGreen.text = v.ToString();
+            inputGreen.text = v.ToString();
             UpdatePreview();
             SetHexColor();
         }
@@ -94,13 +124,14 @@ namespace vipr.experiment.editor
         {
             string v = Mathf.RoundToInt(value * 255f).ToString();
             labelBlue.text = v.ToString();
+            inputBlue.text = v.ToString();
             UpdatePreview();
             SetHexColor();
         }
 
         private void UpdatePreview()
         {
-            previewImage.color = new Color(silderRed.value, sliderGreen.value, sliderBlue.value);
+            previewImage.color = new Color(sliderRed.value, sliderGreen.value, sliderBlue.value);
         }
     }
 }

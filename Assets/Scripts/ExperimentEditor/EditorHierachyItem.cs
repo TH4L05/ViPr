@@ -17,58 +17,82 @@ namespace eccon_lab.vipr.experiment.editor
             Question,
         }
 
-        [SerializeField] private float defaultHeight = 50.0f;
-        [SerializeField] private RectTransform rectTransform;
-        [SerializeField] private ToggleButton toggleButton;
-        [SerializeField] private GameObject contentObject;
-        [SerializeField] private List<EditorHierachyItem> contentItems = new List<EditorHierachyItem>();
+        #region SerializedFields
+
+        [Header("Main")]
         [SerializeField] private string referenceID;
+        [SerializeField] private GameObject contentObject;
         [SerializeField] private TextMeshProUGUI nameTextField;
-        [SerializeField] private Image backgroundImage;
-        [SerializeField] private Color defaultColor = Color.dimGray;
-        [SerializeField] private Color pointerEnterColor = Color.darkSlateBlue;
+        [SerializeField] private List<EditorHierachyItem> contentItems = new List<EditorHierachyItem>();
+
+        [Header("Settings")]
         [SerializeField] private Color selectedColor = Color.grey;
-        [SerializeField] private GameObject subContentPrefab;
-       
-       
+        [SerializeField] private Image backgroundImage;
+        [SerializeField] private Image contentBackgroundImage;
+        [SerializeField] private Image toggleImage;
+        [SerializeField] private Sprite untoggled;
+        [SerializeField] private Sprite toggled;
+        [SerializeField] private Color defaultColor;
+        [SerializeField] private Color hoverColor;
+
+        #endregion
+
+        #region PrivateFields
+
         private EditorHierachy editorHierachy;
-        private RectTransform contentRectTransform;
-        private RectTransform contentRectRootTransform;
         private ItemType itemType = ItemType.Invalid;
         private bool isSelected = false;
-        private Image subContentBackground;
-        
+
+        private bool isToggled;
+        private RectTransform rectTransform;
+        private RectTransform contentTransform;
+        private float defaultHeight;
+        private float toggledHeight;
+
+        #endregion
+
+        #region PublicFields
 
         public string ReferenceID => referenceID;
         public ItemType Type => itemType;
         public bool IsSelected => isSelected;
 
+        #endregion
+
         public void Initialize(string id, string name, ItemType type, EditorHierachy hierachy)
         {
-            rectTransform = GetComponent<RectTransform>();
-            
             itemType = type;
             referenceID = id;
+
+            isToggled = false;
+            rectTransform = GetComponent<RectTransform>();
+            defaultHeight = rectTransform.sizeDelta.y;
+
             if (nameTextField != null) nameTextField.text = name;
             editorHierachy = hierachy;
-            backgroundImage.color = defaultColor;
+            if (backgroundImage != null) backgroundImage.color = defaultColor;
 
-            if (subContentPrefab == null) return;
-            contentObject = Instantiate(subContentPrefab, transform.parent);
-            contentObject.SetActive(false);
+            if (toggleImage != null)
+            {
+                toggleImage.sprite = untoggled;
+                toggledHeight = 55f;
+            }
+
             if (contentObject != null)
             {
-                contentRectRootTransform = contentObject.GetComponent<RectTransform>();
-                contentRectTransform = contentObject.transform.GetChild(1).GetComponent<RectTransform>();
-                subContentBackground = contentObject.transform.GetChild(0).GetComponent<Image>();
+                contentObject.SetActive(false);
+                contentTransform = contentObject.GetComponent<RectTransform>();
+                if(contentBackgroundImage != null) contentBackgroundImage.color = defaultColor;
             }
-            subContentBackground.color = defaultColor;
         }
+
+        #region Add/Remove Content
 
         public void AddContent(EditorHierachyItem item)
         {
             contentItems.Add(item);
-            item.transform.SetParent(contentRectTransform, false);
+            item.transform.SetParent(contentTransform, false);
+            toggledHeight += 55f;
         }
 
         public void RemoveContent(string referenceId)
@@ -78,32 +102,58 @@ namespace eccon_lab.vipr.experiment.editor
                 if (item.referenceID == referenceId)
                 {
                     contentItems.Remove(item);
-                    ToggleContent();
-                    ToggleContent();
+                    toggledHeight -= 55f;
+                    SetHeight();
                     return;
                 }
             }
         }
 
+        #endregion
+
         public void ToggleContent()
         {
-            bool active = !contentObject.activeInHierarchy;
+            isToggled = !isToggled;
 
-            if (active)
+            if (isToggled)
             {
-                float size = 0f;
-                foreach (var item in contentItems)
-                {
-                    size += 55.0f;
-                }
-                IncreaseHeight(size);
+                if (toggleImage != null) toggleImage.sprite = toggled;
             }
             else
             {
-                ResetHeight();
+                if (toggleImage != null) toggleImage.sprite = untoggled;
             }
-            contentObject.SetActive(active);
-            toggleButton.ToggleContent(active);
+            SetHeight();
+            contentObject.SetActive(isToggled);
+        }
+
+        public void ToggleContent(bool toggle)
+        {
+            isToggled = toggle;
+
+            if (isToggled)
+            {
+                if (toggleImage != null) toggleImage.sprite = toggled;
+            }
+            else
+            {
+                if (toggleImage != null) toggleImage.sprite = untoggled;
+            }
+            SetHeight();
+            contentObject.SetActive(isToggled);
+        }
+
+        private void SetHeight()
+        {
+            if (isToggled)
+            {
+                if (toggledHeight == 0f) toggledHeight = defaultHeight;
+                rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, toggledHeight);
+            }
+            else
+            {
+                rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, defaultHeight);
+            }
         }
 
         public void ToggleContentSelect(bool selected)
@@ -120,7 +170,6 @@ namespace eccon_lab.vipr.experiment.editor
                 foreach (var item in contentItems)
                 {
                     item.UnselectItem();
-
                 }
             }
         }
@@ -128,36 +177,9 @@ namespace eccon_lab.vipr.experiment.editor
         public void UnselectItem()
         {
             isSelected = false;
-            backgroundImage.color = defaultColor;
-            if (subContentBackground != null) subContentBackground.color = defaultColor;
+            if (backgroundImage != null) backgroundImage.color = defaultColor;
+            if (contentBackgroundImage != null) contentBackgroundImage.color = defaultColor;
             ToggleContentSelect(false);
-        }
-
-        public void ResetHeight()
-        {
-            Vector2 size = new Vector2(contentRectRootTransform.sizeDelta.x, defaultHeight);
-            contentRectRootTransform.sizeDelta = size;
-        }
-
-        public void IncreaseHeight()
-        {
-            if (!isSelected) return;
-            float size = 0f;
-            foreach (var item in contentItems)
-            {
-                size += 55.0f;
-            }
-            ResetHeight();
-            IncreaseHeight(size);
-            ToggleContent();
-            ToggleContent();
-        }
-
-        public void IncreaseHeight(float height)
-        {
-            if (height == 0f) height = defaultHeight; 
-            Vector2 size = new Vector2(contentRectRootTransform.sizeDelta.x, height);
-            contentRectRootTransform.sizeDelta = size;
         }
 
         public void EditItem()
@@ -168,10 +190,20 @@ namespace eccon_lab.vipr.experiment.editor
         public void OnPointerClick(PointerEventData eventData)
         {
             string id = referenceID;
-            if (itemType != ItemType.Page)
+            switch (itemType)
             {
-                id = ExperimentEditor.Instance.CurrentExperiment.GetQuestion(referenceID).AssignedPageId;
+                case ItemType.Invalid:
+                    break;
+                case ItemType.Page:
+                    ToggleContent();
+                    break;
+                case ItemType.Question:
+                    id = ExperimentEditor.Instance.CurrentExperiment.GetQuestion(referenceID).AssignedPageId;
+                    break;
+                default:
+                    break;
             }
+            if(isSelected) return;
             ExperimentEditor.Instance.OnHierarchyItemClick(id, itemType);
             editorHierachy.ToggleItemState(id); 
         }
@@ -179,26 +211,26 @@ namespace eccon_lab.vipr.experiment.editor
         public void SetSelected()
         {
             isSelected = true;
-            backgroundImage.color = selectedColor;
-            if(subContentBackground != null) subContentBackground.color = selectedColor;
+            if (backgroundImage != null) backgroundImage.color = selectedColor;
+            if (contentBackgroundImage != null) contentBackgroundImage.color = selectedColor;
             ToggleContentSelect(true);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            backgroundImage.color = pointerEnterColor;
+            backgroundImage.color = hoverColor;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             if (isSelected)
             {
-                backgroundImage.color = selectedColor;
-                if (subContentBackground != null) subContentBackground.color = selectedColor;
+                if (backgroundImage != null) backgroundImage.color = selectedColor;
+                if (contentBackgroundImage != null) contentBackgroundImage.color = selectedColor;
                 return;
             }
-            backgroundImage.color = defaultColor;
-            if (subContentBackground != null) subContentBackground.color = defaultColor;
+            if (backgroundImage != null) backgroundImage.color = defaultColor;
+            if (contentBackgroundImage != null) contentBackgroundImage.color = defaultColor;
         }
     }
 }

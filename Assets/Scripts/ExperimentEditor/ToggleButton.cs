@@ -8,15 +8,36 @@ using UnityEngine.UI;
 public class ToggleButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private GameObject contentObject;
+    [SerializeField] private TextMeshProUGUI label;
     [SerializeField] private Image toggleImage;
+    [SerializeField] private Image backgroundImage;
     [SerializeField] private Sprite untoggled;
     [SerializeField] private Sprite toggled;
+    [SerializeField] private Color defaultColor;
+    [SerializeField] private Color hoverColor;
+
     private bool isToggled;
+    private RectTransform rootTransform;
+    private RectTransform contentTransform;
+    private float defaultHeight;
+
+    private void Start()
+    {
+        rootTransform = transform.parent.GetComponent<RectTransform>();
+        defaultHeight = rootTransform.sizeDelta.y;
+        contentTransform = contentObject.GetComponent<RectTransform>();
+    }
 
     private void OnEnable()
     {
-        if (toggleImage != null) toggleImage.sprite = untoggled;
+        isToggled = false;
+        if (toggleImage != null)
+        {
+            toggleImage.sprite = untoggled;
+            backgroundImage.color = defaultColor;
+        }
         if(contentObject != null) contentObject.SetActive(false);
+        //if (label != null) label.color = defaultColor;
     }
 
     public void ToggleContent(bool active)
@@ -33,16 +54,31 @@ public class ToggleButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         if (contentObject != null) contentObject.SetActive(isToggled);
     }
 
+    private void SetHeight()
+    {
+
+        if (isToggled)
+        {
+            rootTransform.sizeDelta = new Vector2(rootTransform.sizeDelta.x, defaultHeight + contentTransform.sizeDelta.y);
+        }
+        else
+        {
+            rootTransform.sizeDelta = new Vector2(rootTransform.sizeDelta.x, defaultHeight);
+        }
+    }
+
     public void ToggleContent()
     {
         isToggled = !isToggled;
         if (isToggled)
         {
             toggleImage.sprite = toggled;
+            SetHeight();
         }
         else
         {
             toggleImage.sprite = untoggled;
+            SetHeight();
         }
         if (contentObject != null) contentObject.SetActive(isToggled);
     }
@@ -54,11 +90,13 @@ public class ToggleButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        //label.color = hoverColor;
+        backgroundImage.color = hoverColor;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        //label.color = defaultColor;
+        backgroundImage.color = defaultColor;
     }
 }
