@@ -85,7 +85,7 @@ namespace eccon_lab.vipr.experiment.editor
 
         #region CreateExperiment
 
-        public void CreateExperiment(string experimentName, ExperimentType experimentType, string assignedVideo = "none", bool isNewExperiment = true)
+        public void CreateExperiment(string experimentName, ExperimentType experimentType, Color defaultPageColor, Color defaultTextColor, float defaultTextSize, string assignedVideo = "none", bool isNewExperiment = true)
         {
             if (!Serialization.DirectoryExists(defaultSaveDirectory))
             {
@@ -96,10 +96,10 @@ namespace eccon_lab.vipr.experiment.editor
             experiment.Initialize();
             experiment.name = experimentName;
             experiment.Setup(experimentName, experimentType);
+            experiment.SetDefaults(defaultPageColor, defaultTextColor, defaultTextSize);
             editorUI.SetExperimentNameLabel(experimentName);
             if(!isNewExperiment) return;
             CreateNewPage();
-            editorUI.ToogleExperimentCreateWindow(false);
             experiment.UpdatePageVisibility(experiment.GetPage(0).Id);
             editorUI.UpdateLogLabelText("Created new Experiment with name \"" + experimentName + "\"");
         }
@@ -115,7 +115,7 @@ namespace eccon_lab.vipr.experiment.editor
             experimentData = JsonUtility.FromJson<ExperimentSaveData>(fileContent);
             Debug.Log(experimentData.experimentName + " = loaded");
 
-            CreateExperiment(experimentData.experimentName, (ExperimentType)experimentData.experimentType, experimentData.assignedVideoFile, false);
+            CreateExperiment(experimentData.experimentName, (ExperimentType)experimentData.experimentType,experimentData.defaultPageColor, experimentData.defaultTextColor, experimentData.defaultTextSize,  experimentData.assignedVideoFile, false);
 
             foreach (var page in experimentData.pages)
             {
@@ -136,25 +136,7 @@ namespace eccon_lab.vipr.experiment.editor
 
         public void SaveExperiment()
         {
-            ExperimentSaveData saveData = new ExperimentSaveData();
-            saveData.experimentName = experiment.ExperimentName;
-            saveData.experimentType = experiment.ExperimentType;
-            saveData.pages = new List<ExperimentSaveDataPage>();
-            saveData.questions = new List<ExperimentSaveDataQuestion>();
-
-            var pages = experiment.GetPages();
-            foreach (var page in pages)
-            {
-                ExperimentSaveDataPage pageData = page.GetSaveData();
-                saveData.pages.Add(pageData);
-            }
-
-            var questions = experiment.GetQuestions();
-            foreach (var question in questions)
-            {
-                ExperimentSaveDataQuestion questionData = question.GetSaveData();
-                saveData.questions.Add(questionData);
-            }
+            ExperimentSaveData saveData = experiment.GetExperimentSaveData();
             Serialization.SaveToJson(saveData, "Experiments" + "\\" + experiment.ExperimentName + ".json");
             editorUI.UpdateLogLabelText("Experiment saved to file \"" + experiment.ExperimentName + ".json\"");
         }
@@ -330,7 +312,6 @@ namespace eccon_lab.vipr.experiment.editor
                 default:
                     break;
             }
-            editorUI.ToggleInMenuWindowObject(true);
             editorUI.ToggleElementInspectorObject(true);
             elementInspector.ShowContent(obj, type);
             OnHierarchyItemClick(referenceID, type);

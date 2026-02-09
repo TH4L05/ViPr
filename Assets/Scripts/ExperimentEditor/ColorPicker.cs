@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace vipr.experiment.editor
+namespace eccon_lab.vipr.experiment.editor.ui
 {
     public class ColorPicker : MonoBehaviour
     {
@@ -35,9 +35,9 @@ namespace vipr.experiment.editor
 
         private void UpdateSliderValues(float r, float g, float b)
         {
-            sliderRed.value = r;
-            sliderGreen.value = g;
-            sliderBlue.value = b;
+            if (sliderRed != null) sliderRed.value = r;
+            if (sliderGreen != null) sliderGreen.value = g;
+            if (sliderBlue != null) sliderBlue.value = b;
             OnColorRedChanged(r);
             OnColorGreenChanged(g);
             OnColorBlueChanged(b);
@@ -61,10 +61,10 @@ namespace vipr.experiment.editor
 
         private void SetHexColor()
         {
+            if(hexColorInput == null) return;
             string r = Mathf.RoundToInt(sliderRed.value * 255f).ToString("X2");
             string g = Mathf.RoundToInt(sliderGreen.value * 255f).ToString("X2");
             string b = Mathf.RoundToInt(sliderBlue.value * 255f ).ToString("X2");
-
             hexColorInput.text = r + g + b; 
         }
 
@@ -73,13 +73,11 @@ namespace vipr.experiment.editor
             return new Color(sliderRed.value, sliderGreen.value, sliderBlue.value);
         }
 
-        
-
         public void OnRedInputChanged(string value)
         {
             float v = float.Parse(value) / 255f;
-            labelRed.text = value;
-            sliderRed.value = v;
+            if(labelRed != null) labelRed.text = value;
+            if(sliderRed != null) sliderRed.value = v;
             UpdatePreview();
             SetHexColor();
         }
@@ -87,8 +85,8 @@ namespace vipr.experiment.editor
         public void OnGreenInputChanged(string value)
         {
             float v = float.Parse(value) / 255f;
-            labelGreen.text = value;
-            sliderGreen.value = v;
+            if (labelGreen != null) labelGreen.text = value;
+            if (sliderGreen != null) sliderGreen.value = v;
             UpdatePreview();
             SetHexColor();
         }
@@ -96,8 +94,8 @@ namespace vipr.experiment.editor
         public void OnBlueInputChanged(string value)
         {
             float v = float.Parse(value) / 255f;
-            labelBlue.text = value;
-            sliderBlue.value = v;
+            if (labelBlue != null) labelBlue.text = value;
+            if (sliderBlue != null) sliderBlue.value = v;
             UpdatePreview();
             SetHexColor();
         }
@@ -105,8 +103,8 @@ namespace vipr.experiment.editor
         public void OnColorRedChanged(float value)
         {
             string v = Mathf.RoundToInt(value * 255f).ToString();
-            labelRed.text = v.ToString();
-            inputRed.text = v.ToString();
+            if (labelRed != null) labelRed.text = v.ToString();
+            if (inputRed != null) inputRed.text = v.ToString();
             UpdatePreview();
             SetHexColor();
         }
@@ -114,8 +112,8 @@ namespace vipr.experiment.editor
         public void OnColorGreenChanged(float value)
         {
             string v = Mathf.RoundToInt(value * 255f).ToString();
-            labelGreen.text = v.ToString();
-            inputGreen.text = v.ToString();
+            if (labelGreen != null) labelGreen.text = v.ToString();
+            if (inputGreen != null) inputGreen.text = v.ToString();
             UpdatePreview();
             SetHexColor();
         }
@@ -123,14 +121,15 @@ namespace vipr.experiment.editor
         public void OnColorBlueChanged(float value)
         {
             string v = Mathf.RoundToInt(value * 255f).ToString();
-            labelBlue.text = v.ToString();
-            inputBlue.text = v.ToString();
+            if (labelBlue != null) labelBlue.text = v.ToString();
+            if (inputBlue != null) inputBlue.text = v.ToString();
             UpdatePreview();
             SetHexColor();
         }
 
         private void UpdatePreview()
         {
+            if (previewImage == null) return;
             previewImage.color = new Color(sliderRed.value, sliderGreen.value, sliderBlue.value);
         }
     }

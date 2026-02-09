@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-namespace eccon_lab.vipr.experiment.editor
+namespace eccon_lab.vipr.experiment.editor.ui
 {
     public class EditorHierachyItem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {

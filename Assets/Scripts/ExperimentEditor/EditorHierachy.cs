@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace eccon_lab.vipr.experiment.editor
+namespace eccon_lab.vipr.experiment.editor.ui
 {
     public class EditorHierachy : MonoBehaviour
     {

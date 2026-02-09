@@ -1,62 +1,68 @@
+/// <author>Thomas Krahl</author>
+
 
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class InfoMessageHandler : MonoBehaviour
+namespace eecon_lab.Network
 {
-    [System.Serializable]
-    public struct InfoMessage
+    public class InfoMessageHandler : MonoBehaviour
     {
-        public string text;
-
-        public InfoMessage(string text)
+        [System.Serializable]
+        public struct InfoMessage
         {
-            this.text = text;
+            public string text;
+
+            public InfoMessage(string text)
+            {
+                this.text = text;
+            }
         }
-    }
 
-    [SerializeField] private List<InfoMessage> messages = new List<InfoMessage>();
-    [SerializeField] private TextMeshProUGUI messageTextField;
-    [SerializeField] private int maxMessages = 100;
+        [SerializeField] private List<InfoMessage> messages = new List<InfoMessage>();
+        [SerializeField] private TextMeshProUGUI messageTextField;
+        [SerializeField] private int maxMessages = 100;
 
-    void Start()
-    {
-        messageTextField.text = "";
-    }
-
-    public void AddMessage(string text)
-    {
-        InfoMessage message = new InfoMessage(text);
-        messages.Add(message);
-        if (messages.Count > maxMessages)
+        void Start()
         {
-            DeleteFirstMessage();
-            return;
+            messageTextField.text = "";
         }
-        UpdateTextField();
-    }
 
-    private void DeleteFirstMessage()
-    {
-        messages.RemoveAt(0);
-        UpdateTextField();
-    }
-
-    private void UpdateTextField()
-    {
-        string text = "";
-        foreach (var message in messages)
+        public void AddMessage(string text)
         {
-            text += message.text;
-            text += "\n";
+            InfoMessage message = new InfoMessage(text);
+            messages.Add(message);
+            if (messages.Count > maxMessages)
+            {
+                DeleteFirstMessage();
+                return;
+            }
+            UpdateTextField();
         }
-        messageTextField.text = text;
-    }
 
-    private void ClearMessages()
-    {
-        messages.Clear();
-        messageTextField.text = "";
+        private void DeleteFirstMessage()
+        {
+            messages.RemoveAt(0);
+            UpdateTextField();
+        }
+
+        private void UpdateTextField()
+        {
+            string text = "";
+            foreach (var message in messages)
+            {
+                text += message.text;
+                text += "\n";
+            }
+            messageTextField.text = text;
+        }
+
+        private void ClearMessages()
+        {
+            messages.Clear();
+            messageTextField.text = "";
+        }
     }
 }
+

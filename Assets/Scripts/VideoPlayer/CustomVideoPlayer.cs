@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 using TMPro;
 using eecon_lab.Main;
+using eccon_lab.vipr;
 
 namespace eecon_lab.vipr.video
 {

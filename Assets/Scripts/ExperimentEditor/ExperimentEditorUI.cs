@@ -1,10 +1,8 @@
 /// <author>Thomas Krahl</author>
 
-using System;
 using System.IO;
 using UnityEngine;
 using TMPro;
-using UnityEngine.Timeline;
 
 namespace eccon_lab.vipr.experiment.editor.ui
 {
@@ -17,12 +15,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [SerializeField] private GameObject inMenuWindowObject;
         
         [Header("MenuCreateExperiment")]
-        [SerializeField] private GameObject createExperimentWindowObject;
-        [SerializeField] private TMP_InputField createExperimenttextFieldName;
-        [SerializeField] private TMP_Dropdown createExperimentDropdownExperimentType;
-        [SerializeField] private TMP_Dropdown createExperimentDropdownAssignedVideo;
-        [SerializeField] private TextMeshProUGUI createExperimentDropdownAssignedVideoLabel;
-        [SerializeField] private GameObject videoSelectionElement;
+        [SerializeField] private CreateExperimentWindow createExperimentWindow;
 
         [Header("MenuLoadExperiment")]
         [SerializeField] private GameObject loadExperimentWindowObject;
@@ -33,14 +26,8 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [SerializeField] private TextMeshProUGUI logTextlabel;
 
         [Header("CreateQuestion")]
-        [SerializeField] private GameObject createQuestionObject;
-        [SerializeField] private GameObject inputOptionQuestionText;
-        [SerializeField] private GameObject inputOptionRadio;
-        [SerializeField] private GameObject inputOptionSlider;
-        [SerializeField] private TMP_Dropdown createQuestionDropdownType;
-        [SerializeField] private TMP_InputField textQuestionText;
-        [SerializeField] private RadioButtonCreateOption[] radioButtonOptions;
-        [SerializeField] private SliderCreateOption sliderCreateOptions;
+        [SerializeField] private CreateQuestionWindow createQuestionWindow;
+        
 
         [Header("ElementInspector")]
         [SerializeField] private GameObject elementInspectorObject;
@@ -56,17 +43,18 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         private void Setup()
         {
-            ToggleMainWindowObject(true);
-            ToggleEditorMenu(true);
-            SetupExperimentTypeDropdown();
-            SetupQuestionTypeDropdown();
-            SetupAssignedVideoDropdown();
+            Debug.Log("Editor ui setup");
+            
             SetupExperimentFilesDropdown();
             SetExperimentNameLabel("-"); 
 
+            ToogleExperimentCreateWindow(false);
+            ToggleExperimentLoadWindow(false);
             ToggleInMenuWindowObject(false);
             ToggleElementInspectorObject(false);
             ToggleCreateQuestionObject(false);
+
+            ToggleEditorMenu(true);
         }
 
         public void ToggleMainWindowObject(bool active)
@@ -78,6 +66,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         public void ToggleEditorMenu(bool active)
         {
             if (startMenuObject == null) return;
+            ToggleMainWindowObject(active);
             startMenuObject.SetActive(active);
             logTextlabel.text = "";
         }
@@ -98,42 +87,16 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         public void ToogleExperimentCreateWindow(bool active)
         {
-            if (createExperimentWindowObject == null) return;
-
-            if (active)
-            {
-                createExperimenttextFieldName.text = "newExperiment";
-                videoSelectionElement.SetActive(false);
-            }
-            createExperimentWindowObject.SetActive(active);
+            if (createExperimentWindow.assignedGameobjct == null) return;
+            ToggleMainWindowObject(active);
+            createExperimentWindow.assignedGameobjct.SetActive(active);
         }
 
         public void ToggleExperimentLoadWindow(bool active)
         {
             if(loadExperimentWindowObject == null) return;
+            ToggleMainWindowObject(active);
             loadExperimentWindowObject.SetActive(active);
-        }
-
-        private void SetupExperimentTypeDropdown()
-        {
-            if(createExperimentDropdownExperimentType == null) return;
-
-            foreach (var item in Enum.GetValues(typeof(ExperimentType)))
-            {
-                createExperimentDropdownExperimentType.options.Add(new TMP_Dropdown.OptionData(item.ToString()));
-            }   
-        }
-
-        private void SetupAssignedVideoDropdown()
-        {
-            if(createExperimentDropdownAssignedVideo == null) return;
-            FileInfo[] files = ExperimentEditor.Instance.GetFileInfosFromFolder("Videos");
-
-            createExperimentDropdownAssignedVideo.options.Add(new TMP_Dropdown.OptionData("none"));
-            foreach (FileInfo file in files)
-            {
-                createExperimentDropdownAssignedVideo.options.Add(new TMP_Dropdown.OptionData(file.Name));
-            }
         }
 
         private void SetupExperimentFilesDropdown()
@@ -153,95 +116,32 @@ namespace eccon_lab.vipr.experiment.editor.ui
             }
         }
 
-        public void OnExperimentTypeDropDownChange(int value)
-        {
-            switch ((ExperimentType)value)
-            {
-                default:
-                case ExperimentType.QuestionaireOnly:
-                    videoSelectionElement.SetActive(false);
-                    break;
-                case ExperimentType.VideoPlusQuestionaire:
-                    videoSelectionElement.SetActive(true);
-                    break;
-            }
-        }
-
         #endregion
 
         #region Question
 
-        private void SetupQuestionTypeDropdown()
-        {
-            if (createQuestionDropdownType == null) return;
-
-            foreach (var item in Enum.GetValues(typeof(QuestionType)))
-            {
-                createQuestionDropdownType.options.Add(new TMP_Dropdown.OptionData(item.ToString()));
-            }
-        }
+        
 
         public void ToggleCreateQuestionObject(bool active)
         {
-            if (createQuestionObject == null) return;
-            createQuestionObject.SetActive(active);
+            if (createQuestionWindow.assignedGameobjct == null) return;
+            ToggleInMenuWindowObject(active);
+            createQuestionWindow.assignedGameobjct.SetActive(active);
         }
 
-        public void OnQuestionTypeChanged(int value)
-        {
-            switch ((QuestionType)value)
-            {
-                case QuestionType.RadioButton:
-                    if (inputOptionQuestionText != null) inputOptionQuestionText.SetActive(true);
-                    if (inputOptionRadio != null) inputOptionRadio.SetActive(true);
-                    if (inputOptionSlider != null) inputOptionSlider.SetActive(false);
-                    break;
-                case QuestionType.InputField:
-                    if (inputOptionQuestionText != null) inputOptionQuestionText.SetActive(true);
-                    if (inputOptionRadio != null) inputOptionRadio.SetActive(false);
-                    break;
-                case QuestionType.Slider:
-                    if (inputOptionQuestionText != null) inputOptionQuestionText.SetActive(true);
-                    if (inputOptionRadio != null) inputOptionRadio.SetActive(false);
-                    if (inputOptionSlider != null) inputOptionSlider.SetActive(true);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        public void OnCreateButtonClick()
-        {
-            Debug.Log("Create new experiment -> name = " + createExperimenttextFieldName.text);
-
-            ExperimentType type = (ExperimentType)createExperimentDropdownExperimentType.value;
-            string labelText = createExperimentDropdownAssignedVideoLabel.text;
-
-            if (type == ExperimentType.QuestionaireOnly)
-            {
-                labelText = "none";
-            }
-            ExperimentEditor.Instance.CreateExperiment(createExperimenttextFieldName.text, (ExperimentType)createExperimentDropdownExperimentType.value, createExperimentDropdownAssignedVideoLabel.text);
-        }
+        
 
         public void OnLoadExperimentButtonClick()
         {
             ExperimentEditor.Instance.LoadExperiment(loadExperimentDropdownFiles.captionText.text);
         }
 
-        public void OnCreateQuestionButtonClick()
-        {
-            Debug.Log("Create new question");
-            ExperimentEditor.Instance.CreateNewQuestion((QuestionType)createQuestionDropdownType.value, textQuestionText.text, radioButtonOptions, sliderCreateOptions);
-            ResetRadioButtonOptions();
-            ToggleCreateQuestionObject(false);
-        }
-
         #endregion
 
         public void ToggleElementInspectorObject(bool active)
         {
-            if (elementInspectorObject == null) return; 
+            if (elementInspectorObject == null) return;
+            ToggleInMenuWindowObject(active);
             elementInspectorObject.SetActive(active);
         }
 
@@ -251,13 +151,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
             experimentNameLabel.text = name;
         }
 
-        public void ResetRadioButtonOptions()
-        {
-            foreach (var item in radioButtonOptions)
-            {
-                item.Reset();
-            }
-        }
+        
 
         public void ToggleExperimentPlayerUi(bool active)
         {

@@ -4,6 +4,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using eccon_lab.vipr.experiment.editor.ui;
 
 namespace eccon_lab.vipr.experiment.editor
 { 
@@ -31,34 +32,31 @@ namespace eccon_lab.vipr.experiment.editor
             HideAllItems();
             deleteButton.onClick.AddListener(OnRemoveButtonClick);
         }
-        
+
+   
         public void ShowContent(object obj, EditorHierachyItem.ItemType type)
         {
-            if (obj == null) return;
+            if (obj == null || type == EditorHierachyItem.ItemType.Invalid) return;
             HideAllItems();
-            currentType = type;
             string name = "";
-
-            switch (type)
+            currentType = type;
+            switch (currentType)
             {
                 case EditorHierachyItem.ItemType.Page:
                     Page p = (Page)obj;
-                    DisplayPageItems(p);
                     currentId = p.Id;
                     name = p.Name;
-
-                    elementNameLabel.text = name;
+                    elementNameLabel.text = "Edit " + name;
                     Debug.Log("Edit " + name);
-                    ExperimentEditor.Instance.UpdateLogLabel("Edit " + name);
+                    DisplayPageItems(p);
                     break;
                 case EditorHierachyItem.ItemType.Question:
                     Question q = (Question)obj;
                     DisplayQuestionItems(q);
                     currentId = q.Id;
                     name = q.Name;
-                    elementNameLabel.text = name;
+                    elementNameLabel.text = "Edit " + name;
                     Debug.Log("Edit " + name);
-                    ExperimentEditor.Instance.UpdateLogLabel("Edit " + name);
                     break;
                 default:
                     break;
@@ -76,6 +74,7 @@ namespace eccon_lab.vipr.experiment.editor
 
         public void DisplayPageItems(Page page)
         {
+            Debug.Log("Display inspector page items");
             colorPickerItem.gameObject.SetActive(true);
             colorPickerItem.SetLabelText("Background color");
             colorPickerItem.SetColorValue(page.GetBackgroundColor());

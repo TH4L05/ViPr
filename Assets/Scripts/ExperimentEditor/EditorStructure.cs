@@ -2,11 +2,10 @@
 
 using System.Collections.Generic;
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace eccon_lab.vipr.experiment
+namespace eccon_lab.vipr.experiment.editor
 {
     [System.Serializable]
     public struct TextValues
@@ -38,6 +37,7 @@ namespace eccon_lab.vipr.experiment
         {
             optionInputText.text = string.Empty;
             optionToggle.isOn = false;
+            if(defaultOption != null) defaultOption.isOn = false;
         }
     }
 
@@ -59,7 +59,7 @@ namespace eccon_lab.vipr.experiment
         public string labelSuffix;
         public int decimalPlaces;
 
-        public SliderOptions(float min = 1, float max = 99, float value = 1, string prefix = "", string suffix = "", int decimalPlaces = 0)
+        public SliderOptions(float min = 1.0f, float max = 99.0f, float value = 1.0f, string prefix = "", string suffix = "", int decimalPlaces = 0)
         {
             minValue = min;
             maxValue = max;
@@ -68,6 +68,8 @@ namespace eccon_lab.vipr.experiment
             labelSuffix = suffix;
             this.decimalPlaces = decimalPlaces;
         }
+
+       
     }
 
     [System.Serializable]
@@ -79,6 +81,16 @@ namespace eccon_lab.vipr.experiment
         public TMP_InputField sliderLabelPrefix;
         public TMP_InputField sliderLabelSuffix;
         public Slider decimalPlaces;
+
+        public void Reset()
+        {
+            sliderMinValue.text = "1";
+            sliderMaxValue.text = "100";
+            sliderDefaultValue.text = "10";
+            sliderLabelPrefix.text = string.Empty;
+            sliderLabelSuffix.text = string.Empty;
+            decimalPlaces.value = 0;
+        }
     }
 
     [System.Serializable]
@@ -89,17 +101,20 @@ namespace eccon_lab.vipr.experiment
     }
 
     [System.Serializable]
-    public struct ExperimentSaveData : INetworkSerializeByMemcpy
+    public struct ExperimentSaveData
     {
         public string experimentName;
         public ExperimentType experimentType;
         public string assignedVideoFile;
+        public Color defaultPageColor;
+        public Color defaultTextColor;
+        public float defaultTextSize;
         public List<ExperimentSaveDataPage> pages;
         public List<ExperimentSaveDataQuestion> questions;
     }
 
     [System.Serializable]
-    public struct ExperimentSaveDataPage : INetworkSerializeByMemcpy
+    public struct ExperimentSaveDataPage
     {
         public string pageName;
         public string pageId;
@@ -107,7 +122,7 @@ namespace eccon_lab.vipr.experiment
     }
 
     [System.Serializable]
-    public struct ExperimentSaveDataQuestion : INetworkSerializeByMemcpy
+    public struct ExperimentSaveDataQuestion
     {
         public string questionName;
         public string questionId;

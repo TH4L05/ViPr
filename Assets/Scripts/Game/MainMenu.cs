@@ -4,7 +4,6 @@ using UnityEngine;
 using TMPro;
 using eecon_lab.Main;
 using eecon_lab.Network;
-using Unity.Netcode;
 
 namespace eecon_lab
 {

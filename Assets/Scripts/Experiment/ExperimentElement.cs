@@ -1,3 +1,5 @@
+/// <author>Thomas Krahl</author>
+
 using UnityEngine;
 
 namespace eccon_lab.vipr.experiment

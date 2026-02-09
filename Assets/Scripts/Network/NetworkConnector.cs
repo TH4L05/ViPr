@@ -5,7 +5,6 @@ using Unity.Netcode;
 using eecon_lab.Main;
 using eecon_lab.vipr.video;
 using eccon_lab.vipr.experiment;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace eecon_lab.Network
 {

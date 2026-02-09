@@ -1,10 +1,9 @@
 /// <author>Thomas Krahl</author>
 
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
+using eccon_lab.vipr.experiment.editor;
 
 namespace eccon_lab.vipr.experiment
 {

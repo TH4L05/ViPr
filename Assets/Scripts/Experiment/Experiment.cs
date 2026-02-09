@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using eccon_lab.vipr.experiment.editor;
 
 namespace eccon_lab.vipr.experiment
 {
@@ -55,6 +56,13 @@ namespace eccon_lab.vipr.experiment
         {
             experimentName = name;
             experimentType = type;
+        }
+
+        public void SetDefaults(Color pageColor, Color textColor, float TextSize)
+        {
+            defaultPageBackgroundColor = pageColor;
+            defaultTextValues.textColor = textColor;
+            defaultTextValues.textSize = TextSize;
         }
 
         public List<Page> GetPages()
@@ -231,6 +239,31 @@ namespace eccon_lab.vipr.experiment
                 button.onClick.AddListener(player.ShowNextPage);
                 buttonLabel.text = "Fortsetzen";
             }
+        }
+
+        public ExperimentSaveData GetExperimentSaveData()
+        {
+            ExperimentSaveData saveData = new ExperimentSaveData();
+            saveData.experimentName = experimentName;
+            saveData.experimentType = experimentType;
+            saveData.defaultPageColor = defaultPageBackgroundColor;
+            saveData.defaultTextColor = defaultTextValues.textColor;
+            saveData.defaultTextSize = defaultTextValues.textSize;
+            saveData.pages = new List<ExperimentSaveDataPage>();
+            saveData.questions = new List<ExperimentSaveDataQuestion>();
+
+            foreach (var page in pages)
+            {
+                ExperimentSaveDataPage pageData = page.GetSaveData();
+                saveData.pages.Add(pageData);
+            }
+
+            foreach (var question in questions)
+            {
+                ExperimentSaveDataQuestion questionData = question.GetSaveData();
+                saveData.questions.Add(questionData);
+            }
+            return saveData;
         }
     }
 }

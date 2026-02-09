@@ -8,7 +8,7 @@ namespace TK.Util
     {
         private float dt;
 
-        private float GetFps()
+        public float GetFps()
         {
             dt += 0.1f * (Time.deltaTime - dt);
             float frames = 1.0f / dt;
