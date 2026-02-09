@@ -18,6 +18,11 @@ namespace eccon_lab.vipr.experiment
         public void Start()
         {
             if (slider == null) return;
+            Initialize();
+        }
+
+        public void Initialize()
+        {
             Setup(sliderOptions);
         }
 

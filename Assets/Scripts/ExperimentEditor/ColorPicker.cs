@@ -21,13 +21,17 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [SerializeField] private TMP_InputField hexColorInput;
         [SerializeField] private Color defaultColor = new Color(0.1538461f, 0.06153846f, 0.2f, 1f);
 
-        private void Start()
+        public void Initialize()
         {
-            Setup(defaultColor);
+            Debug.Log("Initialize Color Picker");
+            UpdateSliderValues(defaultColor.r, defaultColor.g, defaultColor.b);
+            UpdatePreview();
+            SetHexColor();
         }
 
         public void Setup(Color color)
         {
+            Debug.Log("Set Color Picker color= " + color.r + "/" + color.g + "/" + color.b);
             UpdateSliderValues(color.r, color.g, color.b);
             UpdatePreview();
             SetHexColor();

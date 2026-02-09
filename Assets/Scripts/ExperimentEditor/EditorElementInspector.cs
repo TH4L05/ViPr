@@ -24,13 +24,13 @@ namespace eccon_lab.vipr.experiment.editor
         private void Start()
         {
             Setup();
-            
         }
 
         private void Setup()
         {
-            HideAllItems();
+            colorPickerItem.Initialize();
             deleteButton.onClick.AddListener(OnRemoveButtonClick);
+            HideAllItems();
         }
 
    
@@ -52,11 +52,11 @@ namespace eccon_lab.vipr.experiment.editor
                     break;
                 case EditorHierachyItem.ItemType.Question:
                     Question q = (Question)obj;
-                    DisplayQuestionItems(q);
                     currentId = q.Id;
                     name = q.Name;
                     elementNameLabel.text = "Edit " + name;
                     Debug.Log("Edit " + name);
+                    DisplayQuestionItems(q);
                     break;
                 default:
                     break;
@@ -82,8 +82,14 @@ namespace eccon_lab.vipr.experiment.editor
         public void DisplayQuestionItems(Question question)
         {
             colorPickerItem.gameObject.SetActive(true);
+            colorPickerItem.SetLabelText("TextColor");
+            colorPickerItem.SetColorValue(question.GetTextColor());
+
             textInputItem.gameObject.SetActive(true);
+            textInputItem.SetInput(question.GetQuestionText());
+
             textOptionsItem.gameObject.SetActive(true);
+            textOptionsItem.SetTextOptions(question.GetTextValues());
 
             switch (question.GetQuestionType())
             {
@@ -100,13 +106,14 @@ namespace eccon_lab.vipr.experiment.editor
                     sliderOptionsItem.gameObject.SetActive(true);
                     break;
                 default:
+                    radioOptionsItem.gameObject.SetActive(false);
+                    sliderOptionsItem.gameObject.SetActive(false);
                     break;
             }
 
-            colorPickerItem.SetLabelText("TextColor");
-            colorPickerItem.SetColorValue(question.GetTextColor());
-            textInputItem.SetInput(question.GetQuestionText());
-            textOptionsItem.SetTextOptions(question.GetTextValues());
+            
+            
+            
             radioOptionsItem.SetRadioButtonOptions(question.GetRadioOptionValues());
             sliderOptionsItem.SetSliderOptions(question.GetSliderOptionValues());
         }

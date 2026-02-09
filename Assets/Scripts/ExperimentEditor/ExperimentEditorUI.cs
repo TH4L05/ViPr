@@ -3,16 +3,16 @@
 using System.IO;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 namespace eccon_lab.vipr.experiment.editor.ui
 {
     public class ExperimentEditorUI : MonoBehaviour
     {
         [Header("Menu")]
-        [SerializeField] private GameObject menuWindowObject;
-        [SerializeField] private GameObject startMenuObject;
-        [SerializeField] private GameObject inMenuObject;
-        [SerializeField] private GameObject inMenuWindowObject;
+        [SerializeField] private GameObject menuWindow;
+        [SerializeField] private GameObject mainMenu;
+        [SerializeField] private Button mainMenuCloseButton;
         
         [Header("MenuCreateExperiment")]
         [SerializeField] private CreateExperimentWindow createExperimentWindow;
@@ -50,37 +50,30 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
             ToogleExperimentCreateWindow(false);
             ToggleExperimentLoadWindow(false);
-            ToggleInMenuWindowObject(false);
             ToggleElementInspectorObject(false);
             ToggleCreateQuestionObject(false);
 
             ToggleEditorMenu(true);
+            ToggleMainMenuState(true);
         }
 
         public void ToggleMainWindowObject(bool active)
         {
-            if (menuWindowObject == null) return;
-            menuWindowObject.SetActive(active);
+            if (menuWindow == null) return;
+            menuWindow.SetActive(active);
         }
 
         public void ToggleEditorMenu(bool active)
         {
-            if (startMenuObject == null) return;
+            if (mainMenu == null) return;
             ToggleMainWindowObject(active);
-            startMenuObject.SetActive(active);
+            mainMenu.SetActive(active);
             logTextlabel.text = "";
         }
 
-        public void ToggleEditorInMenu(bool active)
+        public void ToggleMainMenuState(bool start)
         {
-            if (inMenuObject == null) return;
-            inMenuObject.SetActive(active);
-        }
-
-        public void ToggleInMenuWindowObject(bool active)
-        {
-            if(inMenuWindowObject == null) return;
-            inMenuWindowObject.SetActive(active);
+            mainMenuCloseButton.interactable = !start;
         }
 
         #region ExperimentCreate
@@ -125,7 +118,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         public void ToggleCreateQuestionObject(bool active)
         {
             if (createQuestionWindow.assignedGameobjct == null) return;
-            ToggleInMenuWindowObject(active);
+            ToggleMainWindowObject(active);
             createQuestionWindow.assignedGameobjct.SetActive(active);
         }
 
@@ -141,7 +134,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         public void ToggleElementInspectorObject(bool active)
         {
             if (elementInspectorObject == null) return;
-            ToggleInMenuWindowObject(active);
+            ToggleMainWindowObject(active);
             elementInspectorObject.SetActive(active);
         }
 

@@ -89,6 +89,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
                             item2.RemoveContent(referenceID);
                         }
                     }
+                    item.OnItemDestroy();
                     Items.Remove(item);
                     Destroy(item.gameObject);
                     return;

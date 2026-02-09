@@ -3385,7 +3385,7 @@ MonoBehaviour:
   labelBlue: {fileID: 7982426395978930889}
   previewImage: {fileID: 2943956579198453614}
   hexColorInput: {fileID: 6154929428605038913}
-  defaultColor: {r: 0.1538461, g: 0.06153846, b: 0.2, a: 1}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &5285987774748012808
 GameObject:
   m_ObjectHideFlags: 0

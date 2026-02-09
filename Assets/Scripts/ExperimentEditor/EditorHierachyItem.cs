@@ -22,18 +22,19 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [Header("Main")]
         [SerializeField] private string referenceID;
         [SerializeField] private GameObject contentObject;
+        [SerializeField] private GameObject contentPrefab;
         [SerializeField] private TextMeshProUGUI nameTextField;
         [SerializeField] private List<EditorHierachyItem> contentItems = new List<EditorHierachyItem>();
 
         [Header("Settings")]
+        [SerializeField] private Color defaultColor;
         [SerializeField] private Color selectedColor = Color.grey;
+        [SerializeField] private Color hoverColor;
         [SerializeField] private Image backgroundImage;
         [SerializeField] private Image contentBackgroundImage;
         [SerializeField] private Image toggleImage;
         [SerializeField] private Sprite untoggled;
         [SerializeField] private Sprite toggled;
-        [SerializeField] private Color defaultColor;
-        [SerializeField] private Color hoverColor;
 
         #endregion
 
@@ -46,8 +47,9 @@ namespace eccon_lab.vipr.experiment.editor.ui
         private bool isToggled;
         private RectTransform rectTransform;
         private RectTransform contentTransform;
-        private float defaultHeight;
-        private float toggledHeight;
+        private RectTransform contentRootTransform;
+        private float defaultHeight = 55.0f;
+        private float toggledHeight = 0f;
 
         #endregion
 
@@ -66,7 +68,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
             isToggled = false;
             rectTransform = GetComponent<RectTransform>();
-            defaultHeight = rectTransform.sizeDelta.y;
+            
 
             if (nameTextField != null) nameTextField.text = name;
             editorHierachy = hierachy;
@@ -75,14 +77,19 @@ namespace eccon_lab.vipr.experiment.editor.ui
             if (toggleImage != null)
             {
                 toggleImage.sprite = untoggled;
-                toggledHeight = 55f;
             }
 
-            if (contentObject != null)
+            if (contentPrefab != null)
             {
+                contentObject = Instantiate(contentPrefab, transform.parent);
                 contentObject.SetActive(false);
-                contentTransform = contentObject.GetComponent<RectTransform>();
-                if(contentBackgroundImage != null) contentBackgroundImage.color = defaultColor;
+                contentObject.name = name + "_Content";
+                contentBackgroundImage = contentObject.GetComponentInChildren<Image>();
+                contentRootTransform = contentObject.GetComponent<RectTransform>();
+                contentTransform = contentObject.transform.GetChild(1).GetComponent<RectTransform>();
+                defaultHeight = 5.0f;
+                toggledHeight = defaultHeight;
+                if (contentBackgroundImage != null) contentBackgroundImage.color = defaultColor;
             }
         }
 
@@ -93,6 +100,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
             contentItems.Add(item);
             item.transform.SetParent(contentTransform, false);
             toggledHeight += 55f;
+            ToggleContentSelect(isSelected);
         }
 
         public void RemoveContent(string referenceId)
@@ -114,23 +122,17 @@ namespace eccon_lab.vipr.experiment.editor.ui
         public void ToggleContent()
         {
             isToggled = !isToggled;
-
-            if (isToggled)
-            {
-                if (toggleImage != null) toggleImage.sprite = toggled;
-            }
-            else
-            {
-                if (toggleImage != null) toggleImage.sprite = untoggled;
-            }
-            SetHeight();
-            contentObject.SetActive(isToggled);
+            UpdateContent();
         }
 
         public void ToggleContent(bool toggle)
         {
             isToggled = toggle;
+            UpdateContent();
+        }
 
+        private void UpdateContent()
+        {
             if (isToggled)
             {
                 if (toggleImage != null) toggleImage.sprite = toggled;
@@ -148,11 +150,11 @@ namespace eccon_lab.vipr.experiment.editor.ui
             if (isToggled)
             {
                 if (toggledHeight == 0f) toggledHeight = defaultHeight;
-                rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, toggledHeight);
+                contentRootTransform.sizeDelta = new Vector2(contentRootTransform.sizeDelta.x, toggledHeight);
             }
             else
             {
-                rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, defaultHeight);
+                contentRootTransform.sizeDelta = new Vector2(contentRootTransform.sizeDelta.x, defaultHeight);
             }
         }
 
@@ -179,7 +181,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
             isSelected = false;
             if (backgroundImage != null) backgroundImage.color = defaultColor;
             if (contentBackgroundImage != null) contentBackgroundImage.color = defaultColor;
-            ToggleContentSelect(false);
+            ToggleContentSelect(isSelected);
         }
 
         public void EditItem()
@@ -195,7 +197,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
                 case ItemType.Invalid:
                     break;
                 case ItemType.Page:
-                    ToggleContent();
+                    //ToggleContent();
                     break;
                 case ItemType.Question:
                     id = ExperimentEditor.Instance.CurrentExperiment.GetQuestion(referenceID).AssignedPageId;
@@ -219,6 +221,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         public void OnPointerEnter(PointerEventData eventData)
         {
             backgroundImage.color = hoverColor;
+            //if (contentBackgroundImage != null) contentBackgroundImage.color = hoverColor;
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -231,6 +234,20 @@ namespace eccon_lab.vipr.experiment.editor.ui
             }
             if (backgroundImage != null) backgroundImage.color = defaultColor;
             if (contentBackgroundImage != null) contentBackgroundImage.color = defaultColor;
+        }
+
+        public void OnItemDestroy()
+        {
+            if (contentItems.Count > 0)
+            {
+                foreach (var item in contentItems)
+                {
+                   item.OnItemDestroy();
+                }
+                contentItems.Clear();
+            }
+
+            if(contentObject != null) Destroy(contentObject);
         }
     }
 }

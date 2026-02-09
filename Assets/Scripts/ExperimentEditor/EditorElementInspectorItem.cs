@@ -17,6 +17,10 @@ namespace eccon_lab.vipr.experiment.editor
         [SerializeField] private ToggleGroup radioOptionSetDefaultGroup;
         [SerializeField] private SliderCreateOption sliderCreateOptions;
         
+        public void Initialize()
+        {
+            if(colorPicker != null) colorPicker.Initialize();
+        }
 
         public void SetLabelText(string text)
         {
@@ -39,6 +43,12 @@ namespace eccon_lab.vipr.experiment.editor
         {
             if (colorPicker == null) return;
             colorPicker.Setup(color);
+        }
+
+        public Color GetColorValue()
+        {
+            if (colorPicker == null) return Color.purple;
+            return colorPicker.GetColor();
         }
 
         public void SetTextOptions(TextValues textValues)
@@ -81,12 +91,6 @@ namespace eccon_lab.vipr.experiment.editor
                                                         (int)sliderCreateOptions.decimalPlaces.value
                                                       );
             return options;
-        }
-
-        public Color GetColorValue()
-        {
-            if (colorPicker == null) return Color.purple;
-            return colorPicker.GetColor();
         }
 
         public void SetRadioButtonOptions(RadioOptionValue[] options)

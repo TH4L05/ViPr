@@ -19,6 +19,10 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [SerializeField] private CustomSlider inputTextSizeDefault;
         [SerializeField] private ToggleButton toggleButton;
 
+        [SerializeField] private ColorPicker cp1;
+        [SerializeField] private ColorPicker cp2;
+        [SerializeField] private CustomSlider sl;
+
         public void Start()
         {
             Setup();
@@ -31,6 +35,9 @@ namespace eccon_lab.vipr.experiment.editor.ui
             SetupExperimentTypeDropdown();
             SetupAssignedVideoDropdown();
             toggleButton.Setup();
+            if (cp1 != null) cp1.Initialize();
+            if (cp2 != null) cp2.Initialize();
+            if (sl != null) sl.Initialize();
         }
 
         private void ToggleVideoFileInputObject(bool active)
