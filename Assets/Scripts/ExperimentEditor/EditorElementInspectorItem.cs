@@ -53,21 +53,12 @@ namespace eccon_lab.vipr.experiment.editor
 
         public void SetTextOptions(TextOptions textValues)
         {
-            SetColorValue(textValues.textColor);
-            textOptionInspector.SetSliderValue(textValues.textSize);
-            textOptionInspector.SetStyleDropdown(textValues.textStyle);
-            textOptionInspector.SetAlignmentHDropdown(textValues.horizontalAlignment);
-            textOptionInspector.SetAlignmentVDropdown(textValues.verticalAlignment); 
+            textOptionInspector.SetTextValues(textValues); 
         }
 
         public TextOptions GetTextOptions()
         {
-            TextOptions textValues = new TextOptions();
-            textValues.textSize = textOptionInspector.GetTextSizeValue();
-            textValues.textStyle = textOptionInspector.GetStyleValue();
-            textValues.horizontalAlignment = textOptionInspector.GetAlignmentHValue(); 
-            textValues.verticalAlignment = textOptionInspector.GetAlignmentVValue();
-            return textValues;
+            return textOptionInspector.GetTextValues();
         }
 
         public void SetSliderOptions(SliderOptions sliderOptions)

@@ -9,6 +9,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
 {
     public class ToggleButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
+        [SerializeField] private RectTransform rootTransform;
         [SerializeField] private GameObject contentObject;
         [SerializeField] private TextMeshProUGUI label;
         [SerializeField] private Image toggleImage;
@@ -20,7 +21,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         private bool isInitialized;
         private bool isToggled;
-        private RectTransform rootTransform;
+        
         private RectTransform contentTransform;
         private float defaultHeight;
 
@@ -32,7 +33,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         public void Setup()
         {
-            rootTransform = GetComponent<RectTransform>();
+            if(rootTransform == null) rootTransform = GetComponent<RectTransform>();
             
             isToggled = false;
             if (toggleImage != null)

@@ -1,5 +1,6 @@
 /// <author>Thomas Krahl</author>
 
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,8 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [SerializeField] private Image previewImage;
         [SerializeField] private TMP_InputField hexColorInput;
         [SerializeField] private Color defaultColor = new Color(0.1538461f, 0.06153846f, 0.2f, 1f);
+
+        public Action<Color> OnValueChanged;
 
         public void Initialize()
         {
@@ -50,6 +53,11 @@ namespace eccon_lab.vipr.experiment.editor.ui
         public void OnHexColorInputChanged()
         {
             string hex = hexColorInput.text;
+            if (hex == "")
+            {
+                hex = "FFFFFF";
+                hexColorInput.text = hex;
+            }
 
             string r = hex.Substring(0, 2);
             string g = hex.Substring(2, 2);
@@ -141,7 +149,9 @@ namespace eccon_lab.vipr.experiment.editor.ui
         private void UpdatePreview()
         {
             if (previewImage == null) return;
-            previewImage.color = new Color(sliderRed.value, sliderGreen.value, sliderBlue.value);
+            Color newColor = new Color(sliderRed.value, sliderGreen.value, sliderBlue.value);
+            previewImage.color = newColor;
+            OnValueChanged?.Invoke(newColor);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
             }
         }
 
-        public void ShowWindowContent()
+        public override void ShowWindowContent()
         {
             textQuestionText.text = string.Empty;
             ResetRadioButtonOptions();

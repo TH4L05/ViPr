@@ -44,9 +44,8 @@ namespace eccon_lab.vipr.experiment.editor.ui
         private EditorHierachy editorHierachy;
         private ItemType itemType = ItemType.Invalid;
         private bool isSelected = false;
-
         private bool isToggled;
-        private bool toggleEnabled;
+        private bool toggleEnabled = true;
         private RectTransform rectTransform;
         private RectTransform contentTransform;
         private RectTransform contentRootTransform;
@@ -82,6 +81,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
                     toggleEnabled = false;
                     break;
                 case ItemType.Page:
+                    toggleEnabled = true;
                     if (toggleImage != null)
                     {
                         toggleImage.sprite = untoggled;
@@ -216,6 +216,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
             switch (itemType)
             {
                 case ItemType.Invalid:
+                    break;
                 case ItemType.Page:
                 case ItemType.InfoPage:
                     break;

@@ -1,5 +1,6 @@
 /// <author>Thomas Krahl</author>
 
+using eccon_lab.vipr.experiment.editor.ui;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -10,6 +11,7 @@ namespace eccon_lab.vipr.experiment.editor
 {
     public class TextOptionInspector : MonoBehaviour
     {
+        [SerializeField] private ColorPicker textColor;
         [SerializeField] private Slider sliderSize;
         [SerializeField] private TextMeshProUGUI sliderSizeLabel;
         [SerializeField] private TMP_Dropdown dropdownStyle;
@@ -21,6 +23,32 @@ namespace eccon_lab.vipr.experiment.editor
         private Dictionary<int, string> alignmentH;
         private Dictionary<int, string> alignmentV;
 
+        private void Awake()
+        {
+            if (textColor != null) textColor.OnValueChanged += UpdateTextPreviewColor;
+        }
+
+        private void OnDestroy()
+        {
+            if (textColor != null) textColor.OnValueChanged -= UpdateTextPreviewColor;
+        }
+
+        public TextOptions GetTextValues()
+        {
+            TextOptions options = new TextOptions();
+            options.textColor = GetTextColor();
+            options.textSize = GetTextSizeValue();
+            options.textStyle = GetStyleValue();
+            options.horizontalAlignment = GetAlignmentHValue();
+            options.verticalAlignment = GetAlignmentVValue();
+            return options;
+        }
+
+        public Color GetTextColor()
+        {
+            if (textColor == null) return new Color(1, 1, 1);
+            return textColor.GetColor();
+        }
 
         public float GetTextSizeValue()
         {
@@ -48,6 +76,7 @@ namespace eccon_lab.vipr.experiment.editor
 
         public void SetTextValues(TextOptions textValues)
         {
+            if(textColor != null) textColor.Setup(textValues.textColor);
             SetSliderValue(textValues.textSize);
             SetStyleDropdown(textValues.textStyle);
             SetAlignmentHDropdown(textValues.horizontalAlignment);
@@ -122,6 +151,11 @@ namespace eccon_lab.vipr.experiment.editor
                 index++;
             }
             UpdateTextAlignmentV(dropdownAlignmentV.value);
+        }
+
+        public void UpdateTextPreviewColor(Color color)
+        {
+            previewlabel.color = color;
         }
 
         public void UpdateTextPreviewSize(float value)

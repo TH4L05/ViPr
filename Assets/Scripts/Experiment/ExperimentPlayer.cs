@@ -2,12 +2,13 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
-using TK.Util;
 using TMPro;
-using eecon_lab.vipr.video;
 using eccon_lab.vipr.experiment.editor;
+using eecon_lab.vipr.video;
+using TK.Util;
 
 namespace eccon_lab.vipr.experiment
 {
@@ -40,6 +41,7 @@ namespace eccon_lab.vipr.experiment
         [SerializeField] private ExperimentState experimentState = ExperimentState.Invalid;
 
         public ExperimentState ExperimentState => experimentState;
+
         public static Action<ExperimentState> OnExperimentStateChanged;
         public static Action<int> OnExperimentPageChanged;
 
@@ -172,14 +174,14 @@ namespace eccon_lab.vipr.experiment
             }
             experiment.Setup(saveData.experimentName, saveData.experimentType);
 
-            foreach (var item in saveData.pages)
+            foreach (var page in saveData.pages)
             {
-                CreatePage(item.pageId, item.pageId, item.backgroundColor);
+                CreatePage(page.pageId, page.pageId, page.pageType, page.pageText, page.textOptions,  page.backgroundColor);
             }
 
-            foreach (var item in saveData.questions)
+            foreach (var question in saveData.questions)
             {
-                CreateQuestion(item.questionId, item.questionName, item.questionType, item.questionText, item.textOptions, item.radioOptions, item.sliderOptions, item.referencePageId);
+                CreateQuestion(question.questionId, question.questionName, question.questionType, question.questionText, question.textOptions, question.radioOptions, question.sliderOptions, question.referencePageId);
             }
             SetPageButtonActions();
             StartExperiment();
@@ -194,9 +196,20 @@ namespace eccon_lab.vipr.experiment
             return null;
         }
 
-        public void CreatePage(string id, string name, Color backgroundColor)
+        public void CreatePage(string id, string name, PageType type, string pageText, TextOptions textOptions, Color backgroundColor)
         {
-            GameObject prefab = GetPrefab("PagePrefab");
+            GameObject prefab = null;
+            switch (type)
+            {
+                case PageType.ContentPage:
+                    prefab = GetPrefab("PageContentPrefab");
+                    break;
+                case PageType.InfoPage:
+                    prefab = GetPrefab("PageInfoPrefab");
+                    break;
+                default:
+                    break;
+            }
 
             if (prefab == null)
             {
@@ -205,10 +218,13 @@ namespace eccon_lab.vipr.experiment
             }
 
             GameObject newPageObject = Instantiate(prefab, experimentRootTransform);
-            newPageObject.name = "Page" + name;
+            newPageObject.name = name;
             Page newPage = new Page();
             newPage.Initialize(name, id, newPageObject);
+            newPage.PageSetup(type, pageText);
             newPage.SetBackgroundColor(backgroundColor);
+            newPage.SetPageTextOptions(textOptions);
+            newPage.SetupAssignedObject();
             experiment.AddPage(newPage);
         }
 
@@ -260,7 +276,7 @@ namespace eccon_lab.vipr.experiment
             return experimentData;
         }
 
-        public void SaveResults()
+        public string SaveResults()
         {
             string baseDirectoryPath = folderPath + "/Results";
 
@@ -278,12 +294,18 @@ namespace eccon_lab.vipr.experiment
             string resultsFilePath = experimentDirPath + "/" + "Results" + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".csv";
 
             string content = "";
+            var questionList = experiment.GetQuestions();
 
-            foreach (Question question in experiment.GetQuestions())
+            foreach (Question question in questionList)
             {
-                content += question.GetAnswerValue() + ";";
+                content += question.GetAnswerValue();
+                if (question != questionList.Last())
+                {
+                    content += ";";
+                }
             }
             Serialization.SaveText(content, resultsFilePath);
+            return content;
         }
     }
 }

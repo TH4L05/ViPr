@@ -17,6 +17,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [Header("Windows")]
         [SerializeField] private CreateExperimentWindow createExperimentWindow;
         [SerializeField] private LoadExperimentWindow loadExperimentWindow;
+        [SerializeField] private CreatePageWindow createPageWindow;
         [SerializeField] private CreateQuestionWindow createQuestionWindow;
 
         [Header("Editor")]
@@ -39,9 +40,10 @@ namespace eccon_lab.vipr.experiment.editor.ui
         {
             Debug.Log("Editor ui setup");
             SetExperimentNameLabel("-"); 
-            ToogleExperimentCreateWindow(false);
             ToggleExperimentLoadWindow(false);
+            ToogleExperimentCreateWindow(false);
             ToggleElementInspectorObject(false);
+            ToggleCreatepageObject(false);
             ToggleCreateQuestionObject(false);
             ToggleEditorMenu(true);
             ToggleMainMenuState(true);
@@ -78,6 +80,13 @@ namespace eccon_lab.vipr.experiment.editor.ui
             if(loadExperimentWindow == null) return;
             ToggleMainWindowObject(active);
             loadExperimentWindow.ToggleAssignedGamebject(active);
+        }
+
+        public void ToggleCreatepageObject(bool active)
+        {
+            if (createPageWindow == null) return;
+            ToggleMainWindowObject(active);
+            createPageWindow.ToggleAssignedGamebject(active);
         }
 
         public void ToggleCreateQuestionObject(bool active)

@@ -22,6 +22,10 @@ namespace eccon_lab.vipr.experiment.editor.ui
             if (assignedGameObject == null) return;
             assignedGameObject.SetActive(active);
         }
+
+        public virtual void ShowWindowContent()
+        {
+        }
     }
 }
 

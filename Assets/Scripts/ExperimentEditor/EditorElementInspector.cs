@@ -43,6 +43,7 @@ namespace eccon_lab.vipr.experiment.editor
             switch (currentType)
             {
                 case EditorHierachyItem.ItemType.Page:
+                case EditorHierachyItem.ItemType.InfoPage:
                     Page p = (Page)obj;
                     currentId = p.Id;
                     name = p.Name;
@@ -74,18 +75,29 @@ namespace eccon_lab.vipr.experiment.editor
 
         public void DisplayPageItems(Page page)
         {
-            Debug.Log("Display inspector page items");
             colorPickerItem.gameObject.SetActive(true);
-            colorPickerItem.SetLabelText("Background color");
             colorPickerItem.SetColorValue(page.GetBackgroundColor());
+
+            switch (page.GetPageType())
+            {
+                case PageType.ContentPage:
+                    
+                    break;
+                case PageType.InfoPage:
+                    textInputItem.gameObject.SetActive(true);
+                    textInputItem.SetInput(page.GetPageText());
+                    textInputItem.SetLabelText("Page text");
+                    textOptionsItem.gameObject.SetActive(true);
+                    textOptionsItem.SetTextOptions(page.GetTextOptions());
+                    break;
+                default:
+                    break;
+            }
         }
         public void DisplayQuestionItems(Question question)
         {
-            colorPickerItem.gameObject.SetActive(true);
-            colorPickerItem.SetLabelText("TextColor");
-            colorPickerItem.SetColorValue(question.GetTextColor());
-
             textInputItem.gameObject.SetActive(true);
+            textInputItem.SetLabelText("Question text");
             textInputItem.SetInput(question.GetQuestionText());
 
             textOptionsItem.gameObject.SetActive(true);

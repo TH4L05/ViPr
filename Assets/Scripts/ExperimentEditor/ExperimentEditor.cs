@@ -100,8 +100,8 @@ namespace eccon_lab.vipr.experiment.editor
             experiment.SetDefaults(defaultPageColor, defaultTextColor, defaultTextSize);
             editorUI.SetExperimentNameLabel(experimentName);
             if(!isNewExperiment) return;
-            CreateNewPage(PageType.InfoPage, experiment.DefaultPageBackgroundColor, "StartPage", "Welcome");
-            CreateNewPage(PageType.ContentPage, experiment.DefaultPageBackgroundColor);
+            CreateNewPage(PageType.InfoPage, experiment.DefaultPageBackgroundColor,experiment.DefaultTextValues,  "StartPage", "Welcome");
+            CreateNewPage(PageType.ContentPage, experiment.DefaultPageBackgroundColor, experiment.DefaultTextValues);
             experiment.UpdatePageVisibility(experiment.GetPage(0).Id);
             editorUI.UpdateLogLabelText("Created new Experiment with name \"" + experimentName + "\"");
             currentPageId = experiment.GetPage(0).Id;
@@ -150,7 +150,7 @@ namespace eccon_lab.vipr.experiment.editor
 
         #region Page
 
-        public void CreateNewPage(PageType type, Color backgroundColor, string name = "", string pageText = "" )
+        public void CreateNewPage(PageType type, Color backgroundColor, TextOptions options, string name = "", string pageText = "" )
         {
             string id = CreateId();
             int pagecount = 1 + experiment.GetPageAmount();
@@ -159,10 +159,10 @@ namespace eccon_lab.vipr.experiment.editor
             Color color = backgroundColor;
             if(backgroundColor == null) color = experiment.DefaultPageBackgroundColor;
 
-            CreatePage(id, pageName,type, pageText, experiment.DefaultTextValues, color);
+            CreatePage(id, pageName,type, pageText, options, color);
         }
 
-        public void CreatePage(string id, string name,PageType type, string pageText,TextOptions textOptions,  Color backgroundColor)
+        public void CreatePage(string id, string name,PageType type, string pageText, TextOptions textOptions,  Color backgroundColor)
         {
             GameObject prefab = null;
             EditorHierachyItem.ItemType itemType = EditorHierachyItem.ItemType.Invalid;
@@ -335,6 +335,7 @@ namespace eccon_lab.vipr.experiment.editor
             switch (type)
             {
                 case EditorHierachyItem.ItemType.Page:
+                case EditorHierachyItem.ItemType.InfoPage:
                     Page p = experiment.GetPage(referenceID);
                     obj = p;
                     break;
