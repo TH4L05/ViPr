@@ -15,7 +15,7 @@ namespace eccon_lab.vipr.experiment
         [SerializeField] private string assignedPageId;
         [SerializeField] private QuestionType questionType;
         [SerializeField] private string questionText;
-        [SerializeField] private TextValues textValues;
+        [SerializeField] private TextOptions textOptions;
         [SerializeField] private Vector3 position;
         [SerializeField] private Vector3 rotation;
         [SerializeField] private Vector2 size;
@@ -40,7 +40,7 @@ namespace eccon_lab.vipr.experiment
             base.Initialize(name, id, assignedUiElement);
             radioOptionValues = new RadioOptionValue[8];
             sliderOptions = new SliderOptions(1.0f, 10.0f, 5f);
-            textValues = new TextValues(Color.white, 30.0f);
+            textOptions = new TextOptions(Color.white, 30.0f);
             position = assigendUiElement.GetComponent<RectTransform>().position;
             rotation = assigendUiElement.GetComponent<RectTransform>().rotation.eulerAngles;
             size = assigendUiElement.GetComponent<RectTransform>().sizeDelta;
@@ -64,14 +64,14 @@ namespace eccon_lab.vipr.experiment
             return questionType;
         }
 
-        public TextValues GetTextValues()
+        public TextOptions GetTextValues()
         {
-            return textValues;
+            return textOptions;
         }
 
         public Color GetTextColor()
         {
-            return textValues.textColor;
+            return textOptions.textColor;
         }
 
         public string GetQuestionText()
@@ -94,9 +94,9 @@ namespace eccon_lab.vipr.experiment
 
         #region Set
 
-        public void SetTextValues(TextValues values)
+        public void SetTextValues(TextOptions values)
         {
-            textValues = values;
+            textOptions = values;
         }
 
         public void SetQuestionText(string text)
@@ -121,7 +121,7 @@ namespace eccon_lab.vipr.experiment
         public void SetupAssignedObject()
         {
             TextMeshProUGUI textField = assigendUiElement.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-            SetTextObjectValues(textField, textValues);
+            SetTextObjectValues(textField, textOptions);
             textField.text = questionText;
 
             switch (questionType)
@@ -164,12 +164,12 @@ namespace eccon_lab.vipr.experiment
                 }
                 
                 TextMeshProUGUI toggleLabel = toggle.gameObject.GetComponentInChildren<TextMeshProUGUI>();
-                SetTextObjectValues(toggleLabel, textValues);
+                SetTextObjectValues(toggleLabel, textOptions);
                 toggleLabel.text = radioOptionValues[i].optionName;
             }
         }
 
-        private void SetTextObjectValues(TextMeshProUGUI textField, TextValues textValues)
+        private void SetTextObjectValues(TextMeshProUGUI textField, TextOptions textValues)
         {
             textField.color = textValues.textColor;
             textField.fontSize = textValues.textSize;
@@ -183,14 +183,14 @@ namespace eccon_lab.vipr.experiment
             CustomSlider slider = assigendUiElement.transform.GetChild(1).GetChild(0).GetComponent<CustomSlider>();
             if (slider == null) return;
             slider.Setup(sliderOptions);
-            slider.SetSliderLabelTextValues(textValues);
+            slider.SetSliderLabelTextValues(textOptions);
         }
 
         #endregion
 
         public ExperimentSaveDataQuestion GetSaveData()
         {
-            ExperimentSaveDataQuestion questionData = new ExperimentSaveDataQuestion(id, name, questionType, assignedPageId, questionText, textValues, radioOptionValues, sliderOptions);
+            ExperimentSaveDataQuestion questionData = new ExperimentSaveDataQuestion(id, name, questionType, assignedPageId, questionText, textOptions, radioOptionValues, sliderOptions);
             return questionData;
         }
 

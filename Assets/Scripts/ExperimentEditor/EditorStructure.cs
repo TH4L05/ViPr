@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace eccon_lab.vipr.experiment.editor
 {
     [System.Serializable]
-    public struct TextValues
+    public struct TextOptions
     {
         public Color textColor;
         public float textSize;
@@ -16,7 +16,7 @@ namespace eccon_lab.vipr.experiment.editor
         public TMPro.HorizontalAlignmentOptions horizontalAlignment;
         public TMPro.VerticalAlignmentOptions verticalAlignment;
 
-        public TextValues(Color color, float size, TMPro.FontStyles style = FontStyles.Normal, TMPro.HorizontalAlignmentOptions horizontalAlignment = HorizontalAlignmentOptions.Left, TMPro.VerticalAlignmentOptions verticalAlignment = VerticalAlignmentOptions.Middle)
+        public TextOptions(Color color, float size, TMPro.FontStyles style = FontStyles.Normal, TMPro.HorizontalAlignmentOptions horizontalAlignment = HorizontalAlignmentOptions.Left, TMPro.VerticalAlignmentOptions verticalAlignment = VerticalAlignmentOptions.Middle)
         {
             textColor = color;
             textSize = size;
@@ -118,7 +118,20 @@ namespace eccon_lab.vipr.experiment.editor
     {
         public string pageName;
         public string pageId;
+        public PageType pageType;
+        public string pageText;
+        public TextOptions textOptions;
         public Color backgroundColor;
+
+        public ExperimentSaveDataPage(string id, string name, PageType type, string text, Color color, TextOptions options)
+        {
+            pageId = id;
+            pageName = name;
+            pageType = type;
+            pageText = text;
+            backgroundColor = color;
+            textOptions = options;
+        }
     }
 
     [System.Serializable]
@@ -129,18 +142,18 @@ namespace eccon_lab.vipr.experiment.editor
         public QuestionType questionType;
         public string referencePageId;
         public string questionText;
-        public TextValues textValues;
+        public TextOptions textOptions;
         public RadioOptionValue[] radioOptions;
         public SliderOptions sliderOptions;
 
-        public ExperimentSaveDataQuestion(string id, string name, QuestionType type, string pageId, string text, TextValues values, RadioOptionValue[] radioOptions, SliderOptions sliderOptions)
+        public ExperimentSaveDataQuestion(string id, string name, QuestionType type, string pageId, string text, TextOptions textOptions, RadioOptionValue[] radioOptions, SliderOptions sliderOptions)
         {
             questionId = id;
             questionName = name;
             questionType = type;
             referencePageId = pageId;
             questionText = text;
-            textValues = values;
+            this.textOptions = textOptions;
             this.radioOptions = radioOptions;
             this.sliderOptions = sliderOptions;
         }

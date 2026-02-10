@@ -77,56 +77,63 @@ namespace eccon_lab.vipr.experiment.editor.ui
             return new Color(sliderRed.value, sliderGreen.value, sliderBlue.value);
         }
 
-        public void OnRedInputChanged(string value)
+        public void OnRedInputChanged(string inputValue)
         {
-            float v = float.Parse(value) / 255f;
-            if(labelRed != null) labelRed.text = value;
-            if(sliderRed != null) sliderRed.value = v;
+            float value = float.Parse(inputValue);
+
+            if(value < 0f) value = 0f;
+            if(value > 255f) value = 255f;
+            if(labelRed != null) labelRed.text = inputValue;
+            if(sliderRed != null) sliderRed.value = value / 255f;
             UpdatePreview();
             SetHexColor();
         }
 
-        public void OnGreenInputChanged(string value)
+        public void OnGreenInputChanged(string inputValue)
         {
-            float v = float.Parse(value) / 255f;
-            if (labelGreen != null) labelGreen.text = value;
-            if (sliderGreen != null) sliderGreen.value = v;
+            float value = float.Parse(inputValue);
+            if (value < 0f) value = 0f;
+            if (value > 255f) value = 255f;
+            if (labelGreen != null) labelGreen.text = inputValue;
+            if (sliderGreen != null) sliderGreen.value = value / 255f;
             UpdatePreview();
             SetHexColor();
         }
 
-        public void OnBlueInputChanged(string value)
+        public void OnBlueInputChanged(string inputValue)
         {
-            float v = float.Parse(value) / 255f;
-            if (labelBlue != null) labelBlue.text = value;
-            if (sliderBlue != null) sliderBlue.value = v;
+            float value = float.Parse(inputValue);
+            if (value < 0f) value = 0f;
+            if (value > 255f) value = 255f;
+            if (labelBlue != null) labelBlue.text = inputValue;
+            if (sliderBlue != null) sliderBlue.value = value / 255f;
             UpdatePreview();
             SetHexColor();
         }
 
         public void OnColorRedChanged(float value)
         {
-            string v = Mathf.RoundToInt(value * 255f).ToString();
-            if (labelRed != null) labelRed.text = v.ToString();
-            if (inputRed != null) inputRed.text = v.ToString();
+            string textValue = Mathf.RoundToInt(value * 255f).ToString();
+            if (labelRed != null) labelRed.text = textValue.ToString();
+            if (inputRed != null) inputRed.text = textValue.ToString();
             UpdatePreview();
             SetHexColor();
         }
 
         public void OnColorGreenChanged(float value)
         {
-            string v = Mathf.RoundToInt(value * 255f).ToString();
-            if (labelGreen != null) labelGreen.text = v.ToString();
-            if (inputGreen != null) inputGreen.text = v.ToString();
+            string textValue = Mathf.RoundToInt(value * 255f).ToString();
+            if (labelGreen != null) labelGreen.text = textValue.ToString();
+            if (inputGreen != null) inputGreen.text = textValue.ToString();
             UpdatePreview();
             SetHexColor();
         }
 
         public void OnColorBlueChanged(float value)
         {
-            string v = Mathf.RoundToInt(value * 255f).ToString();
-            if (labelBlue != null) labelBlue.text = v.ToString();
-            if (inputBlue != null) inputBlue.text = v.ToString();
+            string textValue = Mathf.RoundToInt(value * 255f).ToString();
+            if (labelBlue != null) labelBlue.text = textValue.ToString();
+            if (inputBlue != null) inputBlue.text = textValue.ToString();
             UpdatePreview();
             SetHexColor();
         }

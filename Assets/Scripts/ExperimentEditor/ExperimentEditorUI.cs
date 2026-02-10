@@ -14,20 +14,14 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [SerializeField] private GameObject mainMenu;
         [SerializeField] private Button mainMenuCloseButton;
         
-        [Header("MenuCreateExperiment")]
+        [Header("Windows")]
         [SerializeField] private CreateExperimentWindow createExperimentWindow;
-
-        [Header("MenuLoadExperiment")]
-        [SerializeField] private GameObject loadExperimentWindowObject;
-        [SerializeField] private TMP_Dropdown loadExperimentDropdownFiles;
+        [SerializeField] private LoadExperimentWindow loadExperimentWindow;
+        [SerializeField] private CreateQuestionWindow createQuestionWindow;
 
         [Header("Editor")]
         [SerializeField] private TextMeshProUGUI experimentNameLabel;
         [SerializeField] private TextMeshProUGUI logTextlabel;
-
-        [Header("CreateQuestion")]
-        [SerializeField] private CreateQuestionWindow createQuestionWindow;
-        
 
         [Header("ElementInspector")]
         [SerializeField] private GameObject elementInspectorObject;
@@ -44,15 +38,11 @@ namespace eccon_lab.vipr.experiment.editor.ui
         private void Setup()
         {
             Debug.Log("Editor ui setup");
-            
-            SetupExperimentFilesDropdown();
             SetExperimentNameLabel("-"); 
-
             ToogleExperimentCreateWindow(false);
             ToggleExperimentLoadWindow(false);
             ToggleElementInspectorObject(false);
             ToggleCreateQuestionObject(false);
-
             ToggleEditorMenu(true);
             ToggleMainMenuState(true);
         }
@@ -76,60 +66,26 @@ namespace eccon_lab.vipr.experiment.editor.ui
             mainMenuCloseButton.interactable = !start;
         }
 
-        #region ExperimentCreate
-
         public void ToogleExperimentCreateWindow(bool active)
         {
-            if (createExperimentWindow.assignedGameobjct == null) return;
+            if (createExperimentWindow == null) return;
             ToggleMainWindowObject(active);
-            createExperimentWindow.assignedGameobjct.SetActive(active);
+            createExperimentWindow.ToggleAssignedGamebject(active);
         }
 
         public void ToggleExperimentLoadWindow(bool active)
         {
-            if(loadExperimentWindowObject == null) return;
+            if(loadExperimentWindow == null) return;
             ToggleMainWindowObject(active);
-            loadExperimentWindowObject.SetActive(active);
+            loadExperimentWindow.ToggleAssignedGamebject(active);
         }
-
-        private void SetupExperimentFilesDropdown()
-        {
-            if (loadExperimentDropdownFiles == null) return;
-            FileInfo[] files = ExperimentEditor.Instance.GetFileInfosFromFolder("Experiments");
-            if (files.Length < 1)
-            {
-                loadExperimentDropdownFiles.options.Add(new TMP_Dropdown.OptionData("No experiments available"));
-                return;
-            }
-
-            foreach (FileInfo file in files)
-            {
-                string extension = file.Extension;
-                loadExperimentDropdownFiles.options.Add(new TMP_Dropdown.OptionData(file.Name.Replace(extension, "")));
-            }
-        }
-
-        #endregion
-
-        #region Question
-
-        
 
         public void ToggleCreateQuestionObject(bool active)
         {
-            if (createQuestionWindow.assignedGameobjct == null) return;
+            if (createQuestionWindow == null) return;
             ToggleMainWindowObject(active);
-            createQuestionWindow.assignedGameobjct.SetActive(active);
+            createQuestionWindow.ToggleAssignedGamebject(active);
         }
-
-        
-
-        public void OnLoadExperimentButtonClick()
-        {
-            ExperimentEditor.Instance.LoadExperiment(loadExperimentDropdownFiles.captionText.text);
-        }
-
-        #endregion
 
         public void ToggleElementInspectorObject(bool active)
         {

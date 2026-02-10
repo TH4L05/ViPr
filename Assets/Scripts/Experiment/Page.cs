@@ -3,6 +3,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using eccon_lab.vipr.experiment.editor;
+using JetBrains.Annotations;
+using TMPro;
 
 namespace eccon_lab.vipr.experiment
 {
@@ -11,6 +13,9 @@ namespace eccon_lab.vipr.experiment
     {
         #region SerializedFields
 
+        [SerializeField] private PageType pageType;
+        [SerializeField] private string pageText;
+        [SerializeField] private TextOptions textOptions;
         [SerializeField] private Image backgroundImage;
         [SerializeField] private Color backgroundColor;
         [SerializeField] private Button pageButton;
@@ -26,11 +31,24 @@ namespace eccon_lab.vipr.experiment
             backgroundImage = assigendUiElement.GetComponentInChildren<Image>();
             pageButton = assignedElement.GetComponentInChildren<Button>();
             content = assignedElement.transform.GetChild(1).gameObject;
+            textOptions = new TextOptions(Color.white, 30.0f);
+        }
+
+        public void PageSetup(PageType type, string text)
+        {
+            pageType = type;
+            pageText = text;
+            SetupAssignedObject();
         }
 
         #endregion
 
-        #region Color
+        #region Get/Set
+
+        public PageType GetPageType()
+        {
+            return pageType;
+        }
 
         public Color GetBackgroundColor()
         {
@@ -41,6 +59,26 @@ namespace eccon_lab.vipr.experiment
         {
             backgroundColor = color;
             backgroundImage.color = backgroundColor;
+        }
+
+        public void SetPageText(string text)
+        {
+            pageText = text;
+        }
+
+        public string GetPageText()
+        {
+            return pageText;
+        }
+
+        public void SetPageTextOptions(TextOptions textOptions)
+        {
+            this.textOptions = textOptions;
+        }
+
+        public TextOptions GetTextOptions()
+        {
+            return textOptions;
         }
 
         #endregion
@@ -57,21 +95,27 @@ namespace eccon_lab.vipr.experiment
             return pageButton;
         }
 
-        public void SetUiElementTransform(Transform transform)
-        {
-           assigendUiElement.transform.position = transform.position;
-           assigendUiElement.transform.rotation = transform.rotation;
-           assigendUiElement.transform.localScale = transform.localScale;
-        }
-
         #endregion
+
+        public void SetupAssignedObject()
+        {
+            switch (pageType)
+            {
+                case PageType.ContentPage:
+                    
+                    break;
+                case PageType.InfoPage:
+                    TextMeshProUGUI textField = assigendUiElement.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
+                    textField.text = pageText;
+                    break;
+                default:
+                    break;
+            }
+        }
 
         public ExperimentSaveDataPage GetSaveData()
         {
-            ExperimentSaveDataPage pageData = new ExperimentSaveDataPage();
-            pageData.pageId = id;
-            pageData.pageName = name;
-            pageData.backgroundColor = backgroundColor;
+            ExperimentSaveDataPage pageData = new ExperimentSaveDataPage(id, name, pageType, pageText, backgroundColor, textOptions);
             return pageData;
         }
     }

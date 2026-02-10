@@ -7,34 +7,28 @@ using UnityEngine;
 
 namespace eccon_lab.vipr.experiment.editor.ui
 {
-    public class CreateExperimentWindow : MonoBehaviour
+    public class CreateExperimentWindow : ExperimentEditorMenuWindow
     {
-        public GameObject assignedGameobjct;
-        [Space(2f)]
+        [Space(4f)]
         [SerializeField] private TMP_InputField inputExperimentName;
         [SerializeField] private TMP_Dropdown dropdownExperimentType;
         [SerializeField] private TMP_Dropdown dropdownAssignedVideoFile;
         [SerializeField] private ColorPicker colorPageBackgroundDefault;
         [SerializeField] private ColorPicker colorTextDefault;
         [SerializeField] private CustomSlider inputTextSizeDefault;
-        [SerializeField] private ToggleButton toggleButton;
+        [SerializeField] private ToggleButton foldout;
 
         [SerializeField] private ColorPicker cp1;
         [SerializeField] private ColorPicker cp2;
         [SerializeField] private CustomSlider sl;
 
-        public void Start()
-        {
-            Setup();
-        }
-
-        public void Setup()
+        public override void Initialize()
         {
             inputExperimentName.text = "newExperiment";
             ToggleVideoFileInputObject(false);
             SetupExperimentTypeDropdown();
             SetupAssignedVideoDropdown();
-            toggleButton.Setup();
+            foldout.Setup();
             if (cp1 != null) cp1.Initialize();
             if (cp2 != null) cp2.Initialize();
             if (sl != null) sl.Initialize();

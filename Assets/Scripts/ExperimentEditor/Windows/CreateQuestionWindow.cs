@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace eccon_lab.vipr.experiment.editor.ui
 {
-    public class CreateQuestionWindow : MonoBehaviour
+    public class CreateQuestionWindow : ExperimentEditorMenuWindow
     {
         #region Fields
 
@@ -17,23 +17,10 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [SerializeField] private TMP_InputField textQuestionText;
         [SerializeField] private RadioButtonCreateOption[] radioButtonOptions;
         [SerializeField] private SliderCreateOption sliderCreateOptions;
-        public GameObject assignedGameobjct;
 
         #endregion
 
-        #region UnityFunctions
-
-
-        public void Start()
-        {
-            Setup();
-        }
-
-        #endregion
-
-        #region Setup
-
-        public void Setup()
+        public override void Initialize()
         {
             SetupQuestionTypeDropdown();
         }
@@ -46,8 +33,6 @@ namespace eccon_lab.vipr.experiment.editor.ui
                 createQuestionDropdownType.options.Add(new TMP_Dropdown.OptionData(item.ToString()));
             }
         }
-
-        #endregion
 
         public void ShowWindowContent()
         {

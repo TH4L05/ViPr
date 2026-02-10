@@ -18,42 +18,40 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [SerializeField] private Color defaultColor;
         [SerializeField] private Color hoverColor;
 
+        private bool isInitialized;
         private bool isToggled;
         private RectTransform rootTransform;
         private RectTransform contentTransform;
         private float defaultHeight;
 
-        private void Awake()
-        {
-            rootTransform = transform.parent.GetComponent<RectTransform>();
-            defaultHeight = rootTransform.sizeDelta.y;
-            contentTransform = contentObject.GetComponent<RectTransform>();
-        }
-
         private void OnEnable()
         {
-            isToggled = false;
-            if (toggleImage != null)
-            {
-                toggleImage.sprite = untoggled;
-                backgroundImage.color = defaultColor;
-            }
-            if (contentObject != null) contentObject.SetActive(false);
-            //if (label != null) label.color = defaultColor;
+            if (isInitialized) return;
+            Setup();
         }
 
         public void Setup()
         {
-            rootTransform = transform.parent.GetComponent<RectTransform>();
-            defaultHeight = rootTransform.sizeDelta.y;
-            contentTransform = contentObject.GetComponent<RectTransform>();
+            rootTransform = GetComponent<RectTransform>();
+            
             isToggled = false;
             if (toggleImage != null)
             {
                 toggleImage.sprite = untoggled;
                 backgroundImage.color = defaultColor;
             }
-            if (contentObject != null) contentObject.SetActive(false);
+            if (contentObject != null)
+            {
+                contentTransform = contentObject.GetComponent<RectTransform>();
+                contentObject.SetActive(false);
+            }
+            else
+            {
+                contentTransform = rootTransform;
+            }
+            defaultHeight = rootTransform.sizeDelta.y - contentTransform.sizeDelta.y;
+            SetHeight();
+            isInitialized = true;
         }
 
         public void ToggleContent(bool active)
@@ -67,6 +65,22 @@ namespace eccon_lab.vipr.experiment.editor.ui
             {
                 toggleImage.sprite = untoggled;
             }
+            SetHeight();
+            if (contentObject != null) contentObject.SetActive(isToggled);
+        }
+
+        public void ToggleContent()
+        {
+            isToggled = !isToggled;
+            if (isToggled)
+            {
+                toggleImage.sprite = toggled;
+            }
+            else
+            {
+                toggleImage.sprite = untoggled;
+            }
+            SetHeight(); 
             if (contentObject != null) contentObject.SetActive(isToggled);
         }
 
@@ -83,22 +97,6 @@ namespace eccon_lab.vipr.experiment.editor.ui
             }
         }
 
-        public void ToggleContent()
-        {
-            isToggled = !isToggled;
-            if (isToggled)
-            {
-                toggleImage.sprite = toggled;
-                SetHeight();
-            }
-            else
-            {
-                toggleImage.sprite = untoggled;
-                SetHeight();
-            }
-            if (contentObject != null) contentObject.SetActive(isToggled);
-        }
-
         public void OnPointerClick(PointerEventData eventData)
         {
             ToggleContent();
@@ -106,13 +104,11 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            //label.color = hoverColor;
             backgroundImage.color = hoverColor;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            //label.color = defaultColor;
             backgroundImage.color = defaultColor;
         }
     }

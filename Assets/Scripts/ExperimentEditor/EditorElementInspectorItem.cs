@@ -51,7 +51,7 @@ namespace eccon_lab.vipr.experiment.editor
             return colorPicker.GetColor();
         }
 
-        public void SetTextOptions(TextValues textValues)
+        public void SetTextOptions(TextOptions textValues)
         {
             SetColorValue(textValues.textColor);
             textOptionInspector.SetSliderValue(textValues.textSize);
@@ -60,9 +60,9 @@ namespace eccon_lab.vipr.experiment.editor
             textOptionInspector.SetAlignmentVDropdown(textValues.verticalAlignment); 
         }
 
-        public TextValues GetTextOptions()
+        public TextOptions GetTextOptions()
         {
-            TextValues textValues = new TextValues();
+            TextOptions textValues = new TextOptions();
             textValues.textSize = textOptionInspector.GetTextSizeValue();
             textValues.textStyle = textOptionInspector.GetStyleValue();
             textValues.horizontalAlignment = textOptionInspector.GetAlignmentHValue(); 

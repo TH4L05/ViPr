@@ -2,6 +2,8 @@
 
 using eecon_lab.UI.Network;
 using eecon_lab.vipr.video;
+using UnityEditor;
+using eccon_lab.vipr.experiment;
 
 namespace eecon_lab.Network
 {
@@ -11,18 +13,23 @@ namespace eecon_lab.Network
         public ulong clientID;
         public string clientName;
         public string clientIP;
-        public CustomVideoPlayer.VideoPlayerState playerState;
+        public ExperimentState experimentState;
         public ClientUiEntry clientUIentry;
 
-        public void SetPlayerState(CustomVideoPlayer.VideoPlayerState state = CustomVideoPlayer.VideoPlayerState.none)
+        public void SetPlayerState(ExperimentState state = ExperimentState.Invalid)
         {
-            playerState = state;
-            UpdateUI();
+            experimentState = state;
+            clientUIentry.UpdateState(experimentState.ToString());
+        }
+
+        public void SetXrState(string state)
+        {
+            clientUIentry.UpdateXrState(state);
         }
 
         public void UpdateUI()
         {
-            clientUIentry.UpdateText(clientID.ToString(), clientName, clientIP, playerState.ToString());
+            clientUIentry.UpdateText(clientID.ToString(), clientName, clientIP, experimentState.ToString());
         }
     }
 }

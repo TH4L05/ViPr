@@ -126,7 +126,7 @@ namespace eccon_lab.vipr.experiment.editor
                     ExperimentEditor.Instance.UpdatePageValues(currentId, colorPickerItem.GetColorValue());
                     break;
                 case EditorHierachyItem.ItemType.Question:
-                    TextValues textValues = textOptionsItem.GetTextOptions();
+                    TextOptions textValues = textOptionsItem.GetTextOptions();
                     textValues.textColor = colorPickerItem.GetColorValue();
                     ExperimentEditor.Instance.UpdateQuestionValues(currentId, textInputItem.GetInputValue(), textValues, radioOptionsItem.GetRadioOptionValues(), sliderOptionsItem.GetSliderOptions());
                     break;

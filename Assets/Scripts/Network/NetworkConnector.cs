@@ -46,9 +46,9 @@ namespace eecon_lab.Network
         }
 
         [Rpc(SendTo.Server)]
-        public void UpdateVideoPlayerStatusRpc(CustomVideoPlayer.VideoPlayerState state, RpcParams prams = default)
+        public void UpdateExperimentStateRpc(ExperimentState state, RpcParams prams = default)
         {
-            Level.Instance.NetworkManagement.UpdateVideoPlayerState(state, prams.Receive.SenderClientId);
+            Level.Instance.NetworkManagement.UpdateExperimentState(state, prams.Receive.SenderClientId);
         }
 
         [Rpc(SendTo.NotServer)]
@@ -64,14 +64,6 @@ namespace eecon_lab.Network
             Level.Instance.ExperimentPlayer.CreateExperimentJson(jsonString);
 
         }
-
-
-
-        public void UpdateVideoPlayerState(CustomVideoPlayer.VideoPlayerState state)
-        {
-            UpdateVideoPlayerStatusRpc(state);
-        }
-
 
         public void SentClientData(string name, string ip)
         {

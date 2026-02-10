@@ -14,6 +14,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         {
             Invalid = -1,
             Page,
+            InfoPage,
             Question,
         }
 
@@ -45,6 +46,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         private bool isSelected = false;
 
         private bool isToggled;
+        private bool toggleEnabled;
         private RectTransform rectTransform;
         private RectTransform contentTransform;
         private RectTransform contentRootTransform;
@@ -74,9 +76,26 @@ namespace eccon_lab.vipr.experiment.editor.ui
             editorHierachy = hierachy;
             if (backgroundImage != null) backgroundImage.color = defaultColor;
 
-            if (toggleImage != null)
+            switch (itemType)
             {
-                toggleImage.sprite = untoggled;
+                case ItemType.Invalid:
+                    toggleEnabled = false;
+                    break;
+                case ItemType.Page:
+                    if (toggleImage != null)
+                    {
+                        toggleImage.sprite = untoggled;
+                    }
+                    break;
+                case ItemType.InfoPage:
+                    toggleEnabled = false;
+                    if(toggleImage != null) toggleImage.gameObject.SetActive(false);
+                    break;
+                case ItemType.Question:
+                    toggleEnabled = false;
+                    break;
+                default:
+                    break;
             }
 
             if (contentPrefab != null)
@@ -121,12 +140,14 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         public void ToggleContent()
         {
+            if (!toggleEnabled) return;
             isToggled = !isToggled;
             UpdateContent();
         }
 
         public void ToggleContent(bool toggle)
         {
+            if (!toggleEnabled) return;
             isToggled = toggle;
             UpdateContent();
         }
@@ -195,9 +216,8 @@ namespace eccon_lab.vipr.experiment.editor.ui
             switch (itemType)
             {
                 case ItemType.Invalid:
-                    break;
                 case ItemType.Page:
-                    //ToggleContent();
+                case ItemType.InfoPage:
                     break;
                 case ItemType.Question:
                     id = ExperimentEditor.Instance.CurrentExperiment.GetQuestion(referenceID).AssignedPageId;

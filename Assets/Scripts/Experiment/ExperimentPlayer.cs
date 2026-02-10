@@ -14,10 +14,16 @@ namespace eccon_lab.vipr.experiment
     public enum ExperimentState
     {
         Invalid = -1,
-        Running,
-        Finished,
+        None = 0,
+        Prepared = 1,
+        VideoPrepared = 10,
+        VideoPlaying = 11,
+        VideoStopped = 12,
+        VideoPaused = 13,
+        VideoFinished = 15,
+        Running = 20,
+        Finished = 21,
         Canceled = 999,
-
     }
 
     public class ExperimentPlayer : MonoBehaviour
@@ -173,7 +179,7 @@ namespace eccon_lab.vipr.experiment
 
             foreach (var item in saveData.questions)
             {
-                CreateQuestion(item.questionId, item.questionName, item.questionType, item.questionText, item.textValues, item.radioOptions, item.sliderOptions, item.referencePageId);
+                CreateQuestion(item.questionId, item.questionName, item.questionType, item.questionText, item.textOptions, item.radioOptions, item.sliderOptions, item.referencePageId);
             }
             SetPageButtonActions();
             StartExperiment();
@@ -206,7 +212,7 @@ namespace eccon_lab.vipr.experiment
             experiment.AddPage(newPage);
         }
 
-        public void CreateQuestion(string id, string name, QuestionType type, string questionText, TextValues textValues, RadioOptionValue[] radioOptionValues, SliderOptions sliderOptions, string pageReferenceId)
+        public void CreateQuestion(string id, string name, QuestionType type, string questionText, TextOptions textValues, RadioOptionValue[] radioOptionValues, SliderOptions sliderOptions, string pageReferenceId)
         {
             GameObject prefab = null;
             switch (type)

@@ -41,6 +41,7 @@ namespace eccon_lab.vipr.experiment.editor
         #region PublicFields
 
         public static ExperimentEditor Instance;
+        public ExperimentEditorUI EditorUI => editorUI;
         public Experiment CurrentExperiment => experiment;
 
         #endregion
@@ -99,9 +100,13 @@ namespace eccon_lab.vipr.experiment.editor
             experiment.SetDefaults(defaultPageColor, defaultTextColor, defaultTextSize);
             editorUI.SetExperimentNameLabel(experimentName);
             if(!isNewExperiment) return;
-            CreateNewPage();
+            CreateNewPage(PageType.InfoPage, experiment.DefaultPageBackgroundColor, "StartPage", "Welcome");
+            CreateNewPage(PageType.ContentPage, experiment.DefaultPageBackgroundColor);
             experiment.UpdatePageVisibility(experiment.GetPage(0).Id);
             editorUI.UpdateLogLabelText("Created new Experiment with name \"" + experimentName + "\"");
+            currentPageId = experiment.GetPage(0).Id;
+            experiment.UpdatePageVisibility(currentPageId);
+            editorHierarchy.ToggleItemState(currentPageId);
         }
 
         #endregion
@@ -119,12 +124,12 @@ namespace eccon_lab.vipr.experiment.editor
 
             foreach (var page in experimentData.pages)
             {
-                CreatePage(page.pageId, page.pageName, page.backgroundColor);
+                CreatePage(page.pageId, page.pageName, page.pageType, page.pageText, page.textOptions, page.backgroundColor);
             }
 
             foreach (var question in experimentData.questions)
             {
-                CreateQuestion(question.questionId, question.questionName, question.questionType, question.questionText, question.textValues,  question.radioOptions, question.sliderOptions, question.referencePageId);
+                CreateQuestion(question.questionId, question.questionName, question.questionType, question.questionText, question.textOptions,  question.radioOptions, question.sliderOptions, question.referencePageId);
             }
 
             currentPageId = experiment.GetPage(0).Id;
@@ -145,17 +150,36 @@ namespace eccon_lab.vipr.experiment.editor
 
         #region Page
 
-        public void CreateNewPage()
+        public void CreateNewPage(PageType type, Color backgroundColor, string name = "", string pageText = "" )
         {
             string id = CreateId();
             int pagecount = 1 + experiment.GetPageAmount();
-            string name = "Page" + pagecount.ToString("00");
-            CreatePage(id, name, experiment.DefaultPageBackgroundColor);
+            string pageName = "Page" + pagecount.ToString("00");
+            if(name != string.Empty) pageName = name;
+            Color color = backgroundColor;
+            if(backgroundColor == null) color = experiment.DefaultPageBackgroundColor;
+
+            CreatePage(id, pageName,type, pageText, experiment.DefaultTextValues, color);
         }
 
-        public void CreatePage(string id, string name, Color backgroundColor)
+        public void CreatePage(string id, string name,PageType type, string pageText,TextOptions textOptions,  Color backgroundColor)
         {
-            GameObject prefab = GetPrefab("PagePrefab");
+            GameObject prefab = null;
+            EditorHierachyItem.ItemType itemType = EditorHierachyItem.ItemType.Invalid;
+
+            switch (type)
+            {
+                case PageType.ContentPage:
+                    prefab = GetPrefab("PageContentPrefab");
+                    itemType = EditorHierachyItem.ItemType.Page;
+                    break;
+                case PageType.InfoPage:
+                    prefab = GetPrefab("PageInfoPrefab");
+                    itemType = EditorHierachyItem.ItemType.InfoPage;
+                    break;
+                default:
+                    break;
+            }
 
             if (prefab == null)
             {
@@ -164,12 +188,13 @@ namespace eccon_lab.vipr.experiment.editor
             }
 
             GameObject newPageObject = Instantiate(prefab, experimentRoot);
-            newPageObject.name = "Page" + name;
+            newPageObject.name = name;
             Page newPage = new Page();
             newPage.Initialize(name, id, newPageObject);
+            newPage.PageSetup(type, pageText);
             newPage.SetBackgroundColor(backgroundColor);
             experiment.AddPage(newPage);
-            editorHierarchy.AddItem(newPage, EditorHierachyItem.ItemType.Page, "");
+            editorHierarchy.AddItem(newPage, itemType, "");
             currentPageId = id;
             Debug.Log("Create new Page, name = " + newPage.Name);
             editorUI.UpdateLogLabelText("Create new Page, name = " + newPage.Name);
@@ -187,6 +212,14 @@ namespace eccon_lab.vipr.experiment.editor
 
         public void CreateNewQuestion(QuestionType type, string questionText, RadioButtonCreateOption[] radioButtonOptions, SliderCreateOption sliderCreateOptions)
         {
+            Page p = experiment.GetPage(currentPageId);
+
+            if (p.GetPageType() == PageType.InfoPage)
+            {
+                editorUI.UpdateLogLabelText("CANT create question on pages of type " + PageType.InfoPage);
+                return;
+            }
+
             string id = CreateId();
             int count = 1 + experiment.GetQuestionAmount();
             string name = "Question" + count.ToString("000");
@@ -207,11 +240,10 @@ namespace eccon_lab.vipr.experiment.editor
             sliderOptions.labelSuffix = sliderCreateOptions.sliderLabelSuffix.text;
             sliderOptions.decimalPlaces = (int)sliderCreateOptions.decimalPlaces.value;
 
-
             CreateQuestion(id, name, type, questionText,experiment.DefaultTextValues,  radioValues, sliderOptions, currentPageId);
         }
 
-        public void CreateQuestion(string id, string name, QuestionType type, string questionText,TextValues textValues,  RadioOptionValue[] radioOptionValues, SliderOptions sliderOptions, string pageReferenceId)
+        public void CreateQuestion(string id, string name, QuestionType type, string questionText,TextOptions textValues,  RadioOptionValue[] radioOptionValues, SliderOptions sliderOptions, string pageReferenceId)
         {
             GameObject prefab = null;
             switch (type)
@@ -254,7 +286,7 @@ namespace eccon_lab.vipr.experiment.editor
             return;
         }
 
-        public void UpdateQuestionValues(string id, string questionText, TextValues textValues, RadioOptionValue[] radioOptionValues, SliderOptions sliderOptions)
+        public void UpdateQuestionValues(string id, string questionText, TextOptions textValues, RadioOptionValue[] radioOptionValues, SliderOptions sliderOptions)
         {
             experiment.UpdateQuestion(id, questionText, textValues, radioOptionValues, sliderOptions);
         }
@@ -282,7 +314,8 @@ namespace eccon_lab.vipr.experiment.editor
             switch (type)
             {
                 case EditorHierachyItem.ItemType.Page:
-                    experiment.RemovePage(referenceID);
+                    bool success = experiment.RemovePage(referenceID);
+                    if(!success) return;
                     currentPageId = experiment.GetPage(0).Id;
                     experiment.UpdatePageVisibility(currentPageId);
                     editorHierarchy.ToggleItemState(currentPageId);

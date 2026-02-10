@@ -9,6 +9,7 @@ using UnityEngine.Video;
 using TMPro;
 using eecon_lab.Main;
 using eccon_lab.vipr;
+using eccon_lab.vipr.experiment;
 
 namespace eecon_lab.vipr.video
 {
@@ -261,7 +262,7 @@ namespace eecon_lab.vipr.video
         {
             if (videoPlayer == null) return;
             videoPlayer.Play();
-            Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(CustomVideoPlayer.VideoPlayerState.playing);
+            Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(ExperimentState.VideoPlaying);
         }
 
         public void PauseVideo()
@@ -273,7 +274,7 @@ namespace eecon_lab.vipr.video
                 pauseButtonToggle.ToggleSprite(true);
                 return;
             }
-            Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(VideoPlayerState.paused);
+            Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(ExperimentState.VideoPaused);
             videoPlayer.Pause();
             pauseButtonToggle.ToggleSprite(false);
         }
@@ -283,7 +284,7 @@ namespace eecon_lab.vipr.video
             if (videoPlayer == null) return;
             videoPlayer.Stop();
             directorVideoStop.Play();
-            Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(VideoPlayerState.stopped);
+            Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(ExperimentState.VideoStopped);
             DestroyRenderTexture();
         }
 
@@ -296,7 +297,7 @@ namespace eecon_lab.vipr.video
                 return;
             }
             directorVideoLoopPointReached.Play();
-            Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(VideoPlayerState.finished);
+            Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(ExperimentState.VideoFinished);
             DestroyRenderTexture();
         }
         

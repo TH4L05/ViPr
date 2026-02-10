@@ -20,6 +20,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
             switch (type)
             {
                 case EditorHierachyItem.ItemType.Page:
+                case EditorHierachyItem.ItemType.InfoPage:
                     Page p = (Page)item;
                     name = p.Name;
                     id = p.Id;

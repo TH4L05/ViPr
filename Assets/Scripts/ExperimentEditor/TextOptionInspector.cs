@@ -46,7 +46,7 @@ namespace eccon_lab.vipr.experiment.editor
             return (HorizontalAlignmentOptions)Enum.Parse(typeof(TMPro.HorizontalAlignmentOptions), alignmentH[dropdownAlignmentH.value]);
         }
 
-        public void SetTextValues(TextValues textValues)
+        public void SetTextValues(TextOptions textValues)
         {
             SetSliderValue(textValues.textSize);
             SetStyleDropdown(textValues.textStyle);

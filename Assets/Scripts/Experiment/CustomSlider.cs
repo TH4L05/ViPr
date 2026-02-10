@@ -84,7 +84,7 @@ namespace eccon_lab.vipr.experiment
             return slider.value;
         }
 
-        public void SetSliderLabelTextValues(TextValues textValues)
+        public void SetSliderLabelTextValues(TextOptions textValues)
         {
             sliderLabel.color = textValues.textColor;
             sliderLabel.fontSize = textValues.textSize;

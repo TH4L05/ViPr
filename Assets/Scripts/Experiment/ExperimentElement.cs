@@ -6,7 +6,8 @@ namespace eccon_lab.vipr.experiment
 {
     public enum PageType
     {
-
+        ContentPage,
+        InfoPage,
     }
 
     public enum QuestionType

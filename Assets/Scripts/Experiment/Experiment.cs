@@ -26,7 +26,7 @@ namespace eccon_lab.vipr.experiment
         [SerializeField] private List<Page> pages;
         [SerializeField] private List<Question> questions;
         [SerializeField] private Color defaultPageBackgroundColor;
-        [SerializeField] private TextValues defaultTextValues;
+        [SerializeField] private TextOptions defaultTextValues;
 
         #endregion
 
@@ -35,7 +35,7 @@ namespace eccon_lab.vipr.experiment
         public string ExperimentName => experimentName;
         public ExperimentType ExperimentType => experimentType;
         public Color DefaultPageBackgroundColor => defaultPageBackgroundColor;
-        public TextValues DefaultTextValues => defaultTextValues;
+        public TextOptions DefaultTextValues => defaultTextValues;
 
         public string AssignedVideoFile => assignedVideoFileName;
 
@@ -49,7 +49,7 @@ namespace eccon_lab.vipr.experiment
             questions = new List<Question>();
             experimentName = "newExperiment";
             defaultPageBackgroundColor = new Color(0.1538461f, 0.06153846f, 0.2f);
-            defaultTextValues = new TextValues(Color.white, 30.0f);
+            defaultTextValues = new TextOptions(Color.white, 30.0f);
         }
 
         public void Setup(string name, ExperimentType type)
@@ -99,23 +99,41 @@ namespace eccon_lab.vipr.experiment
             return pages[index];
         }
 
-        public void RemovePage(string id)
+        public bool RemovePage(string id)
         {
             RemoveQuestionByReferenceId(id);
             foreach (Page page in pages)
             {
                 if (page.Id == id)
                 {
+                   if (page.GetPageType() == PageType.InfoPage && page.Name == "StartPage")
+                   {
+                        ExperimentEditor.Instance.EditorUI.UpdateLogLabelText("The Start page cant be deleted");
+                        return false;
+                   }
+                   if (pages.Count < 2)
+                   {
+                        ExperimentEditor.Instance.EditorUI.UpdateLogLabelText("The page cant be deleted");
+                        return false;
+                   }
+
                    Destroy(page.GetUiElement());
                    pages.Remove(page);
-                   return;
+                   return true;
                 } 
             }
+            return false;
         }
 
         public int GetPageAmount()
         {
-            return pages.Count;
+            int amount = 0;
+            foreach  (Page page in pages)
+            {
+                if (page.Name == "StartPage") continue;
+                amount++;
+            }
+            return amount;
         }
 
         public void UpdatePage(string id, Color color)
@@ -174,7 +192,7 @@ namespace eccon_lab.vipr.experiment
             return null;
         }
 
-        public void UpdateQuestion(string id, string questionText, TextValues textValues, RadioOptionValue[] optionValues, SliderOptions sliderOptions)
+        public void UpdateQuestion(string id, string questionText, TextOptions textValues, RadioOptionValue[] optionValues, SliderOptions sliderOptions)
         {
             foreach (Question question in questions)
             {

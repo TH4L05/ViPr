@@ -144,7 +144,7 @@ namespace eecon_lab.Network
             clientData.clientName = name;
             clientData.clientIP = ip;
             clientData.clientUIentry = ui.GetComponent<ClientUiEntry>();
-            clientData.playerState = CustomVideoPlayer.VideoPlayerState.none;
+            clientData.experimentState = ExperimentState.Invalid;
 
             clients.Add(clientData);
             ShowInfoText($"Client {name} Connected ({ip})");
@@ -259,25 +259,24 @@ namespace eecon_lab.Network
             unityTransport.SetConnectionData(Game.Instance.GameOptions.GetConfig().NetIP, Game.Instance.GameOptions.GetConfig().NetPort);
         }
 
-        public void UpdateVideoPlayerStateClient(CustomVideoPlayer.VideoPlayerState state)
+        public void UpdateVideoPlayerStateClient(ExperimentState state)
         {
             if(networkConnector == null) return;
-            networkConnector.UpdateVideoPlayerStatusRpc(state);
+            networkConnector.UpdateExperimentStateRpc(state);
         }
 
-        public void UpdateVideoPlayerState(CustomVideoPlayer.VideoPlayerState state, ulong clientID)
+        public void UpdateExperimentState(ExperimentState state, ulong clientID)
         {
             Debug.Log("Update Video Player State - Client ID=" + clientID + " / state=" + state);
-            ChangeCurrentState(state);
+            //ChangeCurrentState(state);
 
             for (int i = 0; i < clients.Count; i++)
             {
                 if (clients[i].clientID == clientID)
                 {
-                    clients[i].playerState = state;
+                    clients[i].SetPlayerState(state);
                 }
             }
-            UpdateClientUI();
         }
 
         public void ChangeCurrentState(CustomVideoPlayer.VideoPlayerState state)
