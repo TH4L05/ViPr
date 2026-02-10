@@ -54,7 +54,6 @@ namespace eccon_lab.vipr.experiment.editor.ui
                 backgroundImage.color = defaultColor;
             }
             if (contentObject != null) contentObject.SetActive(false);
-            ToggleContent();
         }
 
         public void ToggleContent(bool active)

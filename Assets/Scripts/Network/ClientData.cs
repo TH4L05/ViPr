@@ -12,7 +12,7 @@ namespace eecon_lab.Network
         public string clientName;
         public string clientIP;
         public CustomVideoPlayer.VideoPlayerState playerState;
-        public ClientUIentry clientUIentry;
+        public ClientUiEntry clientUIentry;
 
         public void SetPlayerState(CustomVideoPlayer.VideoPlayerState state = CustomVideoPlayer.VideoPlayerState.none)
         {

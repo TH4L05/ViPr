@@ -5,12 +5,13 @@ using TMPro;
 
 namespace eecon_lab.UI.Network
 {
-    public class ClientUIentry : MonoBehaviour
+    public class ClientUiEntry : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI textFieldClientID;
         [SerializeField] private TextMeshProUGUI textFieldClientName;
         [SerializeField] private TextMeshProUGUI textFieldClientIP;
         [SerializeField] private TextMeshProUGUI textFieldClientPlayerState;
+        [SerializeField] private TextMeshProUGUI textFieldClientXrState;
 
         public void UpdateText(string id, string name, string ip, string state)
         {
@@ -38,6 +39,11 @@ namespace eecon_lab.UI.Network
         public void UpdateState(string state)
         {
             textFieldClientIP.text = state;
+        }
+
+        public void UpdateXrState(string state)
+        {
+            textFieldClientXrState.text = state;
         }
 
     }

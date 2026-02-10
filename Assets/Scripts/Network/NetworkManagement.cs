@@ -143,7 +143,7 @@ namespace eecon_lab.Network
             clientData.clientID = id;
             clientData.clientName = name;
             clientData.clientIP = ip;
-            clientData.clientUIentry = ui.GetComponent<ClientUIentry>();
+            clientData.clientUIentry = ui.GetComponent<ClientUiEntry>();
             clientData.playerState = CustomVideoPlayer.VideoPlayerState.none;
 
             clients.Add(clientData);
