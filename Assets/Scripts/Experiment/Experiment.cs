@@ -243,10 +243,18 @@ namespace eccon_lab.vipr.experiment
 
         public void SetPageButtonActions(ExperimentPlayer player)
         {
+            int index = 0;  
             foreach (Page page in pages)
             {
                 Button button = page.GetPageButton();
                 TextMeshProUGUI buttonLabel = button.GetComponentInChildren<TextMeshProUGUI>();
+
+                if (page == pages.First())
+                {
+                    button.onClick.AddListener(player.ShowNextPage);
+                    buttonLabel.text = "Start";
+                    continue;
+                }
 
                 if (page == pages.Last())
                 {
@@ -256,6 +264,7 @@ namespace eccon_lab.vipr.experiment
                 }
                 button.onClick.AddListener(player.ShowNextPage);
                 buttonLabel.text = "Fortsetzen";
+                index++;
             }
         }
 

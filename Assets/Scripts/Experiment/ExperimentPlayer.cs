@@ -33,7 +33,7 @@ namespace eccon_lab.vipr.experiment
         [SerializeField] private GameObject[] experimentPrefabs;
         [SerializeField] private CustomVideoPlayer videoPlayer;
         [SerializeField] private bool testMode = false;
-        [SerializeField] private bool saveResultsInTestMode = false;
+        [SerializeField] private bool saveResults = true;
         [SerializeField] private Experiment experiment;
         [SerializeField] private Transform experimentRootTransform;
         [SerializeField] private TMP_Dropdown dropdown;
@@ -47,17 +47,7 @@ namespace eccon_lab.vipr.experiment
 
         private int currentPageIndex;
 
-        public void CreateExperiment(string experimentName)
-        {
-            Debug.Log("Create Experiment ...");
-            if (experiment == null)
-            {
-                experiment = ScriptableObject.CreateInstance<Experiment>();
-                experiment.Initialize();
-            }
-            ExperimentSaveData saveData = LoadExperimentData(folderPath + "\\" +  experimentName + ".json");
-            CreateExperimentElements(saveData);
-        }
+        
 
        public void DropdownSetup()
        {
@@ -85,10 +75,24 @@ namespace eccon_lab.vipr.experiment
             return fileContent;
         }
 
+        public void CreateExperiment(string experimentName)
+        {
+        }
+
+        public void CreateExperiment(ExperimentSaveData saveData)
+        {
+            CreateTheExperiment(saveData);
+        }
+
         public void CreateExperimentJson(string jsonString)
         {
             ExperimentSaveData saveData = JsonUtility.FromJson<ExperimentSaveData>(jsonString);
+            CreateTheExperiment(saveData);  
+        }
 
+        private void CreateTheExperiment(ExperimentSaveData saveData)
+        {
+            Debug.Log("Create Experiment ...");
             if (fadeIn != null) fadeIn.Play();
 
             if (experiment == null)
@@ -108,6 +112,7 @@ namespace eccon_lab.vipr.experiment
         {
             currentPageIndex = 0; 
             experimentState = ExperimentState.Running;
+            Debug.Log("Experiment " + experimentState);
 
             if (testMode)
             {
@@ -136,13 +141,18 @@ namespace eccon_lab.vipr.experiment
             OnExperimentPageChanged?.Invoke(currentPageIndex);
         }
 
+        public void CancelExperiment()
+        {
+            experimentState = ExperimentState.Canceled;
+        }
+
         public void FinishExperiment()
         {
             if(experimentState != ExperimentState.Canceled) experimentState = ExperimentState.Finished;
-            Debug.Log("ExperimentFinished");
+            Debug.Log("Experiment " + experimentState);
             DestroyElements();
             OnExperimentStateChanged?.Invoke(experimentState);
-            if (!saveResultsInTestMode)
+            if (!saveResults)
             {
                 Destroy(experiment);
                 return;

@@ -139,11 +139,12 @@ namespace eccon_lab.vipr.experiment.editor
             editorUI.UpdateLogLabelText("The Experiment file \"" + experimentName + "\" was loaded");
         }
 
-        public void SaveExperiment()
+        public void SaveExperiment(string fileName)
         {
             ExperimentSaveData saveData = experiment.GetExperimentSaveData();
-            Serialization.SaveToJson(saveData, "Experiments" + "\\" + experiment.ExperimentName + ".json");
-            editorUI.UpdateLogLabelText("Experiment saved to file \"" + experiment.ExperimentName + ".json\"");
+            fileName = fileName + ".json";
+            Serialization.SaveToJson(saveData, defaultSaveDirectory + "\\" + fileName);
+            editorUI.UpdateLogLabelText("Experiment saved to file \"" + fileName + "\"");
         }
 
         #endregion
@@ -159,7 +160,7 @@ namespace eccon_lab.vipr.experiment.editor
             Color color = backgroundColor;
             if(backgroundColor == null) color = experiment.DefaultPageBackgroundColor;
 
-            CreatePage(id, pageName,type, pageText, options, color);
+            CreatePage(id, pageName, type, pageText, options, color);
         }
 
         public void CreatePage(string id, string name,PageType type, string pageText, TextOptions textOptions,  Color backgroundColor)
@@ -376,9 +377,8 @@ namespace eccon_lab.vipr.experiment.editor
         public void TestExperiment()
         {
             editorUI.ToggleExperimentPlayerUi(true);
-            SaveExperiment();
             experimentPlayer.CreateExperiment(experiment.ExperimentName);
-            editorUI.UpdateLogLabelText("Experiment Test for " + experiment.ExperimentName);
+            editorUI.UpdateLogLabelText("Run Experiment Test for " + experiment.ExperimentName);
         }
 
         public void CancelExperimentTest()

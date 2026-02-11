@@ -16,6 +16,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         public override void Initialize()
         {
+            base.Initialize();
             if(infoField != null) infoField.gameObject.SetActive(false);
             SetupExperimentFilesDropdown();
         }
@@ -38,8 +39,9 @@ namespace eccon_lab.vipr.experiment.editor.ui
             }
         }
 
-        public void OnLoadButtonClick()
+        public override void OnButtonClick()
         {
+            base.OnButtonClick();
             ExperimentEditor.Instance.LoadExperiment(experimentFilesDropdown.captionText.text);
         }
     }

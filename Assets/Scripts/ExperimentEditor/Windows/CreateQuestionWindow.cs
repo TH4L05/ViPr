@@ -78,9 +78,16 @@ namespace eccon_lab.vipr.experiment.editor.ui
             sliderCreateOptions.Reset();
         }
 
-        public void OnCreateQuestionButtonClick()
+        public override void OnButtonClick()
         {
+            base.OnButtonClick();
             Debug.Log("Create new question");
+
+            if (radioButtonOptions[0].optionToggle.isOn)
+            {
+                radioButtonOptions[0].defaultOption.isOn = true;
+            }
+
             ExperimentEditor.Instance.CreateNewQuestion((QuestionType)createQuestionDropdownType.value, textQuestionText.text, radioButtonOptions, sliderCreateOptions);
         }
     }

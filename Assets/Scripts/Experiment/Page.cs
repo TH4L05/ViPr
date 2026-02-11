@@ -105,12 +105,22 @@ namespace eccon_lab.vipr.experiment
                     
                     break;
                 case PageType.InfoPage:
-                    TextMeshProUGUI textField = assigendUiElement.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
+                    TextMeshProUGUI textField = assigendUiElement.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
                     textField.text = pageText;
+                    SetTextObjectValues(textField, textOptions);
                     break;
                 default:
                     break;
             }
+        }
+
+        private void SetTextObjectValues(TextMeshProUGUI textField, TextOptions textValues)
+        {
+            textField.color = textValues.textColor;
+            textField.fontSize = textValues.textSize;
+            textField.fontStyle = textValues.textStyle;
+            textField.horizontalAlignment = textValues.horizontalAlignment;
+            textField.verticalAlignment = textValues.verticalAlignment;
         }
 
         public ExperimentSaveDataPage GetSaveData()

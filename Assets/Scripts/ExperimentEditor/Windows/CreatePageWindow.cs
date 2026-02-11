@@ -8,14 +8,15 @@ namespace eccon_lab.vipr.experiment.editor.ui
     public class CreatePageWindow : ExperimentEditorMenuWindow
     {
         [SerializeField] private TMP_Dropdown dropdownType;
-        [SerializeField] private TMP_InputField inputOptionQuestionText;
+        [SerializeField] private TMP_InputField inputOptionPageText;
+        [SerializeField] private GameObject inputOptionPageTextObject;
         [SerializeField] private ColorPicker backgroundColor;
         [SerializeField] private TextOptionInspector textOptions;
         [SerializeField] private GameObject textOptionsObject;
 
         public override void Initialize()
         {
-            
+            base.Initialize();
             backgroundColor.Initialize();
             SetupTypeDropdown();
             OnDropdownValueChanged(0);
@@ -24,7 +25,8 @@ namespace eccon_lab.vipr.experiment.editor.ui
         public override void ShowWindowContent()
         {
             textOptions.SetTextValues(ExperimentEditor.Instance.CurrentExperiment.DefaultTextValues);
-            inputOptionQuestionText.text = string.Empty;
+            backgroundColor.Setup(ExperimentEditor.Instance.CurrentExperiment.DefaultPageBackgroundColor);
+            inputOptionPageText.text = string.Empty;
             OnDropdownValueChanged(0);
         }
 
@@ -33,11 +35,11 @@ namespace eccon_lab.vipr.experiment.editor.ui
             switch ((PageType)value)
             {
                 case PageType.ContentPage:
-                    inputOptionQuestionText.gameObject.SetActive(false);
+                    inputOptionPageTextObject.SetActive(false);
                     textOptionsObject.SetActive(false);
                     break;
                 case PageType.InfoPage:
-                    inputOptionQuestionText.gameObject.SetActive(true);
+                    inputOptionPageTextObject.SetActive(true);
                     textOptionsObject.SetActive(true);
                     break;
                 default:
@@ -54,9 +56,10 @@ namespace eccon_lab.vipr.experiment.editor.ui
             }
         }
 
-        public void OnCreateButtonClicked()
+        public override void OnButtonClick()
         {
-            ExperimentEditor.Instance.CreateNewPage((PageType)dropdownType.value, backgroundColor.GetColor(), textOptions.GetTextValues(), "", inputOptionQuestionText.text);
+            base.OnButtonClick();
+            ExperimentEditor.Instance.CreateNewPage((PageType)dropdownType.value, backgroundColor.GetColor(), textOptions.GetTextValues(), "", inputOptionPageText.text);
         }
     }
 }

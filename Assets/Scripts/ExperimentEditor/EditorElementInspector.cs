@@ -4,11 +4,10 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using eccon_lab.vipr.experiment.editor.ui;
 
-namespace eccon_lab.vipr.experiment.editor
+namespace eccon_lab.vipr.experiment.editor.ui
 { 
-    public class EditorElementInspector : MonoBehaviour
+    public class EditorElementInspector : ExperimentEditorMenuWindow
     {
         [SerializeField] private TextMeshProUGUI elementNameLabel;
         [SerializeField] private EditorElementInspectorItem colorPickerItem;
@@ -21,18 +20,13 @@ namespace eccon_lab.vipr.experiment.editor
         private string currentId;
         private EditorHierachyItem.ItemType currentType;
 
-        private void Start()
+        public override void Initialize()
         {
-            Setup();
-        }
-
-        private void Setup()
-        {
+            base.Initialize();
             colorPickerItem.Initialize();
             deleteButton.onClick.AddListener(OnRemoveButtonClick);
             HideAllItems();
         }
-
    
         public void ShowContent(object obj, EditorHierachyItem.ItemType type)
         {
@@ -130,8 +124,9 @@ namespace eccon_lab.vipr.experiment.editor
             sliderOptionsItem.SetSliderOptions(question.GetSliderOptionValues());
         }
 
-        public void OnSaveButtonClick()
+        public override void OnButtonClick()
         {
+            base.OnButtonClick();
             switch (currentType)
             {
                 case EditorHierachyItem.ItemType.Page:

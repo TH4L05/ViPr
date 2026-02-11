@@ -24,6 +24,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         public override void Initialize()
         {
+            base.Initialize();
             inputExperimentName.text = "newExperiment";
             ToggleVideoFileInputObject(false);
             SetupExperimentTypeDropdown();
@@ -74,8 +75,9 @@ namespace eccon_lab.vipr.experiment.editor.ui
             }
         }
 
-        public void OnCreateButtonClick()
+        public override void OnButtonClick()
         {
+            base.OnButtonClick();
             Debug.Log("Create new experiment -> name = " + inputExperimentName.text);
             ExperimentType type = (ExperimentType)dropdownExperimentType.value;
             string videoFileName = dropdownAssignedVideoFile.itemText.text;
