@@ -52,17 +52,17 @@ namespace eccon_lab.vipr.experiment
             defaultTextValues = new TextOptions(Color.white, 30.0f);
         }
 
-        public void Setup(string name, ExperimentType type)
+        public void Setup(string name, ExperimentType type, string videoFileName)
         {
             experimentName = name;
             experimentType = type;
+            assignedVideoFileName = videoFileName;
         }
 
-        public void SetDefaults(Color pageColor, Color textColor, float TextSize)
+        public void SetDefaults(Color pageColor, TextOptions textOptions)
         {
             defaultPageBackgroundColor = pageColor;
-            defaultTextValues.textColor = textColor;
-            defaultTextValues.textSize = TextSize;
+            defaultTextValues = textOptions;
         }
 
         public List<Page> GetPages()
@@ -136,13 +136,16 @@ namespace eccon_lab.vipr.experiment
             return amount;
         }
 
-        public void UpdatePage(string id, Color color)
+        public void UpdatePage(string id, Color color, TextOptions options)
         {
             foreach (Page page in pages)
             {
                 if (page.Id == id)
                 {
+                    Debug.Log("Update Page");
                     page.SetBackgroundColor(color);
+                    page.SetPageTextOptions(options);
+                    page.SetupAssignedObject();
                     return;
                 }
             }
@@ -274,8 +277,7 @@ namespace eccon_lab.vipr.experiment
             saveData.experimentName = experimentName;
             saveData.experimentType = experimentType;
             saveData.defaultPageColor = defaultPageBackgroundColor;
-            saveData.defaultTextColor = defaultTextValues.textColor;
-            saveData.defaultTextSize = defaultTextValues.textSize;
+            saveData.defaultTextOptions = defaultTextValues;
             saveData.pages = new List<ExperimentSaveDataPage>();
             saveData.questions = new List<ExperimentSaveDataQuestion>();
 

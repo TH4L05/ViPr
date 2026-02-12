@@ -16,6 +16,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         
         [Header("Windows")]
         [SerializeField] private CreateExperimentWindow createExperimentWindow;
+        [SerializeField] private EditExperimentWindow editExperimentWindow;
         [SerializeField] private LoadExperimentWindow loadExperimentWindow;
         [SerializeField] private SaveExperimentWindow saveExperimentWindow;
         [SerializeField] private CreatePageWindow createPageWindow;
@@ -40,6 +41,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
             if(saveExperimentWindow != null) saveExperimentWindow.Initialize();
             if(createPageWindow != null) createPageWindow.Initialize();
             if(createQuestionWindow != null) createQuestionWindow.Initialize();
+            if(editExperimentWindow != null) editExperimentWindow.Initialize();
         }
 
         private void Setup()
@@ -48,6 +50,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
             SetExperimentNameLabel("-"); 
             ToggleExperimentLoadWindow(false);
             ToogleExperimentCreateWindow(false);
+            ToogleExperimentEditWindow(false);
             ToggleElementInspectorObject(false);
             ToggleCreatepageObject(false);
             ToggleCreateQuestionObject(false);
@@ -79,6 +82,13 @@ namespace eccon_lab.vipr.experiment.editor.ui
             if (createExperimentWindow == null) return;
             ToggleMainWindowObject(active);
             createExperimentWindow.ToggleAssignedGamebject(active);
+        }
+
+        public void ToogleExperimentEditWindow(bool active)
+        {
+            if (editExperimentWindow == null) return;
+            ToggleMainWindowObject(active);
+            editExperimentWindow.ToggleAssignedGamebject(active);
         }
 
         public void ToggleExperimentLoadWindow(bool active)

@@ -1,13 +1,14 @@
 /// <author>Thomas Krahl</author>
 
+using eccon_lab.vipr.experiment.editor.ui;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Linq;
-using UnityEngine;
+using System.Text;
 using TK.Util;
-using eccon_lab.vipr.experiment.editor.ui;
+using UnityEngine;
+using static eccon_lab.vipr.experiment.editor.ui.EditorHierachyItem;
 
 namespace eccon_lab.vipr.experiment.editor
 {
@@ -86,7 +87,7 @@ namespace eccon_lab.vipr.experiment.editor
 
         #region CreateExperiment
 
-        public void CreateExperiment(string experimentName, ExperimentType experimentType, Color defaultPageColor, Color defaultTextColor, float defaultTextSize, string assignedVideo = "none", bool isNewExperiment = true)
+        public void CreateExperiment(string experimentName, ExperimentType experimentType, Color defaultPageColor, TextOptions textOptions, string assignedVideo = "none", bool isNewExperiment = true)
         {
             if (!Serialization.DirectoryExists(defaultSaveDirectory))
             {
@@ -96,8 +97,8 @@ namespace eccon_lab.vipr.experiment.editor
             experiment = ScriptableObject.CreateInstance<Experiment>();
             experiment.Initialize();
             experiment.name = experimentName;
-            experiment.Setup(experimentName, experimentType);
-            experiment.SetDefaults(defaultPageColor, defaultTextColor, defaultTextSize);
+            experiment.Setup(experimentName, experimentType, assignedVideo);
+            experiment.SetDefaults(defaultPageColor, textOptions);
             editorUI.SetExperimentNameLabel(experimentName);
             if(!isNewExperiment) return;
             CreateNewPage(PageType.InfoPage, experiment.DefaultPageBackgroundColor,experiment.DefaultTextValues,  "StartPage", "Welcome");
@@ -120,7 +121,7 @@ namespace eccon_lab.vipr.experiment.editor
             experimentData = JsonUtility.FromJson<ExperimentSaveData>(fileContent);
             Debug.Log(experimentData.experimentName + " = loaded");
 
-            CreateExperiment(experimentData.experimentName, (ExperimentType)experimentData.experimentType,experimentData.defaultPageColor, experimentData.defaultTextColor, experimentData.defaultTextSize,  experimentData.assignedVideoFile, false);
+            CreateExperiment(experimentData.experimentName, (ExperimentType)experimentData.experimentType, experimentData.defaultPageColor, experimentData.defaultTextOptions,  experimentData.assignedVideoFile, false);
 
             foreach (var page in experimentData.pages)
             {
@@ -148,6 +149,12 @@ namespace eccon_lab.vipr.experiment.editor
         }
 
         #endregion
+
+        public void UpdateExperimentData(Color color, TextOptions textOptions, string name, ExperimentType type, string videoFileName)
+        {
+            experiment.Setup(name, type, videoFileName);
+            experiment.SetDefaults(color, textOptions);
+        }
 
         #region Page
 
@@ -202,9 +209,9 @@ namespace eccon_lab.vipr.experiment.editor
             experiment.UpdatePageVisibility(id);
         }
 
-        public void UpdatePageValues(string id, Color backgroundColor)
+        public void UpdatePageValues(string id, Color backgroundColor, TextOptions options)
         {
-            experiment.UpdatePage(id, backgroundColor);
+            experiment.UpdatePage(id, backgroundColor, options);
         }
 
         #endregion
@@ -232,6 +239,7 @@ namespace eccon_lab.vipr.experiment.editor
                 radioValues[i].optionName = radioButtonOptions[i].optionInputText.text;
                 radioValues[i].isEnabled = radioButtonOptions[i].optionToggle.isOn;
             }
+            radioValues[0].isDefault = true;
 
             SliderOptions sliderOptions = new SliderOptions();
             sliderOptions.minValue = float.Parse(sliderCreateOptions.sliderMinValue.text);
@@ -315,6 +323,7 @@ namespace eccon_lab.vipr.experiment.editor
             switch (type)
             {
                 case EditorHierachyItem.ItemType.Page:
+                case EditorHierachyItem.ItemType.InfoPage:
                     bool success = experiment.RemovePage(referenceID);
                     if(!success) return;
                     currentPageId = experiment.GetPage(0).Id;
@@ -349,6 +358,7 @@ namespace eccon_lab.vipr.experiment.editor
             }
             editorUI.ToggleElementInspectorObject(true);
             elementInspector.ShowContent(obj, type);
+            
             OnHierarchyItemClick(referenceID, type);
         }
 
@@ -357,13 +367,27 @@ namespace eccon_lab.vipr.experiment.editor
             editorUI.UpdateLogLabelText(text);
         }
 
-        public void OnHierarchyItemClick(string referenceID, EditorHierachyItem.ItemType type)
+        public void OnHierarchyItemClick(string referenceID, ItemType type)
         {
             string id = referenceID;
+            switch (type)
+            {
+                case ItemType.Invalid:
+                    break;
+                case ItemType.Page:
+                case ItemType.InfoPage:
+                    break;
+                case ItemType.Question:
+                    id = CurrentExperiment.GetQuestion(referenceID).AssignedPageId;
+                    break;
+                default:
+                    break;
+            }
             Page page = experiment.GetPage(id);
             if (page == null) return;
             experiment.UpdatePageVisibility(id);
             currentPageId = id;
+            editorHierarchy.ToggleItemState(id);
             editorUI.UpdateLogLabelText(page.Name + " selected");
         }
 
@@ -376,8 +400,9 @@ namespace eccon_lab.vipr.experiment.editor
 
         public void TestExperiment()
         {
+            ExperimentSaveData saveData = experiment.GetExperimentSaveData();
             editorUI.ToggleExperimentPlayerUi(true);
-            experimentPlayer.CreateExperiment(experiment.ExperimentName);
+            experimentPlayer.CreateExperiment(saveData);
             editorUI.UpdateLogLabelText("Run Experiment Test for " + experiment.ExperimentName);
         }
 

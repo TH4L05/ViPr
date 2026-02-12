@@ -34,7 +34,6 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         public void Setup(Color color)
         {
-            Debug.Log("Set Color Picker color= " + color.r + "/" + color.g + "/" + color.b);
             UpdateSliderValues(color.r, color.g, color.b);
             UpdatePreview();
             SetHexColor();

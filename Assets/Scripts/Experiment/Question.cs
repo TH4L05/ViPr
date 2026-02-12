@@ -142,28 +142,22 @@ namespace eccon_lab.vipr.experiment
         public void SetupAssignedObjectRadioButtons()
         {
             if (radioOptionValues.Length == 0 || radioOptionValues == null) return;
+
+            Toggle[] toggleElements = assigendUiElement.transform.GetChild(1).GetComponent<ToggleGroupHandler>().GetToggleElements();
+
             for (int i = 0; i < radioOptionValues.Length; i++)
             {
-                Toggle toggle = assigendUiElement.transform.GetChild(1).GetChild(i).GetComponent<Toggle>();
-                if (toggle == null) continue;
-
-                toggle.isOn = false;
                 if (!radioOptionValues[i].isEnabled)
                 {
-                    toggle.gameObject.SetActive(false);
+                    toggleElements[i].gameObject.SetActive(false);
 
                 }
                 else
                 {
-                    toggle.gameObject.SetActive(true);
+                    toggleElements[i].gameObject.SetActive(true);
                 }
-
-                if (radioOptionValues[i].isDefault)
-                {
-                    toggle.isOn = true;
-                }
-                
-                TextMeshProUGUI toggleLabel = toggle.gameObject.GetComponentInChildren<TextMeshProUGUI>();
+                toggleElements[i].isOn = radioOptionValues[i].isDefault;
+                TextMeshProUGUI toggleLabel = toggleElements[i].gameObject.GetComponentInChildren<TextMeshProUGUI>();
                 SetTextObjectValues(toggleLabel, textOptions);
                 toggleLabel.text = radioOptionValues[i].optionName;
             }
@@ -204,7 +198,7 @@ namespace eccon_lab.vipr.experiment
                     answer = assigendUiElement.transform.GetChild(1).GetComponent<ToggleGroupHandler>().GetActiveValue();
                     break;
                 case QuestionType.InputField:
-                    answer = assigendUiElement.transform.GetChild(1).GetComponentInChildren<TMP_InputField>().text;
+                    answer = assigendUiElement.transform.GetChild(1).GetComponent<InputAnswerHandle>().GetInputText();
                     break;
                 case QuestionType.Slider:
                     answer = assigendUiElement.transform.GetChild(1).GetComponentInChildren<CustomSlider>().GetSliderValue().ToString();

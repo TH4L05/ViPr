@@ -3,6 +3,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 namespace eccon_lab.vipr.experiment.editor.ui
@@ -130,12 +131,11 @@ namespace eccon_lab.vipr.experiment.editor.ui
             switch (currentType)
             {
                 case EditorHierachyItem.ItemType.Page:
-                    ExperimentEditor.Instance.UpdatePageValues(currentId, colorPickerItem.GetColorValue());
+                case EditorHierachyItem.ItemType.InfoPage:
+                    ExperimentEditor.Instance.UpdatePageValues(currentId, colorPickerItem.GetColorValue(), textOptionsItem.GetTextOptions());
                     break;
                 case EditorHierachyItem.ItemType.Question:
-                    TextOptions textValues = textOptionsItem.GetTextOptions();
-                    textValues.textColor = colorPickerItem.GetColorValue();
-                    ExperimentEditor.Instance.UpdateQuestionValues(currentId, textInputItem.GetInputValue(), textValues, radioOptionsItem.GetRadioOptionValues(), sliderOptionsItem.GetSliderOptions());
+                    ExperimentEditor.Instance.UpdateQuestionValues(currentId, textInputItem.GetInputValue(), textOptionsItem.GetTextOptions(), radioOptionsItem.GetRadioOptionValues(), sliderOptionsItem.GetSliderOptions());
                     break;
                 default:
                     break;

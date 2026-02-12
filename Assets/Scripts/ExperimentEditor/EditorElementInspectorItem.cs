@@ -97,25 +97,12 @@ namespace eccon_lab.vipr.experiment.editor
         public RadioOptionValue[] GetRadioOptionValues()
         {
             RadioOptionValue[] values = new RadioOptionValue[radioButtonCreateOptions.Length];
-            bool defaultActive = radioOptionSetDefaultGroup.AnyTogglesOn();
-            var test = radioOptionSetDefaultGroup.ActiveToggles();
-
             for (int i = 0; i < radioButtonCreateOptions.Length; i++)
             {
                 values[i].optionName = radioButtonCreateOptions[i].optionInputText.text;
                 values[i].isEnabled = radioButtonCreateOptions[i].optionToggle.isOn;
-                values[i].isDefault = false;
-                if (defaultActive)
-                {
-                    foreach (var value in test)
-                    {
-                        if (value.gameObject.name == radioButtonCreateOptions[i].defaultOption.gameObject.name)
-                        {
-                            values[i].isDefault = true;
-                            break;
-                        }
-                    }
-                }
+                values[i].isDefault = radioButtonCreateOptions[i].defaultOption.isOn;
+                
             }
             return values;
         }

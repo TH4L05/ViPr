@@ -1,5 +1,3 @@
-/// <author>Thomas Krahl</author>
-
 using System;
 using System.IO;
 using TMPro;
@@ -7,7 +5,7 @@ using UnityEngine;
 
 namespace eccon_lab.vipr.experiment.editor.ui
 {
-    public class CreateExperimentWindow : ExperimentEditorMenuWindow
+    public class EditExperimentWindow : ExperimentEditorMenuWindow
     {
         [Space(4f)]
         [SerializeField] private TMP_InputField inputExperimentName;
@@ -27,7 +25,19 @@ namespace eccon_lab.vipr.experiment.editor.ui
             SetupAssignedVideoDropdown();
             foldout.Setup();
             if (colorPickerBackground != null) colorPickerBackground.Initialize();
-            if (textOptionInspector != null) textOptionInspector.SetTextValues(new TextOptions(Color.white, 25.0f));
+        }
+
+        public override void ShowWindowContent()
+        {
+            Experiment ex = ExperimentEditor.Instance.CurrentExperiment;
+
+            if (ex.ExperimentType == ExperimentType.VideoPlusQuestionaire)
+            {
+                ToggleVideoFileInputObject(true);
+            }
+            dropdownExperimentType.value = (int)ex.ExperimentType;
+            colorPickerBackground.Setup(ex.DefaultPageBackgroundColor);
+            textOptionInspector.SetTextValues(ex.DefaultTextValues);
         }
 
         private void ToggleVideoFileInputObject(bool active)
@@ -81,7 +91,10 @@ namespace eccon_lab.vipr.experiment.editor.ui
             {
                 videoFileName = "none";
             }
-            ExperimentEditor.Instance.CreateExperiment(inputExperimentName.text, type, colorPickerBackground.GetColor(), textOptionInspector.GetTextValues(), videoFileName);
+            ExperimentEditor.Instance.UpdateExperimentData(colorPickerBackground.GetColor(), textOptionInspector.GetTextValues(), inputExperimentName.text, (ExperimentType)dropdownExperimentType.value, dropdownAssignedVideoFile.captionText.text);
         }
     }
 }
+
+
+

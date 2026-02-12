@@ -213,22 +213,8 @@ namespace eccon_lab.vipr.experiment.editor.ui
         public void OnPointerClick(PointerEventData eventData)
         {
             string id = referenceID;
-            switch (itemType)
-            {
-                case ItemType.Invalid:
-                    break;
-                case ItemType.Page:
-                case ItemType.InfoPage:
-                    break;
-                case ItemType.Question:
-                    id = ExperimentEditor.Instance.CurrentExperiment.GetQuestion(referenceID).AssignedPageId;
-                    break;
-                default:
-                    break;
-            }
             if(isSelected) return;
             ExperimentEditor.Instance.OnHierarchyItemClick(id, itemType);
-            editorHierachy.ToggleItemState(id); 
         }
 
         public void SetSelected()

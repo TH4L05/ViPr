@@ -83,7 +83,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
             base.OnButtonClick();
             Debug.Log("Create new question");
 
-            if (radioButtonOptions[0].optionToggle.isOn)
+            if (radioButtonOptions[0].optionToggle.isOn && radioButtonOptions[0].defaultOption != null)
             {
                 radioButtonOptions[0].defaultOption.isOn = true;
             }

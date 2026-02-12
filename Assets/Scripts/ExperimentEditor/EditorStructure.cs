@@ -1,9 +1,9 @@
 /// <author>Thomas Krahl</author>
 
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace eccon_lab.vipr.experiment.editor
 {
@@ -107,8 +107,7 @@ namespace eccon_lab.vipr.experiment.editor
         public ExperimentType experimentType;
         public string assignedVideoFile;
         public Color defaultPageColor;
-        public Color defaultTextColor;
-        public float defaultTextSize;
+        public TextOptions defaultTextOptions;
         public List<ExperimentSaveDataPage> pages;
         public List<ExperimentSaveDataQuestion> questions;
     }

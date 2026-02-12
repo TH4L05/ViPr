@@ -13,6 +13,11 @@ namespace eccon_lab.vipr.experiment.editor.ui
             if(inputFilename != null) inputFilename.text = string.Empty;
         }
 
+        public override void ShowWindowContent()
+        {
+            inputFilename.text = ExperimentEditor.Instance.CurrentExperiment.ExperimentName;
+        }
+
         public override void OnButtonClick()
         {
             base.OnButtonClick();

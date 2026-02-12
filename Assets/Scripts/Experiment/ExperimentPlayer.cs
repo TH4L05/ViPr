@@ -182,7 +182,7 @@ namespace eccon_lab.vipr.experiment
                 Debug.Log("No save data !!");
                 return;
             }
-            experiment.Setup(saveData.experimentName, saveData.experimentType);
+            experiment.Setup(saveData.experimentName, saveData.experimentType, saveData.assignedVideoFile);
 
             foreach (var page in saveData.pages)
             {
