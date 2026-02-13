@@ -39,9 +39,6 @@ namespace eccon_lab.vipr.experiment.editor.ui
             if(createExperimentWindow != null) createExperimentWindow.Initialize();
             if(loadExperimentWindow != null) loadExperimentWindow.Initialize();
             if(saveExperimentWindow != null) saveExperimentWindow.Initialize();
-            if(createPageWindow != null) createPageWindow.Initialize();
-            if(createQuestionWindow != null) createQuestionWindow.Initialize();
-            if(editExperimentWindow != null) editExperimentWindow.Initialize();
         }
 
         private void Setup()
@@ -56,6 +53,13 @@ namespace eccon_lab.vipr.experiment.editor.ui
             ToggleCreateQuestionObject(false);
             ToggleEditorMenu(true);
             ToggleMainMenuState(true);
+        }
+
+        public void InitWindows()
+        {
+            if (createPageWindow != null) createPageWindow.Initialize();
+            if (createQuestionWindow != null) createQuestionWindow.Initialize();
+            if (editExperimentWindow != null) editExperimentWindow.Initialize();
         }
 
         public void ToggleMainWindowObject(bool active)

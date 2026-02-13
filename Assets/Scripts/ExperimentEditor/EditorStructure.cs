@@ -1,9 +1,10 @@
 /// <author>Thomas Krahl</author>
 
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 namespace eccon_lab.vipr.experiment.editor
 {
@@ -27,17 +28,36 @@ namespace eccon_lab.vipr.experiment.editor
     }
 
     [System.Serializable]
-    public struct RadioButtonCreateOption
+    public struct RadioButtonCreateOptions
     {
-        public TMP_InputField optionInputText;
-        public Toggle optionToggle;
-        public Toggle defaultOption;
+        public RadioButtonCreateOption[] radioButtonCreateOptionElements;
+        public TextOptionInspector textOptionInspector;
 
-        public void Reset()
+        public void ResetOptionValues()
         {
-            optionInputText.text = string.Empty;
-            optionToggle.isOn = false;
-            if(defaultOption != null) defaultOption.isOn = false;
+            foreach (var radioButton in radioButtonCreateOptionElements)
+            {
+                radioButton.ResetOption();
+            }
+        }
+
+        public void SetTextOptions(TextOptions textOptions)
+        {
+            if (textOptionInspector == null) return;
+            textOptionInspector.SetTextValues(textOptions);
+        }
+
+        public RadioButtonOptions GetValues()
+        {
+            RadioButtonOptions radioButtonOptions = new RadioButtonOptions();
+            radioButtonOptions.radioOptionValues = new RadioOptionValue[radioButtonCreateOptionElements.Length];
+
+            for (int i = 0; i < radioButtonCreateOptionElements.Length; i++)
+            {
+                radioButtonOptions.radioOptionValues[i] = radioButtonCreateOptionElements[i].GetValues();
+            }
+            radioButtonOptions.textOptions = textOptionInspector.GetTextValues();
+            return radioButtonOptions;
         }
     }
 
@@ -50,6 +70,19 @@ namespace eccon_lab.vipr.experiment.editor
     }
 
     [System.Serializable]
+    public struct RadioButtonOptions
+    {
+        public RadioOptionValue[] radioOptionValues;
+        public TextOptions textOptions;
+
+        public RadioButtonOptions(TextOptions options, RadioOptionValue[] optionValues)
+        {
+            radioOptionValues = optionValues;
+            textOptions = options;
+        }
+    }
+
+    [System.Serializable]
     public struct SliderOptions
     {
         public float minValue;
@@ -58,8 +91,9 @@ namespace eccon_lab.vipr.experiment.editor
         public string labelPrefix;
         public string labelSuffix;
         public int decimalPlaces;
+        public TextOptions textOptions;
 
-        public SliderOptions(float min = 1.0f, float max = 99.0f, float value = 1.0f, string prefix = "", string suffix = "", int decimalPlaces = 0)
+        public SliderOptions(TextOptions options, float min = 1.0f, float max = 99.0f, float value = 1.0f, string prefix = "", string suffix = "", int decimalPlaces = 0)
         {
             minValue = min;
             maxValue = max;
@@ -67,9 +101,8 @@ namespace eccon_lab.vipr.experiment.editor
             labelPrefix = prefix;
             labelSuffix = suffix;
             this.decimalPlaces = decimalPlaces;
+            textOptions = options;
         }
-
-       
     }
 
     [System.Serializable]
@@ -81,6 +114,7 @@ namespace eccon_lab.vipr.experiment.editor
         public TMP_InputField sliderLabelPrefix;
         public TMP_InputField sliderLabelSuffix;
         public Slider decimalPlaces;
+        public TextOptionInspector textOptionInspector;
 
         public void Reset()
         {
@@ -90,6 +124,25 @@ namespace eccon_lab.vipr.experiment.editor
             sliderLabelPrefix.text = string.Empty;
             sliderLabelSuffix.text = string.Empty;
             decimalPlaces.value = 0;
+        }
+
+        public void SetTextOptions(TextOptions textOptions)
+        {
+            if (textOptionInspector == null) return;
+            textOptionInspector.SetTextValues(textOptions);
+        }
+
+        public SliderOptions GetValues()
+        {
+            SliderOptions sliderOptions = new SliderOptions();
+            sliderOptions.minValue = float.Parse(sliderMinValue.text);
+            sliderOptions.maxValue = float.Parse(sliderMaxValue.text);
+            sliderOptions.defaultValue = float.Parse(sliderDefaultValue.text);
+            sliderOptions.labelPrefix = sliderLabelPrefix.text;
+            sliderOptions.labelSuffix = sliderLabelSuffix.text;
+            sliderOptions.decimalPlaces = (int)decimalPlaces.value;
+            sliderOptions.textOptions = textOptionInspector.GetTextValues();
+            return sliderOptions;
         }
     }
 
@@ -142,10 +195,10 @@ namespace eccon_lab.vipr.experiment.editor
         public string referencePageId;
         public string questionText;
         public TextOptions textOptions;
-        public RadioOptionValue[] radioOptions;
+        public RadioButtonOptions radioOptions;
         public SliderOptions sliderOptions;
 
-        public ExperimentSaveDataQuestion(string id, string name, QuestionType type, string pageId, string text, TextOptions textOptions, RadioOptionValue[] radioOptions, SliderOptions sliderOptions)
+        public ExperimentSaveDataQuestion(string id, string name, QuestionType type, string pageId, string text, TextOptions textOptions, RadioButtonOptions radioOptions, SliderOptions sliderOptions)
         {
             questionId = id;
             questionName = name;

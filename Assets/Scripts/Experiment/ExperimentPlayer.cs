@@ -238,7 +238,7 @@ namespace eccon_lab.vipr.experiment
             experiment.AddPage(newPage);
         }
 
-        public void CreateQuestion(string id, string name, QuestionType type, string questionText, TextOptions textValues, RadioOptionValue[] radioOptionValues, SliderOptions sliderOptions, string pageReferenceId)
+        public void CreateQuestion(string id, string name, QuestionType type, string questionText, TextOptions textValues, RadioButtonOptions radioOptions, SliderOptions sliderOptions, string pageReferenceId)
         {
             GameObject prefab = null;
             switch (type)
@@ -268,7 +268,7 @@ namespace eccon_lab.vipr.experiment
             Question newQuestion = new Question();
             newQuestion.Initialize(id, name, newObject);
             newQuestion.QuestionSetup(type, pageReferenceId, questionText);
-            newQuestion.SetRadioOptionValues(radioOptionValues);
+            newQuestion.SetRadioButtonOptionValues(radioOptions);
             newQuestion.SetSliderOptions(sliderOptions);
             newQuestion.SetTextValues(textValues);
             newQuestion.SetupAssignedObject();

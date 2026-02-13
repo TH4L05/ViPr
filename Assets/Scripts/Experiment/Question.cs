@@ -19,7 +19,7 @@ namespace eccon_lab.vipr.experiment
         [SerializeField] private Vector3 position;
         [SerializeField] private Vector3 rotation;
         [SerializeField] private Vector2 size;
-        [SerializeField] private RadioOptionValue[] radioOptionValues;
+        [SerializeField] private RadioButtonOptions radioButtonOptions;
         [SerializeField] private SliderOptions sliderOptions;
 
         #endregion
@@ -38,9 +38,11 @@ namespace eccon_lab.vipr.experiment
         override public void Initialize(string id, string name, GameObject assignedUiElement)
         {
             base.Initialize(name, id, assignedUiElement);
-            radioOptionValues = new RadioOptionValue[8];
-            sliderOptions = new SliderOptions(1.0f, 10.0f, 5f);
-            textOptions = new TextOptions(Color.white, 30.0f);
+            TextOptions textOptions = new TextOptions(Color.white, 25.0f, FontStyles.Normal, HorizontalAlignmentOptions.Left, VerticalAlignmentOptions.Middle);
+
+            radioButtonOptions = new RadioButtonOptions(textOptions, new RadioOptionValue[10]);
+            sliderOptions = new SliderOptions(new TextOptions(Color.white, 25.0f), 1.0f, 10.0f, 5f);
+            this.textOptions = textOptions;
             position = assigendUiElement.GetComponent<RectTransform>().position;
             rotation = assigendUiElement.GetComponent<RectTransform>().rotation.eulerAngles;
             size = assigendUiElement.GetComponent<RectTransform>().sizeDelta;
@@ -79,10 +81,9 @@ namespace eccon_lab.vipr.experiment
             return questionText;
         }
 
-        public RadioOptionValue[] GetRadioOptionValues()
+        public RadioButtonOptions GetRadioButtonOptionValues()
         {
-
-            return radioOptionValues;
+            return radioButtonOptions;
         }
 
         public SliderOptions GetSliderOptionValues()
@@ -109,9 +110,9 @@ namespace eccon_lab.vipr.experiment
             sliderOptions = options;
         }
 
-        public void SetRadioOptionValues(RadioOptionValue[] optionValues)
+        public void SetRadioButtonOptionValues(RadioButtonOptions options)
         {
-            radioOptionValues = optionValues;
+            radioButtonOptions = options;
         }
 
         #endregion
@@ -141,25 +142,24 @@ namespace eccon_lab.vipr.experiment
 
         public void SetupAssignedObjectRadioButtons()
         {
-            if (radioOptionValues.Length == 0 || radioOptionValues == null) return;
+            if (radioButtonOptions.radioOptionValues.Length < 1) return;
 
             Toggle[] toggleElements = assigendUiElement.transform.GetChild(1).GetComponent<ToggleGroupHandler>().GetToggleElements();
 
-            for (int i = 0; i < radioOptionValues.Length; i++)
+            for (int i = 0; i < radioButtonOptions.radioOptionValues.Length; i++)
             {
-                if (!radioOptionValues[i].isEnabled)
+                if (!radioButtonOptions.radioOptionValues[i].isEnabled)
                 {
                     toggleElements[i].gameObject.SetActive(false);
-
                 }
                 else
                 {
                     toggleElements[i].gameObject.SetActive(true);
                 }
-                toggleElements[i].isOn = radioOptionValues[i].isDefault;
+                toggleElements[i].isOn = radioButtonOptions.radioOptionValues[i].isDefault;
                 TextMeshProUGUI toggleLabel = toggleElements[i].gameObject.GetComponentInChildren<TextMeshProUGUI>();
-                SetTextObjectValues(toggleLabel, textOptions);
-                toggleLabel.text = radioOptionValues[i].optionName;
+                SetTextObjectValues(toggleLabel, radioButtonOptions.textOptions);
+                toggleLabel.text = radioButtonOptions.radioOptionValues[i].optionName;
             }
         }
 
@@ -177,14 +177,14 @@ namespace eccon_lab.vipr.experiment
             CustomSlider slider = assigendUiElement.transform.GetChild(1).GetChild(0).GetComponent<CustomSlider>();
             if (slider == null) return;
             slider.Setup(sliderOptions);
-            slider.SetSliderLabelTextValues(textOptions);
+            slider.SetSliderLabelTextValues(sliderOptions.textOptions);
         }
 
         #endregion
 
         public ExperimentSaveDataQuestion GetSaveData()
         {
-            ExperimentSaveDataQuestion questionData = new ExperimentSaveDataQuestion(id, name, questionType, assignedPageId, questionText, textOptions, radioOptionValues, sliderOptions);
+            ExperimentSaveDataQuestion questionData = new ExperimentSaveDataQuestion(id, name, questionType, assignedPageId, questionText, textOptions, radioButtonOptions, sliderOptions);
             return questionData;
         }
 
@@ -206,7 +206,6 @@ namespace eccon_lab.vipr.experiment
                 default:
                     break;
             }
-
             return answer;
         }
     }

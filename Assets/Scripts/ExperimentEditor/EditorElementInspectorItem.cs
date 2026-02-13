@@ -13,7 +13,7 @@ namespace eccon_lab.vipr.experiment.editor
         [SerializeField] private TMP_InputField inputField; 
         [SerializeField] private ColorPicker colorPicker;
         [SerializeField] private TextOptionInspector textOptionInspector;
-        [SerializeField] private RadioButtonCreateOption[] radioButtonCreateOptions;
+        [SerializeField] private RadioButtonCreateOptions radioCreateOptionValues;
         [SerializeField] private ToggleGroup radioOptionSetDefaultGroup;
         [SerializeField] private SliderCreateOption sliderCreateOptions;
         
@@ -69,11 +69,13 @@ namespace eccon_lab.vipr.experiment.editor
             sliderCreateOptions.sliderLabelPrefix.text = sliderOptions.labelPrefix.ToString();
             sliderCreateOptions.sliderLabelSuffix.text = sliderOptions.labelSuffix.ToString();
             sliderCreateOptions.decimalPlaces.value  = sliderOptions.decimalPlaces;
+            sliderCreateOptions.SetTextOptions(sliderOptions.textOptions);
         }
 
         public SliderOptions GetSliderOptions()
         {
             SliderOptions options = new SliderOptions( 
+                                                        sliderCreateOptions.textOptionInspector.GetTextValues(),
                                                         float.Parse(sliderCreateOptions.sliderMinValue.text), 
                                                         float.Parse(sliderCreateOptions.sliderMaxValue.text), 
                                                         float.Parse(sliderCreateOptions.sliderDefaultValue.text),
@@ -84,27 +86,18 @@ namespace eccon_lab.vipr.experiment.editor
             return options;
         }
 
-        public void SetRadioButtonOptions(RadioOptionValue[] options)
+        public void SetRadioButtonOptions(RadioButtonOptions options)
         {
-            for (int i = 0; i < options.Length; i++)
+            for (int i = 0; i < options.radioOptionValues.Length; i++)
             {
-                radioButtonCreateOptions[i].optionInputText.text = options[i].optionName;
-                radioButtonCreateOptions[i].optionToggle.isOn = options[i].isEnabled;
-                radioButtonCreateOptions[i].defaultOption.isOn = options[i].isDefault;
+                radioCreateOptionValues.radioButtonCreateOptionElements[i].SetValues(options.radioOptionValues[i]);
             }
+            radioCreateOptionValues.textOptionInspector.SetTextValues(options.textOptions);
         }
 
-        public RadioOptionValue[] GetRadioOptionValues()
+        public RadioButtonOptions GetRadioOptionValues()
         {
-            RadioOptionValue[] values = new RadioOptionValue[radioButtonCreateOptions.Length];
-            for (int i = 0; i < radioButtonCreateOptions.Length; i++)
-            {
-                values[i].optionName = radioButtonCreateOptions[i].optionInputText.text;
-                values[i].isEnabled = radioButtonCreateOptions[i].optionToggle.isOn;
-                values[i].isDefault = radioButtonCreateOptions[i].defaultOption.isOn;
-                
-            }
-            return values;
+            return radioCreateOptionValues.GetValues();
         }
     }
 }

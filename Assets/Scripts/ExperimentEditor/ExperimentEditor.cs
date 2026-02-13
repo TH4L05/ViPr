@@ -44,6 +44,7 @@ namespace eccon_lab.vipr.experiment.editor
         public static ExperimentEditor Instance;
         public ExperimentEditorUI EditorUI => editorUI;
         public Experiment CurrentExperiment => experiment;
+        public TextOptions DefaultTextOptions => experiment.DefaultTextValues;
 
         #endregion
 
@@ -105,6 +106,7 @@ namespace eccon_lab.vipr.experiment.editor
             CreateNewPage(PageType.ContentPage, experiment.DefaultPageBackgroundColor, experiment.DefaultTextValues);
             experiment.UpdatePageVisibility(experiment.GetPage(0).Id);
             editorUI.UpdateLogLabelText("Created new Experiment with name \"" + experimentName + "\"");
+            editorUI.InitWindows();
             currentPageId = experiment.GetPage(0).Id;
             experiment.UpdatePageVisibility(currentPageId);
             editorHierarchy.ToggleItemState(currentPageId);
@@ -218,7 +220,7 @@ namespace eccon_lab.vipr.experiment.editor
 
         #region Question
 
-        public void CreateNewQuestion(QuestionType type, string questionText, RadioButtonCreateOption[] radioButtonOptions, SliderCreateOption sliderCreateOptions)
+        public void CreateNewQuestion(QuestionType type, string questionText, RadioButtonOptions radioButtonOptions, SliderOptions sliderOptions)
         {
             Page p = experiment.GetPage(currentPageId);
 
@@ -232,27 +234,11 @@ namespace eccon_lab.vipr.experiment.editor
             int count = 1 + experiment.GetQuestionAmount();
             string name = "Question" + count.ToString("000");
 
-            RadioOptionValue[] radioValues = new RadioOptionValue[radioButtonOptions.Length];
-            for (int i = 0; i < radioButtonOptions.Length; i++)
-            {
-                radioValues[i] = new RadioOptionValue();
-                radioValues[i].optionName = radioButtonOptions[i].optionInputText.text;
-                radioValues[i].isEnabled = radioButtonOptions[i].optionToggle.isOn;
-            }
-            radioValues[0].isDefault = true;
-
-            SliderOptions sliderOptions = new SliderOptions();
-            sliderOptions.minValue = float.Parse(sliderCreateOptions.sliderMinValue.text);
-            sliderOptions.maxValue = float.Parse(sliderCreateOptions.sliderMaxValue.text);
-            sliderOptions.defaultValue = float.Parse(sliderCreateOptions.sliderDefaultValue.text);
-            sliderOptions.labelPrefix = sliderCreateOptions.sliderLabelPrefix.text;
-            sliderOptions.labelSuffix = sliderCreateOptions.sliderLabelSuffix.text;
-            sliderOptions.decimalPlaces = (int)sliderCreateOptions.decimalPlaces.value;
-
-            CreateQuestion(id, name, type, questionText,experiment.DefaultTextValues,  radioValues, sliderOptions, currentPageId);
+            TextOptions textOptions = experiment.DefaultTextValues;    
+            CreateQuestion(id, name, type, questionText,experiment.DefaultTextValues,  radioButtonOptions, sliderOptions, currentPageId);
         }
 
-        public void CreateQuestion(string id, string name, QuestionType type, string questionText,TextOptions textValues,  RadioOptionValue[] radioOptionValues, SliderOptions sliderOptions, string pageReferenceId)
+        public void CreateQuestion(string id, string name, QuestionType type, string questionText,TextOptions textValues,  RadioButtonOptions radioOptionValues, SliderOptions sliderOptions, string pageReferenceId)
         {
             GameObject prefab = null;
             switch (type)
@@ -284,7 +270,7 @@ namespace eccon_lab.vipr.experiment.editor
             newQuestion.Initialize( id, name, newObject);
             newQuestion.QuestionSetup(type, pageReferenceId, questionText);
             newQuestion.SetTextValues(textValues);
-            newQuestion.SetRadioOptionValues(radioOptionValues);
+            newQuestion.SetRadioButtonOptionValues(radioOptionValues);
             newQuestion.SetSliderOptions(sliderOptions);
             newQuestion.SetupAssignedObject();
 
@@ -295,9 +281,9 @@ namespace eccon_lab.vipr.experiment.editor
             return;
         }
 
-        public void UpdateQuestionValues(string id, string questionText, TextOptions textValues, RadioOptionValue[] radioOptionValues, SliderOptions sliderOptions)
+        public void UpdateQuestionValues(string id, string questionText, TextOptions textValues, RadioButtonOptions radioOptions, SliderOptions sliderOptions)
         {
-            experiment.UpdateQuestion(id, questionText, textValues, radioOptionValues, sliderOptions);
+            experiment.UpdateQuestion(id, questionText, textValues, radioOptions, sliderOptions);
         }
 
         #endregion

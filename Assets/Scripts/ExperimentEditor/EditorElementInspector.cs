@@ -118,10 +118,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
                     break;
             }
 
-            
-            
-            
-            radioOptionsItem.SetRadioButtonOptions(question.GetRadioOptionValues());
+            radioOptionsItem.SetRadioButtonOptions(question.GetRadioButtonOptionValues());
             sliderOptionsItem.SetSliderOptions(question.GetSliderOptionValues());
         }
 

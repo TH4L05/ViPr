@@ -195,7 +195,7 @@ namespace eccon_lab.vipr.experiment
             return null;
         }
 
-        public void UpdateQuestion(string id, string questionText, TextOptions textValues, RadioOptionValue[] optionValues, SliderOptions sliderOptions)
+        public void UpdateQuestion(string id, string questionText, TextOptions textValues, RadioButtonOptions radioOptions, SliderOptions sliderOptions)
         {
             foreach (Question question in questions)
             {
@@ -203,7 +203,7 @@ namespace eccon_lab.vipr.experiment
                 {
                     question.SetQuestionText(questionText);
                     question.SetTextValues(textValues);
-                    question.SetRadioOptionValues(optionValues);
+                    question.SetRadioButtonOptionValues(radioOptions);
                     question.SetSliderOptions(sliderOptions);
                     question.SetupAssignedObject();
                     return;

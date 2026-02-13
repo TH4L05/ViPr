@@ -15,7 +15,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [SerializeField] private GameObject inputOptionSlider;
         [SerializeField] private TMP_Dropdown createQuestionDropdownType;
         [SerializeField] private TMP_InputField textQuestionText;
-        [SerializeField] private RadioButtonCreateOption[] radioButtonOptions;
+        [SerializeField] private RadioButtonCreateOptions radioButtonCreateOptions;
         [SerializeField] private SliderCreateOption sliderCreateOptions;
 
         #endregion
@@ -23,6 +23,10 @@ namespace eccon_lab.vipr.experiment.editor.ui
         public override void Initialize()
         {
             SetupQuestionTypeDropdown();
+            TextOptions textOptions = ExperimentEditor.Instance.CurrentExperiment.DefaultTextValues;
+            radioButtonCreateOptions.textOptionInspector.SetTextValues(textOptions);
+            sliderCreateOptions.textOptionInspector.SetTextValues(textOptions);
+            radioButtonCreateOptions.ResetOptionValues();
         }
 
         private void SetupQuestionTypeDropdown()
@@ -67,10 +71,8 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         public void ResetRadioButtonOptions()
         {
-            foreach (var item in radioButtonOptions)
-            {
-                item.Reset();
-            }
+            radioButtonCreateOptions.ResetOptionValues();
+            
         }
 
         public void ResetSliderOptions()
@@ -82,13 +84,9 @@ namespace eccon_lab.vipr.experiment.editor.ui
         {
             base.OnButtonClick();
             Debug.Log("Create new question");
-
-            if (radioButtonOptions[0].optionToggle.isOn && radioButtonOptions[0].defaultOption != null)
-            {
-                radioButtonOptions[0].defaultOption.isOn = true;
-            }
-
-            ExperimentEditor.Instance.CreateNewQuestion((QuestionType)createQuestionDropdownType.value, textQuestionText.text, radioButtonOptions, sliderCreateOptions);
+            RadioButtonOptions radioButtonOptions = radioButtonCreateOptions.GetValues();
+            radioButtonOptions.radioOptionValues[0].isDefault = true;
+            ExperimentEditor.Instance.CreateNewQuestion((QuestionType)createQuestionDropdownType.value, textQuestionText.text, radioButtonOptions, sliderCreateOptions.GetValues());
         }
     }
 }
