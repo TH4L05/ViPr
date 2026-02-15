@@ -101,15 +101,15 @@ namespace eccon_lab.vipr.experiment.editor
             experiment.Setup(experimentName, experimentType, assignedVideo);
             experiment.SetDefaults(defaultPageColor, textOptions);
             editorUI.SetExperimentNameLabel(experimentName);
-            if(!isNewExperiment) return;
+            if (!isNewExperiment) return;
             CreateNewPage(PageType.InfoPage, experiment.DefaultPageBackgroundColor,experiment.DefaultTextValues,  "StartPage", "Welcome");
             CreateNewPage(PageType.ContentPage, experiment.DefaultPageBackgroundColor, experiment.DefaultTextValues);
             experiment.UpdatePageVisibility(experiment.GetPage(0).Id);
             editorUI.UpdateLogLabelText("Created new Experiment with name \"" + experimentName + "\"");
-            editorUI.InitWindows();
             currentPageId = experiment.GetPage(0).Id;
             experiment.UpdatePageVisibility(currentPageId);
             editorHierarchy.ToggleItemState(currentPageId);
+            editorUI.InitWindows();
         }
 
         #endregion
@@ -140,6 +140,7 @@ namespace eccon_lab.vipr.experiment.editor
             editorHierarchy.ToggleItemState(currentPageId);
             editorUI.ToggleExperimentLoadWindow(false);
             editorUI.UpdateLogLabelText("The Experiment file \"" + experimentName + "\" was loaded");
+            editorUI.InitWindows();
         }
 
         public void SaveExperiment(string fileName)
@@ -394,11 +395,11 @@ namespace eccon_lab.vipr.experiment.editor
 
         public void CancelExperimentTest()
         {
-            ExperimentTestFinished(ExperimentState.Canceled);
+            ExperimentTestFinished(ExperimentState.Canceled.ToString());
             experimentPlayer.DestroyElements();
         }
 
-        public void ExperimentTestFinished(ExperimentState state)
+        public void ExperimentTestFinished(string state)
         {
             editorUI.ToggleExperimentPlayerUi(false);
             editorUI.UpdateLogLabelText("Experiment Test finished");

@@ -30,6 +30,11 @@ namespace eccon_lab.vipr.experiment.editor.ui
         public override void ShowWindowContent()
         {
             Experiment ex = ExperimentEditor.Instance.CurrentExperiment;
+            if (ex == null)
+            {
+                Debug.LogError("Experiment not found");
+                return;
+            }
 
             if (ex.ExperimentType == ExperimentType.VideoPlusQuestionaire)
             {

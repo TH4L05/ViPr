@@ -57,6 +57,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         public void InitWindows()
         {
+            Debug.Log("init windows");
             if (createPageWindow != null) createPageWindow.Initialize();
             if (createQuestionWindow != null) createQuestionWindow.Initialize();
             if (editExperimentWindow != null) editExperimentWindow.Initialize();

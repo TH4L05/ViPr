@@ -46,8 +46,9 @@ namespace eecon_lab.Network
         }
 
         [Rpc(SendTo.Server)]
-        public void UpdateExperimentStateRpc(ExperimentState state, RpcParams prams = default)
+        public void UpdateExperimentStateRpc(string state, RpcParams prams = default)
         {
+            Debug.Log("Change exyperiment state rpc");
             Level.Instance.NetworkManagement.UpdateExperimentState(state, prams.Receive.SenderClientId);
         }
 

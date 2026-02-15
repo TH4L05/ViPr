@@ -199,6 +199,10 @@ namespace eccon_lab.vipr.experiment
                     break;
                 case QuestionType.InputField:
                     answer = assigendUiElement.transform.GetChild(1).GetComponent<InputAnswerHandle>().GetInputText();
+                    if (string.IsNullOrEmpty(answer))
+                    {
+                        answer = "No text entered";
+                    }
                     break;
                 case QuestionType.Slider:
                     answer = assigendUiElement.transform.GetChild(1).GetComponentInChildren<CustomSlider>().GetSliderValue().ToString();

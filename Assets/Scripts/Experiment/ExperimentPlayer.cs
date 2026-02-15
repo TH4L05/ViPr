@@ -42,8 +42,7 @@ namespace eccon_lab.vipr.experiment
 
         public ExperimentState ExperimentState => experimentState;
 
-        public static Action<ExperimentState> OnExperimentStateChanged;
-        public static Action<int> OnExperimentPageChanged;
+        public static Action<string> OnExperimentStateChanged;
 
         private int currentPageIndex;
 
@@ -132,34 +131,38 @@ namespace eccon_lab.vipr.experiment
                 default:
                     break;
             }
+            OnExperimentStateChanged?.Invoke("Experiment " + experimentState);
         }
 
         public void ShowNextPage()
         {
             currentPageIndex++;
             experiment.UpdatePageVisibility(currentPageIndex);
-            OnExperimentPageChanged?.Invoke(currentPageIndex);
+            OnExperimentStateChanged?.Invoke("Experiment @ Page " + currentPageIndex);
         }
 
         public void CancelExperiment()
         {
             experimentState = ExperimentState.Canceled;
+            FinishExperiment();
         }
 
         public void FinishExperiment()
         {
-            if(experimentState != ExperimentState.Canceled) experimentState = ExperimentState.Finished;
             Debug.Log("Experiment " + experimentState);
-            DestroyElements();
-            OnExperimentStateChanged?.Invoke(experimentState);
-            if (!saveResults)
+            OnExperimentStateChanged?.Invoke("Experiment " + experimentState);
+            if (experimentState == ExperimentState.Canceled)
             {
+                DestroyElements();
                 Destroy(experiment);
+                experimentRootTransform.gameObject.SetActive(false);
                 return;
             }
-            SaveResults();
-            Destroy(experiment);
+
+            if (saveResults) SaveResults();
             experimentRootTransform.gameObject.SetActive(false);
+            DestroyElements();
+            Destroy(experiment);  
         }
 
         public void DestroyElements()

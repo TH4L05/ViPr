@@ -3,6 +3,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using eccon_lab.vipr.experiment.editor;
+using TMPro;
 
 namespace eccon_lab.vipr.experiment
 {
@@ -20,7 +21,7 @@ namespace eccon_lab.vipr.experiment
             foreach (var item in toggles)
             {
                 if (!item.isOn) continue;
-                Text t = item.GetComponentInChildren<Text>();
+                TextMeshProUGUI t = item.GetComponentInChildren<TextMeshProUGUI>();
                 return t.text;
             }
             return "-";

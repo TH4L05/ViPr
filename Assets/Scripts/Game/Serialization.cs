@@ -16,7 +16,7 @@ namespace TK.Util
 
             bf.Serialize(stream, saveObj);
             stream.Close();
-            Debug.Log($"<color=#00FFFF>File {path} = Saved</color>");
+            Debug.Log($"<color=#00FFFF>File {path.Replace("\\", "/")} = Saved</color>");
         }
 
         public static object Load(string path)
@@ -25,7 +25,7 @@ namespace TK.Util
             FileStream stream = new FileStream(path, FileMode.Open);
             object result = bf.Deserialize(stream);
             stream.Close();
-            Debug.Log($"<color=#00FFFF>File {path} = Loaded</color>");
+            Debug.Log($"<color=#00FFFF>File {path.Replace("\\", "/")} = Loaded</color>");
 
             return result;
         }
@@ -57,13 +57,13 @@ namespace TK.Util
         public static void SaveText(string text, string path)
         {
             File.WriteAllText(path, text);
-            Debug.Log($"<color=#00FFFF>File {path} = Saved</color>");
+            Debug.Log($"<color=#00FFFF>Text file \"{path.Replace("\\", "/")}\" = Saved</color>");
         }
 
         public static string LoadText(string path)
         {
             var content = File.ReadAllText(path);
-            Debug.Log($"<color=#00FFFF>File {path} = Loaded</color>");
+            Debug.Log($"<color=#00FFFF>Text file \"{path.Replace("\\", "/")}\" = Loaded</color>");
             return content;
         }
 
@@ -76,7 +76,7 @@ namespace TK.Util
                 content.Add(line);
             }
 
-            Debug.Log($"<color=#00FFFF>File {path} = Loaded</color>");
+            Debug.Log($"<color=#00FFFF>Textlines from text file \"{path.Replace("\\","/")}\" = Loaded</color>");
             return content;
         }
 

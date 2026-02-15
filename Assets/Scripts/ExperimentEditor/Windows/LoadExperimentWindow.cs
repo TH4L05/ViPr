@@ -27,6 +27,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
             FileInfo[] files = ExperimentEditor.Instance.GetFileInfosFromFolder("Experiments");
             if (files.Length < 1)
             {
+                experimentFilesDropdown.transform.parent.gameObject.SetActive(false);
                 infoField.gameObject.SetActive(true);
                 loadButton.interactable = false;
                 return;

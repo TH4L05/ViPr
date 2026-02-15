@@ -10,7 +10,7 @@ namespace eecon_lab.UI.Network
         [SerializeField] private TextMeshProUGUI textFieldClientID;
         [SerializeField] private TextMeshProUGUI textFieldClientName;
         [SerializeField] private TextMeshProUGUI textFieldClientIP;
-        [SerializeField] private TextMeshProUGUI textFieldClientPlayerState;
+        [SerializeField] private TextMeshProUGUI textFieldClientState;
         [SerializeField] private TextMeshProUGUI textFieldClientXrState;
 
         public void UpdateText(string id, string name, string ip, string state)
@@ -18,7 +18,7 @@ namespace eecon_lab.UI.Network
             textFieldClientID.text = id;
             textFieldClientName.text = name;
             textFieldClientIP.text = ip;
-            textFieldClientPlayerState.text = state;
+            textFieldClientState.text = state;
         }
 
         public void UpdateID(string id)
@@ -38,7 +38,7 @@ namespace eecon_lab.UI.Network
 
         public void UpdateState(string state)
         {
-            textFieldClientIP.text = state;
+            textFieldClientState.text = state;
         }
 
         public void UpdateXrState(string state)

@@ -1521,12 +1521,13 @@ MonoBehaviour:
   folderPath: Experiments
   experimentPrefabs:
   - {fileID: 3403438012942750446, guid: 3334390810461c847973acc2bf984f90, type: 3}
+  - {fileID: 3765377351170875142, guid: 6845a2fa39c531f4a9cad37203de14a9, type: 3}
   - {fileID: 7794365065803955649, guid: 8343ecb13314f784ba2a021d42d7de1d, type: 3}
   - {fileID: 3648964467665570793, guid: 20eae319ebe5e4f439734e532b47770c, type: 3}
   - {fileID: 4006374029469599199, guid: 0a4e685060df18640be6b8a2e0f00f64, type: 3}
   videoPlayer: {fileID: 1190465220}
   testMode: 0
-  saveResultsInTestMode: 0
+  saveResults: 1
   experiment: {fileID: 0}
   experimentRootTransform: {fileID: 533507550}
   dropdown: {fileID: 0}
@@ -4912,6 +4913,10 @@ PrefabInstance:
       propertyPath: skipXrSetup
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 48540312655528800, guid: feb31855a1d236f419ed524ac3177f5d, type: 3}
+      propertyPath: experimentPlayer
+      value: 
+      objectReference: {fileID: 671906441}
     - target: {fileID: 48540312655528800, guid: feb31855a1d236f419ed524ac3177f5d, type: 3}
       propertyPath: customVideoPlayer
       value: 

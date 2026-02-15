@@ -43,10 +43,13 @@ namespace eecon_lab.Network
             if(NetworkManager.Singleton == null) return;
             unityTransport = NetworkManager.Singleton.GetComponentInChildren<UnityTransport>();
             networkManager = NetworkManager.Singleton;
+
+            ExperimentPlayer.OnExperimentStateChanged += OnExperimentstateChanged;
         }
 
         private void OnDestroy()
         {
+            ExperimentPlayer.OnExperimentStateChanged -= OnExperimentstateChanged;
         }
 
         public void Initialize()
@@ -144,7 +147,7 @@ namespace eecon_lab.Network
             clientData.clientName = name;
             clientData.clientIP = ip;
             clientData.clientUIentry = ui.GetComponent<ClientUiEntry>();
-            clientData.experimentState = ExperimentState.Invalid;
+            clientData.experimentState = ExperimentState.None.ToString();
 
             clients.Add(clientData);
             ShowInfoText($"Client {name} Connected ({ip})");
@@ -262,10 +265,15 @@ namespace eecon_lab.Network
         public void UpdateVideoPlayerStateClient(ExperimentState state)
         {
             if(networkConnector == null) return;
+            networkConnector.UpdateExperimentStateRpc(state.ToString());
+        }
+
+        public void OnExperimentstateChanged(string state)
+        {
             networkConnector.UpdateExperimentStateRpc(state);
         }
 
-        public void UpdateExperimentState(ExperimentState state, ulong clientID)
+        public void UpdateExperimentState(string state, ulong clientID)
         {
             Debug.Log("Update Video Player State - Client ID=" + clientID + " / state=" + state);
             //ChangeCurrentState(state);
@@ -274,7 +282,7 @@ namespace eecon_lab.Network
             {
                 if (clients[i].clientID == clientID)
                 {
-                    clients[i].SetPlayerState(state);
+                    clients[i].SetPlayerState(state.ToString());
                 }
             }
         }
@@ -292,8 +300,6 @@ namespace eecon_lab.Network
                 textFieldButtonPlay.text = "Play";
             } 
         }
-
-
 
         public void StartExperiment()
         {

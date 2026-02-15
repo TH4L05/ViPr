@@ -13,10 +13,10 @@ namespace eecon_lab.Network
         public ulong clientID;
         public string clientName;
         public string clientIP;
-        public ExperimentState experimentState;
+        public string experimentState;
         public ClientUiEntry clientUIentry;
 
-        public void SetPlayerState(ExperimentState state = ExperimentState.Invalid)
+        public void SetPlayerState(string state = "none")
         {
             experimentState = state;
             clientUIentry.UpdateState(experimentState.ToString());
@@ -29,7 +29,7 @@ namespace eecon_lab.Network
 
         public void UpdateUI()
         {
-            clientUIentry.UpdateText(clientID.ToString(), clientName, clientIP, experimentState.ToString());
+            clientUIentry.UpdateText(clientID.ToString(), clientName, clientIP, experimentState);
         }
     }
 }
