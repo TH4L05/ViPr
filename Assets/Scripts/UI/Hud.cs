@@ -28,7 +28,7 @@ namespace eecon_lab.UI
 
         private void Awake()
         {
-            SetupUnityXR.OnInitFinished += Setup;
+            SetupUnityXR.OnXrStateChanged += Setup;
         }
 
         private void LateUpdate()
@@ -38,7 +38,7 @@ namespace eecon_lab.UI
 
         private void OnDestroy()
         {
-            SetupUnityXR.OnInitFinished -= Setup;
+            SetupUnityXR.OnXrStateChanged -= Setup;
         }
 
         #endregion

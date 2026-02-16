@@ -10,6 +10,9 @@ using TMPro;
 using eecon_lab.Main;
 using eccon_lab.vipr;
 using eccon_lab.vipr.experiment;
+using TK.Util;
+using eecon_lab.XR;
+using System.Collections;
 
 namespace eecon_lab.vipr.video
 {
@@ -38,6 +41,9 @@ namespace eecon_lab.vipr.video
         [SerializeField] private GameObject playerMain;
         [SerializeField] private GameObject playerControls;
         [SerializeField] private Material playerMaterial;
+        [SerializeField] private RawImage player2Dimage;
+        [SerializeField] private GameObject player2Dcanvas;
+        [SerializeField] private GameObject experimentPlayerUi;
 
         [Header("Playables")]
         [SerializeField] private PlayableDirector directorVideoStart;
@@ -77,6 +83,8 @@ namespace eecon_lab.vipr.video
                                             new Vector2(1920, 1920),
                                          };
         private bool hidePlayerMainUiPermanent;
+        private bool xrEnabled;
+        private bool onExperiment;
 
         #endregion
 
@@ -85,6 +93,7 @@ namespace eecon_lab.vipr.video
         private void Start()
         {
             Setup();
+            SetupUnityXR.OnXrStateChanged += OnXrStateChanged;
         }
 
         private void Update()
@@ -97,6 +106,8 @@ namespace eecon_lab.vipr.video
 
         private void OnDestroy()
         {
+            SetupUnityXR.OnXrStateChanged -= OnXrStateChanged;
+            if (videoPlayer == null) return;
             videoPlayer.loopPointReached -= OnLoopPointReched;
             videoPlayer.prepareCompleted -= StartVideo;
         }
@@ -117,21 +128,28 @@ namespace eecon_lab.vipr.video
             videoSlider.onValueChanged.AddListener(SliderHandleUpdate);
             videoPlayer.loopPointReached += OnLoopPointReched;
             videoPlayer.prepareCompleted += StartVideo;
+            playerControls.SetActive(false);
 
-            if (Game.Instance.ActiveGameMode != Game.GameMode.normal && Game.Instance.ActiveGameMode != Game.GameMode.unset)
+            if (Game.Instance.ActiveGameMode == Game.GameMode.normal && xrEnabled)
             {
-                ToogleSelectionUiPermanent();
+                experimentPlayerUi.SetActive(false);
             }
+            else
+            {
+                ToggleExperimentUi(true);
+                ToggleMenuObjectsVisibility(false);
+                playerMain.SetActive(true);
+            }
+            
         }
 
         private void LoadFromFolder(string path)
         {
             string pathFull = path;
 
-            if (Directory.Exists(pathFull))
+            if (Serialization.DirectoryExists(pathFull))
             {
-                DirectoryInfo dir = new DirectoryInfo(pathFull);
-                FileInfo[] fileInfos = dir.GetFiles("*.*");
+                FileInfo[] fileInfos = Serialization.GetFileInfosFromFolder(pathFull);
 
                 if (fileInfos.Length < 1)
                 {
@@ -197,8 +215,7 @@ namespace eecon_lab.vipr.video
         public void PrepareVideo()
         {
             if (videoPlayer == null) return;
-            Prepare(videoFiles[videoSelectionDropdown.value]);
-            
+            Prepare(videoFiles[videoSelectionDropdown.value]); 
         }
 
         private void Prepare(string url)
@@ -227,6 +244,11 @@ namespace eecon_lab.vipr.video
                 renderTexture = new RenderTexture((int)videoResoultion.x, (int)videoResoultion.y, 0);
             }
 
+            if (!Game.Instance.VRactive)
+            {
+                renderTexture = new RenderTexture(1920, 1080, 0);
+            }
+
             renderTexture.name = "VideoPlayerRenderTexture";
             renderTexture.anisoLevel = 16;
             renderTexture.antiAliasing = 8;
@@ -234,7 +256,14 @@ namespace eecon_lab.vipr.video
             renderTexture.Create();
 
             videoPlayer.targetTexture = renderTexture;
-            playerMaterial.mainTexture = renderTexture;
+            if (!xrEnabled && player2Dimage != null)
+            {
+                player2Dimage.texture = renderTexture;
+            }
+            else
+            {
+                playerMaterial.mainTexture = renderTexture;
+            }
             Debug.Log("RenderTextureSize = " + renderTexture.width + "x" + renderTexture.height);
         }
 
@@ -251,11 +280,19 @@ namespace eecon_lab.vipr.video
 
         private void StartVideo(VideoPlayer player)
         {
+
             CreateRenderTexture(videoPlayer.width, videoPlayer.height);
             videoSlider.maxValue = (float)videoPlayer.length;
             SetTotalTime(videoPlayer.length);
+            experimentPlayerUi.SetActive(false);
+            if (!xrEnabled)
+            {
+                TogglePlayer2Dobject(true);
+                playerMain.SetActive(false);
+                PlayVideo();
+                return;
+            }
             directorVideoStart.Play();
-
         }
 
         public void PlayVideo()
@@ -286,6 +323,13 @@ namespace eecon_lab.vipr.video
             directorVideoStop.Play();
             Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(ExperimentState.VideoStopped);
             DestroyRenderTexture();
+            ToggleExperimentUi(true);
+
+            if (!xrEnabled)
+            {
+                TogglePlayer2Dobject(false);
+                playerControls.SetActive(false);
+            }
         }
 
         private void OnLoopPointReched(VideoPlayer source)
@@ -296,9 +340,21 @@ namespace eecon_lab.vipr.video
                 videoPlayer.Play();
                 return;
             }
-            directorVideoLoopPointReached.Play();
+
             Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(ExperimentState.VideoFinished);
             DestroyRenderTexture();
+            if (onExperiment)
+            {
+                StartCoroutine(WaitAfterVideo(60f));   
+            }
+            directorVideoLoopPointReached.Play();
+        }
+
+        IEnumerator WaitAfterVideo(float time)
+        {
+            yield return new WaitForSeconds(time);
+            TogglePlayer2Dobject(false);
+            ToggleExperimentUi(true);
         }
         
         public void ToggleMenuObjectsVisibility(bool active)
@@ -455,6 +511,29 @@ namespace eecon_lab.vipr.video
         {
             hidePlayerMainUiPermanent = !hidePlayerMainUiPermanent;
             ChangeSelectionUiState();
+        }
+
+        public void ToggleExperimentUi(bool active)
+        {
+            if (Game.Instance.ActiveGameMode == Game.GameMode.normal) return;
+            if(experimentPlayerUi == null) return;
+            experimentPlayerUi.SetActive(active);
+        }
+
+        public void TogglePlayer2Dobject(bool active)
+        {
+            if(player2Dcanvas == null) return;  
+            player2Dcanvas.SetActive(active);
+        }
+
+        private void OnXrStateChanged(bool enabled)
+        {
+            xrEnabled = enabled;
+        }
+
+        public void ToggleOnExperiment(bool enabled)
+        {
+            onExperiment = enabled;
         }
 
     }  

@@ -12,7 +12,7 @@ namespace eecon_lab.XR
     public class SetupUnityXR : ScriptableObject
     {
         [SerializeField] private bool initializeOnStart = true;
-        public static Action<bool> OnInitFinished;
+        public static Action<bool> OnXrStateChanged;
         private bool xrInitialized;
 
         public void OnLevelExit()
@@ -24,7 +24,7 @@ namespace eecon_lab.XR
         {
             Debug.Log("<color=#2AC93A>Skip XR Initialization</color>");
             xrInitialized = false;
-            OnInitFinished?.Invoke(xrInitialized);
+            OnXrStateChanged?.Invoke(xrInitialized);
         }
 
         public void Initialize(MonoBehaviour caller)
@@ -32,7 +32,7 @@ namespace eecon_lab.XR
             if (!initializeOnStart)
             {
                 xrInitialized = false;
-                OnInitFinished?.Invoke(xrInitialized);
+                OnXrStateChanged?.Invoke(xrInitialized);
                 return;
             }
 
@@ -49,7 +49,7 @@ namespace eecon_lab.XR
             else
             {
                 Debug.Log("<color=#2AC93A>XR already Initialized!.</color>");
-                OnInitFinished?.Invoke(xrInitialized);  
+                OnXrStateChanged?.Invoke(xrInitialized);  
             }                       
         }
 
@@ -76,7 +76,7 @@ namespace eecon_lab.XR
             {
                 Debug.Log("<color=#FF0000>Initializing XR Failed.</color>");
             }
-            OnInitFinished?.Invoke(xrInitialized);
+            OnXrStateChanged?.Invoke(xrInitialized);
         }
 
         private void SetGameViewRenderMode(GameViewRenderMode mode)
@@ -85,13 +85,15 @@ namespace eecon_lab.XR
             Debug.Log("Game view render mode = " + XRSettings.gameViewRenderMode);
         }
 
-        public void StopXR()
+        public bool StopXR()
         {
             Debug.Log("<color=#2AC93A>Stopping XR ...</color>");
             XRGeneralSettings.Instance.Manager.StopSubsystems();
             XRGeneralSettings.Instance.Manager.DeinitializeLoader();
-            xrInitialized =false;
             Debug.Log("<color=#2AC93A>XR stopped</color>");
+            xrInitialized =false;
+            OnXrStateChanged?.Invoke(xrInitialized);
+            return xrInitialized;
         }
     }
 }

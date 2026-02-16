@@ -66,6 +66,12 @@ namespace eecon_lab.Network
 
         }
 
+        [Rpc(SendTo.Server)]
+        public void SendResultsToServerRPC(string results, string experimentName)
+        {
+            Level.Instance.ExperimentPlayer.SaveResultsToFile(results, experimentName);
+        }
+
         public void SentClientData(string name, string ip)
         {
             SetClientDataRpc(name, ip);

@@ -9,6 +9,7 @@ using TMPro;
 using eccon_lab.vipr.experiment.editor;
 using eecon_lab.vipr.video;
 using TK.Util;
+using eecon_lab.Main;
 
 namespace eccon_lab.vipr.experiment
 {
@@ -46,9 +47,13 @@ namespace eccon_lab.vipr.experiment
 
         private int currentPageIndex;
 
-        
+        private void Start()
+        {
+            
+        }
 
-       public void DropdownSetup()
+
+        public void DropdownSetup()
        {
             if (dropdown == null) return;
 
@@ -159,7 +164,14 @@ namespace eccon_lab.vipr.experiment
                 return;
             }
 
-            if (saveResults) SaveResults();
+            if (saveResults)
+            {
+                string results = SaveResults();
+                if (Game.Instance.ActiveGameMode == Game.GameMode.client)
+                {
+                    Level.Instance.NetworkManagement.networkConnector.SendResultsToServerRPC(results, experiment.ExperimentName);
+                }
+            }
             experimentRootTransform.gameObject.SetActive(false);
             DestroyElements();
             Destroy(experiment);  
@@ -291,21 +303,6 @@ namespace eccon_lab.vipr.experiment
 
         public string SaveResults()
         {
-            string baseDirectoryPath = folderPath + "/Results";
-
-            if (!Serialization.DirectoryExists(baseDirectoryPath))
-            {
-                Serialization.CreateDirectory(baseDirectoryPath);
-            }
-
-            string experimentDirPath = baseDirectoryPath + "/" + experiment.ExperimentName;
-            if (!Serialization.DirectoryExists(experimentDirPath))
-            {
-                Serialization.CreateDirectory(experimentDirPath);
-            }
-
-            string resultsFilePath = experimentDirPath + "/" + "Results" + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".csv";
-
             string content = "";
             var questionList = experiment.GetQuestions();
 
@@ -317,8 +314,27 @@ namespace eccon_lab.vipr.experiment
                     content += ";";
                 }
             }
-            Serialization.SaveText(content, resultsFilePath);
+            SaveResultsToFile(content, experiment.ExperimentName);
             return content;
+        }
+
+        public void SaveResultsToFile(string content, string name)
+        {
+            string baseDirectoryPath = folderPath + "/Results";
+
+            if (!Serialization.DirectoryExists(baseDirectoryPath))
+            {
+                Serialization.CreateDirectory(baseDirectoryPath);
+            }
+
+            string experimentDirPath = baseDirectoryPath + "/" + name;
+            if (!Serialization.DirectoryExists(experimentDirPath))
+            {
+                Serialization.CreateDirectory(experimentDirPath);
+            }
+
+            string resultsFilePath = experimentDirPath + "/" + "Results" + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".csv";
+            Serialization.SaveText(content, resultsFilePath);
         }
     }
 }

@@ -11,6 +11,7 @@ using eecon_lab.vipr.video;
 using eccon_lab.vipr.experiment;
 using eecon_lab.XR;
 using TK.SceneLoading;
+using System;
 
 namespace eecon_lab.Main
 {
@@ -64,7 +65,7 @@ namespace eecon_lab.Main
         private void OnDestroy()
         {
             xrSetup.OnLevelExit();
-            SetupUnityXR.OnInitFinished -= XRInitFinished;
+            SetupUnityXR.OnXrStateChanged -= XRInitFinished;
         }
 
         #endregion
@@ -74,13 +75,13 @@ namespace eecon_lab.Main
         private void Initialize()
         {
             Game.Instance.SetLevel(this);
-            if (skipXrSetup || Game.Instance.ActiveGameMode == Game.GameMode.host || Game.Instance.ActiveGameMode == Game.GameMode.editor)
-            {
-                XRInitFinished(false);
-                return;
-            }
-            SetupXR();
             if (ingameLog != null) ingameLog.ShowLog(Game.Instance.GameOptions.GetConfig().ShowLog);
+            if (Game.Instance.ActiveGameMode == Game.GameMode.normal)
+            {
+                SetupXR();
+            }
+            StartSetup();
+            NetworkSetup();
         }
 
         public void SetupXR()
@@ -100,7 +101,7 @@ namespace eecon_lab.Main
             GameConfig config = Game.Instance.GameOptions.GetConfig();
             if (config != null && config.UseVR)
             {
-                SetupUnityXR.OnInitFinished += XRInitFinished;
+                SetupUnityXR.OnXrStateChanged += XRInitFinished;
 
                 if (xrSetup == null)
                 {
@@ -117,17 +118,14 @@ namespace eecon_lab.Main
 
         public void ToggleXr(bool enable)
         {
-            if (skipXrSetup || !Game.Instance.GameOptions.GetConfig().UseVR)
-            {
-                return;
-            }
             if (enable)
             {
-                xrSetup.Initialize(this);
+                if (Game.Instance.VRactive) return;
+                SetupXR();
             }
             else
             {
-
+                if(!Game.Instance.VRactive) return;
                 xrSetup.StopXR();
             }
         }
@@ -139,21 +137,9 @@ namespace eecon_lab.Main
 
         private void XRInitFinished(bool isInitialized)
         {
-            Debug.Log($"<color=#AF870C>XR is initialized = {isInitialized}</color>");
+            Debug.Log($"<color=#AF870C>XR enabled = {isInitialized}</color>");
             Game.Instance.VRactive = isInitialized;
-            if (networkModeActive)
-            {
-                if (isInitialized)
-                {
-                    if (testCamera != null) testCamera.SetActive(false);
-                }
-
-                return;
-            }
-            StartSetup();
-            NetworkSetup();
-            OnLevelStart?.Invoke();
-            if (Game.Instance.ActiveGameMode == Game.GameMode.normal)
+            if (isInitialized)
             {
                 if (testCamera != null) testCamera.SetActive(false);
             }
@@ -162,7 +148,12 @@ namespace eecon_lab.Main
         private void StartSetup()
         {
             Debug.Log($"<color=#AF870C>Level Setup</color>");
+            if (Game.Instance.ActiveGameMode == Game.GameMode.normal)
+            {
+                if (testCamera != null) testCamera.SetActive(false);
+            }
 
+            OnLevelStart?.Invoke();
             if (reflectionProbes.Count > 0)
             {
                 foreach (var probe in reflectionProbes)

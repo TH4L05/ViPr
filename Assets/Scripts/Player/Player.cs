@@ -39,7 +39,7 @@ namespace eecon_lab.Character.Player
 
         private void Awake()
         {
-            SetupUnityXR.OnInitFinished += Setup;
+            SetupUnityXR.OnXrStateChanged += Setup;
         }
 
         public void Start()
@@ -48,7 +48,7 @@ namespace eecon_lab.Character.Player
 
         private void OnDestroy()
         {
-            SetupUnityXR.OnInitFinished -= Setup;
+            SetupUnityXR.OnXrStateChanged -= Setup;
         }
 
         #endregion
