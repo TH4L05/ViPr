@@ -2807,7 +2807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  m_Color: {r: 0.078431375, g: 0.19607843, b: 0.3137255, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6950,7 +6950,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  m_Color: {r: 0.078431375, g: 0.19607843, b: 0.3137255, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7527,7 +7527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  m_Color: {r: 0.078431375, g: 0.19607843, b: 0.3137255, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8935,9 +8935,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
-    m_HighlightedColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+    m_HighlightedColor: {r: 0.099750005, g: 0.24937502, b: 0.39900002, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    m_SelectedColor: {r: 0.13464347, g: 0.34622616, b: 0.553, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -11127,7 +11127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+  m_Color: {r: 0.110294096, g: 0.28235295, b: 0.45, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11650,7 +11650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  m_Color: {r: 0.078431375, g: 0.19607843, b: 0.3137255, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12080,8 +12080,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 476.5, y: 0}
-  m_SizeDelta: {x: 903, y: 50}
+  m_AnchoredPosition: {x: 501.5, y: 0}
+  m_SizeDelta: {x: 953, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &449026233
 MonoBehaviour:
@@ -12103,7 +12103,7 @@ MonoBehaviour:
   untoggled: {fileID: 21300000, guid: 7a80d34b87dce864ab8e7eba293a69c4, type: 3}
   toggled: {fileID: 21300000, guid: a822297c660a4e646a28c95877402f7d, type: 3}
   defaultColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-  hoverColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+  hoverColor: {r: 0.110294096, g: 0.28235295, b: 0.45, a: 1}
 --- !u!1 &450079068
 GameObject:
   m_ObjectHideFlags: 0
@@ -12205,7 +12205,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    m_HighlightedColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+    m_HighlightedColor: {r: 0.110294096, g: 0.28235295, b: 0.45, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -17842,7 +17842,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    m_HighlightedColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+    m_HighlightedColor: {r: 0.110294096, g: 0.28235295, b: 0.45, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -21872,7 +21872,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  m_Color: {r: 0.078431375, g: 0.19607843, b: 0.3137255, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -23676,7 +23676,7 @@ MonoBehaviour:
   untoggled: {fileID: 21300000, guid: 7a80d34b87dce864ab8e7eba293a69c4, type: 3}
   toggled: {fileID: 21300000, guid: a822297c660a4e646a28c95877402f7d, type: 3}
   defaultColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-  hoverColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+  hoverColor: {r: 0.110294096, g: 0.28235295, b: 0.45, a: 1}
 --- !u!224 &859350014 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5484244414012117340, guid: da069f63c4e497649b3600b224574bc2, type: 3}
@@ -33911,7 +33911,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  m_Color: {r: 0.078431375, g: 0.19607843, b: 0.3137255, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -34614,7 +34614,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    m_HighlightedColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+    m_HighlightedColor: {r: 0.110294096, g: 0.28235295, b: 0.45, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -39790,8 +39790,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 476.5, y: -50}
-  m_SizeDelta: {x: 903, y: 240}
+  m_AnchoredPosition: {x: 501.5, y: -50}
+  m_SizeDelta: {x: 953, y: 240}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1404168252
 MonoBehaviour:
@@ -44639,9 +44639,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
-    m_HighlightedColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+    m_HighlightedColor: {r: 0.099750005, g: 0.24937502, b: 0.39900002, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    m_SelectedColor: {r: 0.13464347, g: 0.34622616, b: 0.553, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -46731,7 +46731,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    m_HighlightedColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+    m_HighlightedColor: {r: 0.099750005, g: 0.24937502, b: 0.39900002, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -47526,7 +47526,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+  m_Color: {r: 0.110294096, g: 0.28235295, b: 0.45, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -49906,7 +49906,7 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
@@ -50734,7 +50734,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1071608447}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.52966106}
+  m_AnchorMin: {x: 0, y: 0.52966094}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -52098,7 +52098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+  m_Color: {r: 0.0625, g: 0.15625, b: 0.25, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -56491,7 +56491,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6046792671966140137, guid: 6f3b7f3331f766a48bd2a0089a4bd607, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 476.5
+      value: 501.5
       objectReference: {fileID: 0}
     - target: {fileID: 6046792671966140137, guid: 6f3b7f3331f766a48bd2a0089a4bd607, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -57845,43 +57845,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2286565874098102190, guid: f4f5afaac4326414ea006c718ec707ab, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2286565874098102190, guid: f4f5afaac4326414ea006c718ec707ab, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2286565874098102190, guid: f4f5afaac4326414ea006c718ec707ab, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2286565874098102190, guid: f4f5afaac4326414ea006c718ec707ab, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 2286565874098102190, guid: f4f5afaac4326414ea006c718ec707ab, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 7650754842537437077, guid: f4f5afaac4326414ea006c718ec707ab, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7650754842537437077, guid: f4f5afaac4326414ea006c718ec707ab, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7650754842537437077, guid: f4f5afaac4326414ea006c718ec707ab, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7650754842537437077, guid: f4f5afaac4326414ea006c718ec707ab, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 175
       objectReference: {fileID: 0}
     - target: {fileID: 7650754842537437077, guid: f4f5afaac4326414ea006c718ec707ab, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -58073,16 +58073,20 @@ PrefabInstance:
       value: -17.5
       objectReference: {fileID: 0}
     - target: {fileID: 679391748336701103, guid: 6f3b7f3331f766a48bd2a0089a4bd607, type: 3}
+      propertyPath: defaultColor.a
+      value: 0.92156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 679391748336701103, guid: 6f3b7f3331f766a48bd2a0089a4bd607, type: 3}
       propertyPath: defaultColor.b
-      value: 0.2
+      value: 0.3137255
       objectReference: {fileID: 0}
     - target: {fileID: 679391748336701103, guid: 6f3b7f3331f766a48bd2a0089a4bd607, type: 3}
       propertyPath: defaultColor.g
-      value: 0.061538458
+      value: 0.19607843
       objectReference: {fileID: 0}
     - target: {fileID: 679391748336701103, guid: 6f3b7f3331f766a48bd2a0089a4bd607, type: 3}
       propertyPath: defaultColor.r
-      value: 0.15384613
+      value: 0.078431375
       objectReference: {fileID: 0}
     - target: {fileID: 765083514078361145, guid: 6f3b7f3331f766a48bd2a0089a4bd607, type: 3}
       propertyPath: m_AnchorMax.y

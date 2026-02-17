@@ -1752,7 +1752,7 @@ MonoBehaviour:
   untoggled: {fileID: 21300000, guid: 7a80d34b87dce864ab8e7eba293a69c4, type: 3}
   toggled: {fileID: 21300000, guid: a822297c660a4e646a28c95877402f7d, type: 3}
   defaultColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-  hoverColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+  hoverColor: {r: 0.110294096, g: 0.28235295, b: 0.45, a: 1}
 --- !u!1 &2125016696303747486
 GameObject:
   m_ObjectHideFlags: 0
@@ -6580,6 +6580,9 @@ MonoBehaviour:
   inputField: {fileID: 0}
   colorPicker: {fileID: 4653904535272170150}
   textOptionInspector: {fileID: 0}
+  radioCreateOptionValues:
+    radioButtonCreateOptionElements: []
+    textOptionInspector: {fileID: 0}
   radioOptionSetDefaultGroup: {fileID: 0}
   sliderCreateOptions:
     sliderMinValue: {fileID: 0}

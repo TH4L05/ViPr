@@ -20,7 +20,8 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [SerializeField] private TextMeshProUGUI labelBlue;
         [SerializeField] private Image previewImage;
         [SerializeField] private TMP_InputField hexColorInput;
-        [SerializeField] private Color defaultColor = new Color(0.1538461f, 0.06153846f, 0.2f, 1f);
+        //[SerializeField] private Color defaultColor = new Color(0.1538461f, 0.06153846f, 0.2f, 1f);
+        [SerializeField] private Color defaultColor = new Color(0.07843138f, 0.1960784f, 0.3137255f, 1f);
 
         public Action<Color> OnValueChanged;
 

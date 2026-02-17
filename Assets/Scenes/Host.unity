@@ -552,9 +552,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    m_HighlightedColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+    m_HighlightedColor: {r: 0.078431375, g: 0.19607843, b: 0.3137255, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+    m_SelectedColor: {r: 0.13464347, g: 0.34622616, b: 0.553, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1118,10 +1118,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
-    m_HighlightedColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+    m_NormalColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    m_HighlightedColor: {r: 0.0625, g: 0.15625, b: 0.25, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+    m_SelectedColor: {r: 0.13464347, g: 0.34622616, b: 0.553, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1325,6 +1325,9 @@ MonoBehaviour:
   playerMain: {fileID: 0}
   playerControls: {fileID: 0}
   playerMaterial: {fileID: 0}
+  player2Dimage: {fileID: 0}
+  player2Dcanvas: {fileID: 0}
+  experimentPlayerUi: {fileID: 0}
   directorVideoStart: {fileID: 0}
   directorVideoStop: {fileID: 0}
   directorVideoLoopPointReached: {fileID: 0}
@@ -1402,7 +1405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.07576924, g: 0.030000001, b: 0.1, a: 1}
+  m_Color: {r: 0.0625, g: 0.15625, b: 0.25, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1889,15 +1892,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: IP = 127.0.0.1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 536bbec6a1a14364db0721a240dff277, type: 2}
-  m_sharedMaterial: {fileID: 5757776282380224584, guid: 536bbec6a1a14364db0721a240dff277, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a071ecc0eba3dc84a958e7f8b5515206, type: 2}
+  m_sharedMaterial: {fileID: 5757776282380224584, guid: a071ecc0eba3dc84a958e7f8b5515206, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4289440683
-  m_fontColor: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
+    rgba: 4285098345
+  m_fontColor: {r: 0.4117647, g: 0.4117647, b: 0.4117647, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1914,8 +1917,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5937,10 +5940,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
-    m_HighlightedColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+    m_NormalColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    m_HighlightedColor: {r: 0.0625, g: 0.15625, b: 0.25, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+    m_SelectedColor: {r: 0.13464347, g: 0.34622616, b: 0.553, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -7081,9 +7084,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    m_HighlightedColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+    m_HighlightedColor: {r: 0.078431375, g: 0.19607843, b: 0.3137255, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+    m_SelectedColor: {r: 0.13464347, g: 0.34622616, b: 0.553, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -8618,7 +8621,7 @@ MonoBehaviour:
   textFieldClientID: {fileID: 464983135167394499}
   textFieldClientName: {fileID: 5238508503781762951}
   textFieldClientIP: {fileID: 6874417887456819295}
-  textFieldClientPlayerState: {fileID: 9171184764373081254}
+  textFieldClientState: {fileID: 0}
   textFieldClientXrState: {fileID: 0}
 --- !u!222 &9090948440437788694
 CanvasRenderer:
