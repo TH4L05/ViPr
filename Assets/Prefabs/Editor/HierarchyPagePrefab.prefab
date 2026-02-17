@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Page 999
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a071ecc0eba3dc84a958e7f8b5515206, type: 2}
+  m_sharedMaterial: {fileID: 5757776282380224584, guid: a071ecc0eba3dc84a958e7f8b5515206, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -407,12 +407,12 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
+  m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.7529413, g: 0.7529413, b: 0.7529413, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -657,7 +657,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -15, y: -10}
+  m_AnchoredPosition: {x: -30, y: -10}
   m_SizeDelta: {x: 70, y: 35}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &2718184832496333415
@@ -720,9 +720,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    m_HighlightedColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+    m_HighlightedColor: {r: 0.16078432, g: 0.40392157, b: 0.64705884, a: 1}
     m_PressedColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
-    m_SelectedColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+    m_SelectedColor: {r: 0.27058825, g: 0.36078432, b: 0.45490196, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -813,7 +813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+  m_Color: {r: 0.113249995, g: 0.28312498, b: 0.45299998, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1062,9 +1062,9 @@ MonoBehaviour:
   contentPrefab: {fileID: 3539713525305415308, guid: a2ce9b3bd8d9fb64489dcb73001e2011, type: 3}
   nameTextField: {fileID: 5032061350183132231}
   contentItems: []
-  defaultColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
-  selectedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  hoverColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+  defaultColor: {r: 0.113249995, g: 0.28312498, b: 0.45299998, a: 1}
+  selectedColor: {r: 0.27157646, g: 0.3621857, b: 0.45490196, a: 1}
+  hoverColor: {r: 0.162, g: 0.40220705, b: 0.648, a: 1}
   backgroundImage: {fileID: 8196211791247496567}
   contentBackgroundImage: {fileID: 0}
   toggleImage: {fileID: 4141281104408520052}

@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Question001
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 536bbec6a1a14364db0721a240dff277, type: 2}
+  m_sharedMaterial: {fileID: 5757776282380224584, guid: 536bbec6a1a14364db0721a240dff277, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -92,8 +92,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 27
+  m_fontSizeBase: 27
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -366,9 +366,9 @@ MonoBehaviour:
   contentPrefab: {fileID: 0}
   nameTextField: {fileID: 3997034885448834313}
   contentItems: []
-  defaultColor: {r: 0.29803923, g: 0.29803923, b: 0.29803923, a: 1}
-  selectedColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
-  hoverColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+  defaultColor: {r: 0.113249995, g: 0.28312498, b: 0.45299998, a: 1}
+  selectedColor: {r: 0.27157646, g: 0.3621857, b: 0.45490196, a: 1}
+  hoverColor: {r: 0.162, g: 0.40220705, b: 0.648, a: 1}
   backgroundImage: {fileID: 7372202686831611560}
   contentBackgroundImage: {fileID: 0}
   toggleImage: {fileID: 0}
@@ -473,9 +473,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    m_HighlightedColor: {r: 0.39215687, g: 0.15686275, b: 0.50980395, a: 1}
+    m_HighlightedColor: {r: 0.162, g: 0.40220705, b: 0.648, a: 1}
     m_PressedColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
-    m_SelectedColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+    m_SelectedColor: {r: 0.27157646, g: 0.3621857, b: 0.45490196, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -566,7 +566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+  m_Color: {r: 0.113249995, g: 0.28312498, b: 0.45299998, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

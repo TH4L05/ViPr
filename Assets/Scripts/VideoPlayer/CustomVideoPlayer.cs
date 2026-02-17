@@ -13,6 +13,7 @@ using eccon_lab.vipr.experiment;
 using TK.Util;
 using eecon_lab.XR;
 using System.Collections;
+using eecon_lab.Rendering;
 
 namespace eecon_lab.vipr.video
 {
@@ -35,6 +36,7 @@ namespace eecon_lab.vipr.video
 
         [Header("Ref")]
         [SerializeField] private VideoPlayer videoPlayer;
+        [SerializeField] private SkyboxChanger skyboxChanger;
         [SerializeField] private RenderTexture renderTexture;
         [SerializeField] private GameObject[] menuObjects = new GameObject[0];
         [SerializeField] private AudioSource audioSource;
@@ -42,13 +44,17 @@ namespace eecon_lab.vipr.video
         [SerializeField] private GameObject playerControls;
         [SerializeField] private Material playerMaterial;
         [SerializeField] private RawImage player2Dimage;
-        [SerializeField] private GameObject player2Dcanvas;
+        [SerializeField] private GameObject videoPlayer2D;
         [SerializeField] private GameObject experimentPlayerUi;
+        [SerializeField] private GameObject defaultUiObjects;
+        [SerializeField] private PlayableDirector defaultUiDirector;
 
         [Header("Playables")]
         [SerializeField] private PlayableDirector directorVideoStart;
         [SerializeField] private PlayableDirector directorVideoStop;
         [SerializeField] private PlayableDirector directorVideoLoopPointReached;
+        [SerializeField] private Animator togglePlayerMenuAnimator;
+        [SerializeField] private Animator toggleSelectionMenuAnimator;
 
         [Header("UI")]
         [SerializeField] private TMP_Dropdown videoSelectionDropdown;
@@ -85,6 +91,8 @@ namespace eecon_lab.vipr.video
         private bool hidePlayerMainUiPermanent;
         private bool xrEnabled;
         private bool onExperiment;
+        private bool playerControlsToggled = false;
+        private bool mainControlsToggled = false;
 
         #endregion
 
@@ -121,24 +129,22 @@ namespace eecon_lab.vipr.video
             LoadFromFolder(videoFolderName);
 
             if(videoPlayer == null) return;
-            playerControls.SetActive(false);
             ChangeVolume(Game.Instance.GameOptions.GetConfig().MasterVolume);
             ChangePlaybackSpeed(2);
             
             videoSlider.onValueChanged.AddListener(SliderHandleUpdate);
+            videoSlider.value = 0;
             videoPlayer.loopPointReached += OnLoopPointReched;
             videoPlayer.prepareCompleted += StartVideo;
-            playerControls.SetActive(false);
 
             if (Game.Instance.ActiveGameMode == Game.GameMode.normal && xrEnabled)
             {
-                experimentPlayerUi.SetActive(false);
+                defaultUiObjects.SetActive(false);
             }
             else
             {
-                ToggleExperimentUi(true);
+                defaultUiObjects.SetActive(true);
                 ToggleMenuObjectsVisibility(false);
-                playerMain.SetActive(true);
             }
             
         }
@@ -280,24 +286,32 @@ namespace eecon_lab.vipr.video
 
         private void StartVideo(VideoPlayer player)
         {
-
             CreateRenderTexture(videoPlayer.width, videoPlayer.height);
             videoSlider.maxValue = (float)videoPlayer.length;
             SetTotalTime(videoPlayer.length);
-            experimentPlayerUi.SetActive(false);
+            defaultUiObjects.SetActive(false);
+            defaultUiDirector.Stop();
+            ToggleSelectionControlsVisibility();
+
             if (!xrEnabled)
             {
                 TogglePlayer2Dobject(true);
-                playerMain.SetActive(false);
                 PlayVideo();
                 return;
             }
+            
             directorVideoStart.Play();
         }
 
         public void PlayVideo()
         {
             if (videoPlayer == null) return;
+            if (xrEnabled)
+            {
+                skyboxChanger.ChangeSkybox(1);
+                ToggleMenuObjectsVisibility(false);
+            }
+            
             videoPlayer.Play();
             Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(ExperimentState.VideoPlaying);
         }
@@ -305,6 +319,7 @@ namespace eecon_lab.vipr.video
         public void PauseVideo()
         {
             if (videoPlayer == null) return;
+            if (!videoPlayer.isPlaying) return;
             if (videoPlayer.isPaused)
             {
                 PlayVideo();
@@ -320,16 +335,20 @@ namespace eecon_lab.vipr.video
         {
             if (videoPlayer == null) return;
             videoPlayer.Stop();
-            directorVideoStop.Play();
             Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(ExperimentState.VideoStopped);
             DestroyRenderTexture();
-            ToggleExperimentUi(true);
+            defaultUiObjects.SetActive(true);
+            defaultUiDirector.Play();
+            playerControlsToggled = true;
+            TogglePlayerControlsVisibility();
 
             if (!xrEnabled)
             {
                 TogglePlayer2Dobject(false);
-                playerControls.SetActive(false);
+                return;
             }
+            skyboxChanger.ChangeSkybox(0);
+            ToggleMenuObjectsVisibility(true);  
         }
 
         private void OnLoopPointReched(VideoPlayer source)
@@ -342,11 +361,11 @@ namespace eecon_lab.vipr.video
             }
 
             Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(ExperimentState.VideoFinished);
-            DestroyRenderTexture();
             if (onExperiment)
             {
                 StartCoroutine(WaitAfterVideo(60f));   
             }
+
             directorVideoLoopPointReached.Play();
         }
 
@@ -448,6 +467,18 @@ namespace eecon_lab.vipr.video
             videoPlayer.playbackSpeed = playbackSpeed;
         }
 
+        public void TogglePlayerControlsVisibility()
+        {
+            playerControlsToggled = !playerControlsToggled;
+            togglePlayerMenuAnimator.SetBool("Toggle", playerControlsToggled);
+        }
+
+        public void ToggleSelectionControlsVisibility()
+        {
+            mainControlsToggled = !mainControlsToggled;
+            toggleSelectionMenuAnimator.SetBool("Toggle", mainControlsToggled);
+        }
+
         #endregion
 
         #region Material
@@ -522,8 +553,8 @@ namespace eecon_lab.vipr.video
 
         public void TogglePlayer2Dobject(bool active)
         {
-            if(player2Dcanvas == null) return;  
-            player2Dcanvas.SetActive(active);
+            if(videoPlayer2D == null) return;  
+            videoPlayer2D.SetActive(active);
         }
 
         private void OnXrStateChanged(bool enabled)
