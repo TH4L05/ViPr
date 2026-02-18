@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 0.85
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: dcbff1d80769ec24285f5e1cd4a7c5b7, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 22b32a763faaaef40a6ed8b6fe74a52a, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -178,7 +178,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 858410db0e55ce343a0c300eac297f35, type: 2}
+  - {fileID: 2100000, guid: f14548730de136c4aa138cb1df82a667, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -641,81 +641,6 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
---- !u!1 &157219326
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 157219327}
-  - component: {fileID: 157219329}
-  - component: {fileID: 157219328}
-  m_Layer: 0
-  m_Name: LogoFull
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &157219327
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 157219326}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 834898577}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &157219328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 157219326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: db1ef0ce0ea79fd4ab559d4be6e5db66, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &157219329
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 157219326}
-  m_CullTransparentMesh: 1
 --- !u!1 &170488690
 GameObject:
   m_ObjectHideFlags: 0
@@ -2087,7 +2012,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2809229, g: 0.074626215, b: 0.4056604, a: 1}
+  m_Color: {r: 0.078431375, g: 0.19607843, b: 0.3137255, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2145,7 +2070,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: b5b3f37c9d55eec47b55069d41ba1438, type: 2}
+  sharedProfile: {fileID: 11400000, guid: caf1c2a7575fa164887e72ed086e90a4, type: 2}
 --- !u!4 &832575519
 Transform:
   m_ObjectHideFlags: 0
@@ -2194,7 +2119,6 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1119622219}
-  - {fileID: 157219327}
   - {fileID: 2056061640}
   m_Father: {fileID: 2079998632}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4621,6 +4545,10 @@ PrefabInstance:
       propertyPath: skyLightObject
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5240565636985497881, guid: 1cda42a0d9d852f4e87ada7dcfd56174, type: 3}
+      propertyPath: skyboxSetups.Array.data[0].skyboxMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 22b32a763faaaef40a6ed8b6fe74a52a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6998,15 +6926,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5005479359508598223, guid: 8ef385866279b2241bfbd3599be7b192, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 5005479359508598223, guid: 8ef385866279b2241bfbd3599be7b192, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5005479359508598223, guid: 8ef385866279b2241bfbd3599be7b192, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 5449757530455239681, guid: 8ef385866279b2241bfbd3599be7b192, type: 3}
       propertyPath: m_AnchorMax.y
@@ -7082,15 +7010,15 @@ PrefabInstance:
       objectReference: {fileID: 1190465220}
     - target: {fileID: 7463304623957084858, guid: 8ef385866279b2241bfbd3599be7b192, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.33
       objectReference: {fileID: 0}
     - target: {fileID: 7463304623957084858, guid: 8ef385866279b2241bfbd3599be7b192, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7463304623957084858, guid: 8ef385866279b2241bfbd3599be7b192, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.33
       objectReference: {fileID: 0}
     - target: {fileID: 7980967520850079629, guid: 8ef385866279b2241bfbd3599be7b192, type: 3}
       propertyPath: m_AnchorMax.y
@@ -7234,15 +7162,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9223024863798394121, guid: 8ef385866279b2241bfbd3599be7b192, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.649965
       objectReference: {fileID: 0}
     - target: {fileID: 9223024863798394121, guid: 8ef385866279b2241bfbd3599be7b192, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9223024863798394121, guid: 8ef385866279b2241bfbd3599be7b192, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.649965
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

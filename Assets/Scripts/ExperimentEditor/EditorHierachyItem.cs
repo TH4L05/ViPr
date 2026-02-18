@@ -26,6 +26,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [SerializeField] private GameObject contentPrefab;
         [SerializeField] private TextMeshProUGUI nameTextField;
         [SerializeField] private List<EditorHierachyItem> contentItems = new List<EditorHierachyItem>();
+        [SerializeField] private Image selectionIndicator;
 
         [Header("Settings")]
         [SerializeField] private Color defaultColor;
@@ -202,6 +203,10 @@ namespace eccon_lab.vipr.experiment.editor.ui
             isSelected = false;
             if (backgroundImage != null) backgroundImage.color = defaultColor;
             if (contentBackgroundImage != null) contentBackgroundImage.color = defaultColor;
+            if (itemType != ItemType.Question && selectionIndicator != null)
+            {
+                selectionIndicator.gameObject.SetActive(isSelected);
+            }
             ToggleContentSelect(isSelected);
         }
 
@@ -222,7 +227,11 @@ namespace eccon_lab.vipr.experiment.editor.ui
             isSelected = true;
             if (backgroundImage != null) backgroundImage.color = selectedColor;
             if (contentBackgroundImage != null) contentBackgroundImage.color = selectedColor;
-            ToggleContentSelect(true);
+            if (itemType != ItemType.Question && selectionIndicator != null)
+            {
+                selectionIndicator.gameObject.SetActive(isSelected);
+            }
+            ToggleContentSelect(isSelected);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

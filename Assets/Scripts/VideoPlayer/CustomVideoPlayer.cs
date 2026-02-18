@@ -137,9 +137,9 @@ namespace eecon_lab.vipr.video
             videoPlayer.loopPointReached += OnLoopPointReched;
             videoPlayer.prepareCompleted += StartVideo;
 
-            if (Game.Instance.ActiveGameMode == Game.GameMode.normal && xrEnabled)
+            if (Game.Instance.ActiveGameMode == Game.GameMode.normal && Game.Instance.GameOptions.GetConfig().UseVR)
             {
-                defaultUiObjects.SetActive(false);
+                Level.Instance.ToggleXr(true);
             }
             else
             {
@@ -340,6 +340,8 @@ namespace eecon_lab.vipr.video
             defaultUiObjects.SetActive(true);
             defaultUiDirector.Play();
             playerControlsToggled = true;
+            videoSlider.value = 0;
+            
             TogglePlayerControlsVisibility();
 
             if (!xrEnabled)
@@ -560,6 +562,17 @@ namespace eecon_lab.vipr.video
         private void OnXrStateChanged(bool enabled)
         {
             xrEnabled = enabled;
+            Debug.Log("XR enabled = " + xrEnabled);
+            if (xrEnabled)
+            {
+                defaultUiObjects.SetActive(false);
+                defaultUiDirector.Stop();
+            }
+            else
+            {
+                defaultUiObjects.SetActive(true);
+                defaultUiDirector.Play();
+            }
         }
 
         public void ToggleOnExperiment(bool enabled)

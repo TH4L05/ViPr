@@ -12,7 +12,8 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [Space(4f)]
         [SerializeField] private TMP_InputField inputExperimentName;
         [SerializeField] private TMP_Dropdown dropdownExperimentType;
-        [SerializeField] private TMP_Dropdown dropdownAssignedVideoFile;
+        //[SerializeField] private TMP_Dropdown dropdownAssignedVideoFile;
+        [SerializeField] private TMP_InputField inputAssignedVideoFile;
         [SerializeField] private ToggleButton foldout;
 
         [SerializeField] private ColorPicker colorPickerBackground;
@@ -24,7 +25,8 @@ namespace eccon_lab.vipr.experiment.editor.ui
             inputExperimentName.text = "newExperiment";
             ToggleVideoFileInputObject(false);
             SetupExperimentTypeDropdown();
-            SetupAssignedVideoDropdown();
+            //SetupAssignedVideoDropdown();
+            inputAssignedVideoFile.text = string.Empty;
             foldout.Setup();
             if (colorPickerBackground != null) colorPickerBackground.Initialize();
             if (textOptionInspector != null) textOptionInspector.SetTextValues(new TextOptions(Color.white, 25.0f));
@@ -32,7 +34,8 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         private void ToggleVideoFileInputObject(bool active)
         {
-            dropdownAssignedVideoFile.transform.parent.gameObject.SetActive(active);
+            inputAssignedVideoFile.transform.parent.gameObject.SetActive(active);
+            //dropdownAssignedVideoFile.transform.parent.gameObject.SetActive(active);
         }
 
         private void SetupExperimentTypeDropdown()
@@ -44,7 +47,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
             }
         }
 
-        private void SetupAssignedVideoDropdown()
+        /*private void SetupAssignedVideoDropdown()
         {
             if (dropdownAssignedVideoFile == null) return;
             FileInfo[] files = ExperimentEditor.Instance.GetFileInfosFromFolder("Videos");
@@ -54,7 +57,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
             {
                 dropdownAssignedVideoFile.options.Add(new TMP_Dropdown.OptionData(file.Name));
             }
-        }
+        }*/
 
         public void OnExperimentTypeDropDownChange(int value)
         {
@@ -75,13 +78,20 @@ namespace eccon_lab.vipr.experiment.editor.ui
             base.OnButtonClick();
             Debug.Log("Create new experiment -> name = " + inputExperimentName.text);
             ExperimentType type = (ExperimentType)dropdownExperimentType.value;
-            string videoFileName = dropdownAssignedVideoFile.itemText.text;
 
-            if (type == ExperimentType.QuestionaireOnly)
+            string experimentName = inputExperimentName.text;
+            if (string.IsNullOrEmpty(experimentName))
+            {
+                experimentName = "newExperiment" + DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            }
+
+            string videoFileName = inputAssignedVideoFile.text;
+
+            if (type == ExperimentType.QuestionaireOnly || string.IsNullOrEmpty(videoFileName))
             {
                 videoFileName = "none";
             }
-            ExperimentEditor.Instance.CreateExperiment(inputExperimentName.text, type, colorPickerBackground.GetColor(), textOptionInspector.GetTextValues(), videoFileName);
+            ExperimentEditor.Instance.CreateExperiment(experimentName, type, colorPickerBackground.GetColor(), textOptionInspector.GetTextValues(), videoFileName);
         }
     }
 }

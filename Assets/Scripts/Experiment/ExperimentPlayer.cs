@@ -30,6 +30,8 @@ namespace eccon_lab.vipr.experiment
 
     public class ExperimentPlayer : MonoBehaviour
     {
+        #region SerializedFields
+
         [SerializeField] private string folderPath = "Experiments";
         [SerializeField] private GameObject[] experimentPrefabs;
         [SerializeField] private CustomVideoPlayer videoPlayer;
@@ -39,19 +41,23 @@ namespace eccon_lab.vipr.experiment
         [SerializeField] private Transform experimentRootTransform;
         [SerializeField] private TMP_Dropdown dropdown;
         [SerializeField] private PlayableDirector fadeIn;
-        [SerializeField] private ExperimentState experimentState = ExperimentState.Invalid;
+        
+        #endregion
+
+        #region PublicFields
 
         public ExperimentState ExperimentState => experimentState;
 
         public static Action<string> OnExperimentStateChanged;
 
+        #endregion
+
+        #region PrivateFields
+
+        private ExperimentState experimentState = ExperimentState.Invalid;
         private int currentPageIndex;
 
-        private void Start()
-        {
-            
-        }
-
+        #endregion
 
         public void DropdownSetup()
        {
