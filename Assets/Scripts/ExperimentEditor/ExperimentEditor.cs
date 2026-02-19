@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using TK.Util;
 using UnityEngine;
-using static eccon_lab.vipr.experiment.editor.ui.EditorHierachyItem;
+using static eccon_lab.vipr.experiment.editor.ui.EditorHierarchyItem;
 
 namespace eccon_lab.vipr.experiment.editor
 {
@@ -21,7 +21,7 @@ namespace eccon_lab.vipr.experiment.editor
 
         [Header("References")]
         [SerializeField] private ExperimentEditorUI editorUI;
-        [SerializeField] private EditorHierachy editorHierarchy;
+        [SerializeField] private EditorHierarchy editorHierarchy;
         [SerializeField] private EditorElementInspector elementInspector;
         [SerializeField] private Experiment experiment;
         [SerializeField] private ExperimentPlayer experimentPlayer;
@@ -45,6 +45,7 @@ namespace eccon_lab.vipr.experiment.editor
         public ExperimentEditorUI EditorUI => editorUI;
         public Experiment CurrentExperiment => experiment;
         public TextOptions DefaultTextOptions => experiment.DefaultTextValues;
+        public string DefaultSaveDirectory => defaultSaveDirectory;
 
         #endregion
 
@@ -176,17 +177,17 @@ namespace eccon_lab.vipr.experiment.editor
         public void CreatePage(string id, string name,PageType type, string pageText, TextOptions textOptions,  Color backgroundColor)
         {
             GameObject prefab = null;
-            EditorHierachyItem.ItemType itemType = EditorHierachyItem.ItemType.Invalid;
+            EditorHierarchyItem.ItemType itemType = EditorHierarchyItem.ItemType.Invalid;
 
             switch (type)
             {
                 case PageType.ContentPage:
                     prefab = GetPrefab("PageContentPrefab");
-                    itemType = EditorHierachyItem.ItemType.Page;
+                    itemType = EditorHierarchyItem.ItemType.Page;
                     break;
                 case PageType.InfoPage:
                     prefab = GetPrefab("PageInfoPrefab");
-                    itemType = EditorHierachyItem.ItemType.InfoPage;
+                    itemType = EditorHierarchyItem.ItemType.InfoPage;
                     break;
                 default:
                     break;
@@ -276,7 +277,7 @@ namespace eccon_lab.vipr.experiment.editor
             newQuestion.SetupAssignedObject();
 
             experiment.AddQuestion(newQuestion);
-            editorHierarchy.AddItem(newQuestion, EditorHierachyItem.ItemType.Question, pageReferenceId);
+            editorHierarchy.AddItem(newQuestion, EditorHierarchyItem.ItemType.Question, pageReferenceId);
             Debug.Log("Create new Question, name = " + newQuestion.Name);
             editorUI.UpdateLogLabelText("Create new Question, name = " + newQuestion.Name);
             return;
@@ -305,19 +306,19 @@ namespace eccon_lab.vipr.experiment.editor
             return b[0].ToString() + b.Last().ToString() + "-" + DateTime.Now.ToString("ddMMyyyy-HHmmss-ffff");
         }
 
-        public void RemoveItem(string referenceID, EditorHierachyItem.ItemType type)
+        public void RemoveItem(string referenceID, EditorHierarchyItem.ItemType type)
         {
             switch (type)
             {
-                case EditorHierachyItem.ItemType.Page:
-                case EditorHierachyItem.ItemType.InfoPage:
+                case EditorHierarchyItem.ItemType.Page:
+                case EditorHierarchyItem.ItemType.InfoPage:
                     bool success = experiment.RemovePage(referenceID);
                     if(!success) return;
                     currentPageId = experiment.GetPage(0).Id;
                     experiment.UpdatePageVisibility(currentPageId);
                     editorHierarchy.ToggleItemState(currentPageId);
                     break;
-                case EditorHierachyItem.ItemType.Question:
+                case EditorHierarchyItem.ItemType.Question:
                     experiment.RemoveQuestion(referenceID);
                     break;
                 default:
@@ -326,17 +327,17 @@ namespace eccon_lab.vipr.experiment.editor
             editorHierarchy.RemoveItem(referenceID);
         }
 
-        public void EditItem(string referenceID, EditorHierachyItem.ItemType type)
+        public void EditItem(string referenceID, EditorHierarchyItem.ItemType type)
         {
             object obj = null;
             switch (type)
             {
-                case EditorHierachyItem.ItemType.Page:
-                case EditorHierachyItem.ItemType.InfoPage:
+                case EditorHierarchyItem.ItemType.Page:
+                case EditorHierarchyItem.ItemType.InfoPage:
                     Page p = experiment.GetPage(referenceID);
                     obj = p;
                     break;
-                case EditorHierachyItem.ItemType.Question:
+                case EditorHierarchyItem.ItemType.Question:
                     Question q = experiment.GetQuestion(referenceID);
                     obj = q;
                     break;

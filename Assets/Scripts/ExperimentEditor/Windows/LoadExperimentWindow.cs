@@ -1,6 +1,7 @@
 /// <author>Thomas Krahl</author>
 
 using System.IO;
+using TK.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [SerializeField] private TMP_Dropdown experimentFilesDropdown;
         [SerializeField] private TextMeshProUGUI infoField;
         [SerializeField] private Button loadButton;
+        private string folder;
 
         public override void Initialize()
         {
@@ -21,9 +23,22 @@ namespace eccon_lab.vipr.experiment.editor.ui
             SetupExperimentFilesDropdown();
         }
 
+        public void SetExperimentFolder(string path)
+        {
+            folder = path;
+        }
+
         private void SetupExperimentFilesDropdown()
         {
             if (experimentFilesDropdown == null) return;
+            if (!Serialization.DirectoryExists(folder))
+            {
+                experimentFilesDropdown.transform.parent.gameObject.SetActive(false);
+                infoField.gameObject.SetActive(true);
+                loadButton.interactable = false;
+                return;
+            }
+
             FileInfo[] files = ExperimentEditor.Instance.GetFileInfosFromFolder("Experiments");
             if (files.Length < 1)
             {

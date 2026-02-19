@@ -362,19 +362,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::eccon_lab.vipr.experiment.editor.EditorHierachyItem
   referenceID: 
-  contentObject: {fileID: 0}
-  contentPrefab: {fileID: 0}
   nameTextField: {fileID: 3997034885448834313}
+  contentPrefab: {fileID: 0}
+  contentObject: {fileID: 0}
   contentItems: []
-  selectionIndicator: {fileID: 0}
   defaultColor: {r: 0.29803923, g: 0.29803923, b: 0.29803923, a: 1}
   selectedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  hoverColor: {r: 0.078431375, g: 0.19607843, b: 0.3137255, a: 1}
-  backgroundImage: {fileID: 7372202686831611560}
-  contentBackgroundImage: {fileID: 0}
+  hoverColor: {r: 0.099750005, g: 0.24937502, b: 0.39900002, a: 1}
+  background: {fileID: 7372202686831611560}
+  contentObjectBackground: {fileID: 0}
   toggleImage: {fileID: 0}
   untoggled: {fileID: 0}
   toggled: {fileID: 0}
+  selectionIndicator: {fileID: 0}
+  selected: {fileID: 0}
+  notSelected: {fileID: 0}
 --- !u!1 &6897198706384016169
 GameObject:
   m_ObjectHideFlags: 0

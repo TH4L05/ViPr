@@ -37,7 +37,11 @@ namespace eccon_lab.vipr.experiment.editor.ui
         {
             Setup();
             if(createExperimentWindow != null) createExperimentWindow.Initialize();
-            if(loadExperimentWindow != null) loadExperimentWindow.Initialize();
+            if (loadExperimentWindow != null)
+            {
+                loadExperimentWindow.SetExperimentFolder(ExperimentEditor.Instance.DefaultSaveDirectory);
+                loadExperimentWindow.Initialize();
+            }
             if(saveExperimentWindow != null) saveExperimentWindow.Initialize();
         }
 

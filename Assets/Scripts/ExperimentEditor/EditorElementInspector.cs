@@ -19,7 +19,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [SerializeField] private Button deleteButton;
 
         private string currentId;
-        private EditorHierachyItem.ItemType currentType;
+        private EditorHierarchyItem.ItemType currentType;
 
         public override void Initialize()
         {
@@ -29,16 +29,16 @@ namespace eccon_lab.vipr.experiment.editor.ui
             HideAllItems();
         }
    
-        public void ShowContent(object obj, EditorHierachyItem.ItemType type)
+        public void ShowContent(object obj, EditorHierarchyItem.ItemType type)
         {
-            if (obj == null || type == EditorHierachyItem.ItemType.Invalid) return;
+            if (obj == null || type == EditorHierarchyItem.ItemType.Invalid) return;
             HideAllItems();
             string name = "";
             currentType = type;
             switch (currentType)
             {
-                case EditorHierachyItem.ItemType.Page:
-                case EditorHierachyItem.ItemType.InfoPage:
+                case EditorHierarchyItem.ItemType.Page:
+                case EditorHierarchyItem.ItemType.InfoPage:
                     Page p = (Page)obj;
                     currentId = p.Id;
                     name = p.Name;
@@ -46,7 +46,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
                     Debug.Log("Edit " + name);
                     DisplayPageItems(p);
                     break;
-                case EditorHierachyItem.ItemType.Question:
+                case EditorHierarchyItem.ItemType.Question:
                     Question q = (Question)obj;
                     currentId = q.Id;
                     name = q.Name;
@@ -127,11 +127,11 @@ namespace eccon_lab.vipr.experiment.editor.ui
             base.OnButtonClick();
             switch (currentType)
             {
-                case EditorHierachyItem.ItemType.Page:
-                case EditorHierachyItem.ItemType.InfoPage:
+                case EditorHierarchyItem.ItemType.Page:
+                case EditorHierarchyItem.ItemType.InfoPage:
                     ExperimentEditor.Instance.UpdatePageValues(currentId, colorPickerItem.GetColorValue(), textOptionsItem.GetTextOptions());
                     break;
-                case EditorHierachyItem.ItemType.Question:
+                case EditorHierarchyItem.ItemType.Question:
                     ExperimentEditor.Instance.UpdateQuestionValues(currentId, textInputItem.GetInputValue(), textOptionsItem.GetTextOptions(), radioOptionsItem.GetRadioOptionValues(), sliderOptionsItem.GetSliderOptions());
                     break;
                 default:

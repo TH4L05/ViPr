@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace eccon_lab.vipr.experiment.editor.ui
 {
-    public class EditorHierachy : MonoBehaviour
+    public class EditorHierarchy : MonoBehaviour
     {
-        [SerializeField] private List<EditorHierachyItem> Items = new List<EditorHierachyItem>();
+        [SerializeField] private List<EditorHierarchyItem> Items = new List<EditorHierarchyItem>();
         [SerializeField] private Transform contentRoot;
 
-        public void AddItem(object item, EditorHierachyItem.ItemType type, string pageReferenceId)
+        public void AddItem(object item, EditorHierarchyItem.ItemType type, string pageReferenceId)
         {
             GameObject prefab = null;
             string name = "xxx";
@@ -19,8 +19,8 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
             switch (type)
             {
-                case EditorHierachyItem.ItemType.Page:
-                case EditorHierachyItem.ItemType.InfoPage:
+                case EditorHierarchyItem.ItemType.Page:
+                case EditorHierarchyItem.ItemType.InfoPage:
                     Page p = (Page)item;
                     name = p.Name;
                     id = p.Id;
@@ -29,7 +29,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
                     root = contentRoot;
                     
                     break;
-                case EditorHierachyItem.ItemType.Question:
+                case EditorHierarchyItem.ItemType.Question:
                     Question q = (Question)item;
                     name = q.Name;
                     id = q.Id;
@@ -55,19 +55,19 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
             GameObject newPageObject = Instantiate(prefab, root);
             newPageObject.name = name;
-            EditorHierachyItem newItem = newPageObject.GetComponent<EditorHierachyItem>();
+            EditorHierarchyItem newItem = newPageObject.GetComponent<EditorHierarchyItem>();
             newItem.Initialize(id, name, type, this);
             Items.Add(newItem);
 
             switch (type)
             {
-                case EditorHierachyItem.ItemType.Invalid:
+                case EditorHierarchyItem.ItemType.Invalid:
                     break;
-                case EditorHierachyItem.ItemType.Page:
+                case EditorHierarchyItem.ItemType.Page:
                     ToggleItemState(id);
                     break;
-                case EditorHierachyItem.ItemType.Question:
-                    EditorHierachyItem page = GetItem((item as Question).AssignedPageId);
+                case EditorHierarchyItem.ItemType.Question:
+                    EditorHierarchyItem page = GetItem((item as Question).AssignedPageId);
                     page.AddContent(newItem);
                     //newItem.gameObject.SetActive(false);
                     UpdatePageToggle(pageReferenceId);
@@ -79,13 +79,13 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         public void RemoveItem(string referenceID)
         {
-            foreach (EditorHierachyItem item in Items)
+            foreach (EditorHierarchyItem item in Items)
             {
                 if (item.ReferenceID == referenceID)
                 {
-                    if (item.Type == EditorHierachyItem.ItemType.Question)
+                    if (item.Type == EditorHierarchyItem.ItemType.Question)
                     {
-                        foreach (EditorHierachyItem item2 in Items)
+                        foreach (EditorHierarchyItem item2 in Items)
                         {
                             item2.RemoveContent(referenceID);
                         }
@@ -98,9 +98,9 @@ namespace eccon_lab.vipr.experiment.editor.ui
             }
         }
 
-        public EditorHierachyItem GetItem(string referenceId)
+        public EditorHierarchyItem GetItem(string referenceId)
         {
-            foreach (EditorHierachyItem item in Items)
+            foreach (EditorHierarchyItem item in Items)
             {
                 if (item.ReferenceID == referenceId) return item;
             }
@@ -109,7 +109,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         public Transform GetItemTransform(string referenceId)
         {
-            foreach (EditorHierachyItem item in Items)
+            foreach (EditorHierarchyItem item in Items)
             {
                 if (item.ReferenceID == referenceId) return item.gameObject.transform;
             }
@@ -118,9 +118,9 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         public void UpdatePageToggle(string pageId)
         {
-            foreach (EditorHierachyItem item in Items)
+            foreach (EditorHierarchyItem item in Items)
             {
-                if (item.Type == EditorHierachyItem.ItemType.Page && item.ReferenceID == pageId)
+                if (item.Type == EditorHierarchyItem.ItemType.Page && item.ReferenceID == pageId)
                 {
                     item.ToggleContent(true);
                     return;
@@ -132,13 +132,13 @@ namespace eccon_lab.vipr.experiment.editor.ui
         {
             foreach (var item in Items)
             {
-                if(item.Type == EditorHierachyItem.ItemType.Question) continue;
+                if(item.Type == EditorHierarchyItem.ItemType.Question) continue;
                 if (item.ReferenceID == id)
                 {
-                    item.SetSelected();
+                    item.ToggleSelection(true);
                     continue;
                 }
-                item.UnselectItem();
+                item.ToggleSelection(false);
             }
         }
     }

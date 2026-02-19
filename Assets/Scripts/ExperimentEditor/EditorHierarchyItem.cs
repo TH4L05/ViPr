@@ -8,7 +8,7 @@ using TMPro;
 
 namespace eccon_lab.vipr.experiment.editor.ui
 {
-    public class EditorHierachyItem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+    public class EditorHierarchyItem : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
         public enum ItemType
         {
@@ -22,27 +22,33 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         [Header("Main")]
         [SerializeField] private string referenceID;
-        [SerializeField] private GameObject contentObject;
-        [SerializeField] private GameObject contentPrefab;
         [SerializeField] private TextMeshProUGUI nameTextField;
-        [SerializeField] private List<EditorHierachyItem> contentItems = new List<EditorHierachyItem>();
-        [SerializeField] private Image selectionIndicator;
+        [SerializeField] private GameObject contentPrefab;
+        [SerializeField] private GameObject contentObject;
+        [SerializeField] private List<EditorHierarchyItem> contentItems = new List<EditorHierarchyItem>();
 
+        [Space(5f)]
         [Header("Settings")]
         [SerializeField] private Color defaultColor;
         [SerializeField] private Color selectedColor = Color.grey;
         [SerializeField] private Color hoverColor;
-        [SerializeField] private Image backgroundImage;
-        [SerializeField] private Image contentBackgroundImage;
-        [SerializeField] private Image toggleImage;
+        [Space(5f)]
+        [SerializeField] private Image background;
+        [SerializeField] private Image contentObjectBackground;
+        [Space(5f)]
+        [SerializeField] private Image toggleImage; 
         [SerializeField] private Sprite untoggled;
         [SerializeField] private Sprite toggled;
+        [Space(5f)]
+        [SerializeField] private Image selectionIndicator;
+        [SerializeField] private Sprite selected;
+        [SerializeField] private Sprite notSelected;
 
         #endregion
 
         #region PrivateFields
 
-        private EditorHierachy editorHierachy;
+        private EditorHierarchy editorHierachy;
         private ItemType itemType = ItemType.Invalid;
         private bool isSelected = false;
         private bool isToggled;
@@ -63,7 +69,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         #endregion
 
-        public void Initialize(string id, string name, ItemType type, EditorHierachy hierachy)
+        public void Initialize(string id, string name, ItemType type, EditorHierarchy hierachy)
         {
             itemType = type;
             referenceID = id;
@@ -74,7 +80,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
             if (nameTextField != null) nameTextField.text = name;
             editorHierachy = hierachy;
-            if (backgroundImage != null) backgroundImage.color = defaultColor;
+            if (background != null) background.color = defaultColor;
 
             switch (itemType)
             {
@@ -98,24 +104,27 @@ namespace eccon_lab.vipr.experiment.editor.ui
                 default:
                     break;
             }
+            ContentObjectSetup();
+        }
 
-            if (contentPrefab != null)
-            {
-                contentObject = Instantiate(contentPrefab, transform.parent);
-                contentObject.SetActive(false);
-                contentObject.name = name + "_Content";
-                contentBackgroundImage = contentObject.GetComponentInChildren<Image>();
-                contentRootTransform = contentObject.GetComponent<RectTransform>();
-                contentTransform = contentObject.transform.GetChild(1).GetComponent<RectTransform>();
-                defaultHeight = 5.0f;
-                toggledHeight = defaultHeight;
-                if (contentBackgroundImage != null) contentBackgroundImage.color = defaultColor;
-            }
+        private void ContentObjectSetup()
+        {
+            if (contentPrefab == null) return;
+
+            contentObject = Instantiate(contentPrefab, transform.parent);
+            contentObject.name = name + "_Content";
+            contentRootTransform = contentObject.GetComponent<RectTransform>();
+            ToggleContentItem(false);
+            defaultHeight = 5.0f;
+            toggledHeight = defaultHeight;
+            contentTransform = contentObject.transform.GetChild(1).GetComponent<RectTransform>();
+            contentObjectBackground = contentObject.GetComponentInChildren<Image>();
+            if (contentObjectBackground != null) contentObjectBackground.color = defaultColor;  
         }
 
         #region Add/Remove Content
 
-        public void AddContent(EditorHierachyItem item)
+        public void AddContent(EditorHierarchyItem item)
         {
             contentItems.Add(item);
             item.transform.SetParent(contentTransform, false);
@@ -163,7 +172,12 @@ namespace eccon_lab.vipr.experiment.editor.ui
             {
                 if (toggleImage != null) toggleImage.sprite = untoggled;
             }
+            ToggleContentItem(isToggled);
             SetHeight();
+        }
+
+        private void ToggleContentItem(bool isToggled)
+        {
             contentObject.SetActive(isToggled);
         }
 
@@ -182,32 +196,10 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         public void ToggleContentSelect(bool selected)
         {
-            if (selected)
+            foreach (var item in contentItems)
             {
-                foreach (var item in contentItems)
-                {
-                    item.SetSelected();
-                }
+                item.ToggleSelection(selected);
             }
-            else
-            {
-                foreach (var item in contentItems)
-                {
-                    item.UnselectItem();
-                }
-            }
-        }
-
-        public void UnselectItem()
-        {
-            isSelected = false;
-            if (backgroundImage != null) backgroundImage.color = defaultColor;
-            if (contentBackgroundImage != null) contentBackgroundImage.color = defaultColor;
-            if (itemType != ItemType.Question && selectionIndicator != null)
-            {
-                selectionIndicator.gameObject.SetActive(isSelected);
-            }
-            ToggleContentSelect(isSelected);
         }
 
         public void EditItem()
@@ -222,34 +214,39 @@ namespace eccon_lab.vipr.experiment.editor.ui
             ExperimentEditor.Instance.OnHierarchyItemClick(id, itemType);
         }
 
-        public void SetSelected()
+        public void ToggleSelection(bool selected)
         {
-            isSelected = true;
-            if (backgroundImage != null) backgroundImage.color = selectedColor;
-            if (contentBackgroundImage != null) contentBackgroundImage.color = selectedColor;
-            if (itemType != ItemType.Question && selectionIndicator != null)
-            {
-                selectionIndicator.gameObject.SetActive(isSelected);
-            }
+            isSelected = selected;
+            ToggleSelectionIndicator(isSelected);
             ToggleContentSelect(isSelected);
+
+            if (isSelected)
+            {
+                if (background != null) background.color = selectedColor;
+                if (contentObjectBackground != null) contentObjectBackground.color = selectedColor;
+            }
+            else
+            {
+                if (background != null) background.color = defaultColor;
+                if (contentObjectBackground != null) contentObjectBackground.color = defaultColor;
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            backgroundImage.color = hoverColor;
-            //if (contentBackgroundImage != null) contentBackgroundImage.color = hoverColor;
+            background.color = hoverColor;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             if (isSelected)
             {
-                if (backgroundImage != null) backgroundImage.color = selectedColor;
-                if (contentBackgroundImage != null) contentBackgroundImage.color = selectedColor;
+                if (background != null) background.color = selectedColor;
+                if (contentObjectBackground != null) contentObjectBackground.color = selectedColor;
                 return;
             }
-            if (backgroundImage != null) backgroundImage.color = defaultColor;
-            if (contentBackgroundImage != null) contentBackgroundImage.color = defaultColor;
+            if (background != null) background.color = defaultColor;
+            if (contentObjectBackground != null) contentObjectBackground.color = defaultColor;
         }
 
         public void OnItemDestroy()
@@ -263,7 +260,27 @@ namespace eccon_lab.vipr.experiment.editor.ui
                 contentItems.Clear();
             }
 
-            if(contentObject != null) Destroy(contentObject);
+            if (contentObject != null)
+            {
+                Destroy(contentObject);
+                contentObject = null;
+            }
+
+        }
+
+        public void ToggleSelectionIndicator(bool isSelected)
+        {
+            if (itemType == ItemType.Question) return;
+            if (selectionIndicator == null) return;
+
+            if (isSelected)
+            {
+                selectionIndicator.sprite = selected;
+            }
+            else
+            {
+                selectionIndicator.sprite = notSelected;
+            }
         }
     }
 }
