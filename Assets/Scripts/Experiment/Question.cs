@@ -174,7 +174,7 @@ namespace eccon_lab.vipr.experiment
 
         public void SetupAssignedObjectSlider()
         {
-            CustomSlider slider = assigendUiElement.transform.GetChild(1).GetChild(0).GetComponent<CustomSlider>();
+            CustomSlider slider = assigendUiElement.transform.GetChild(1).GetComponent<CustomSlider>();
             if (slider == null) return;
             slider.Setup(sliderOptions);
             slider.SetSliderLabelTextValues(sliderOptions.textOptions);

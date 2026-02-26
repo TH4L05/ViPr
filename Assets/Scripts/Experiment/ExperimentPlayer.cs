@@ -123,9 +123,11 @@ namespace eccon_lab.vipr.experiment
             currentPageIndex = 0; 
             experimentState = ExperimentState.Running;
             Debug.Log("Experiment " + experimentState);
+            
 
             if (testMode)
             {
+                experimentRootTransform.gameObject.SetActive(true);
                 experiment.UpdatePageVisibility(currentPageIndex);
                 return;
             }
@@ -160,8 +162,12 @@ namespace eccon_lab.vipr.experiment
 
         public void FinishExperiment()
         {
-            Debug.Log("Experiment " + experimentState);
+            if (experimentState != ExperimentState.Canceled)
+            {
+                experimentState = ExperimentState.Finished;
+            }
             OnExperimentStateChanged?.Invoke("Experiment " + experimentState);
+            Debug.Log("Experiment " + experimentState);
             if (experimentState == ExperimentState.Canceled)
             {
                 DestroyElements();
@@ -207,7 +213,7 @@ namespace eccon_lab.vipr.experiment
 
             foreach (var page in saveData.pages)
             {
-                CreatePage(page.pageId, page.pageId, page.pageType, page.pageText, page.textOptions,  page.backgroundColor);
+                CreatePage(page.pageId, page.pageName, page.pageType, page.pageText, page.textOptions,  page.backgroundColor);
             }
 
             foreach (var question in saveData.questions)

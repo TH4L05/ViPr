@@ -31,7 +31,6 @@ namespace eccon_lab.vipr.experiment.editor.ui
 
         [Header("ExperimentTest")]
         [SerializeField] private GameObject testUiObject;
-        [SerializeField] private GameObject testUiExperimentPlayer;
 
         public void Initialize()
         {
@@ -146,7 +145,6 @@ namespace eccon_lab.vipr.experiment.editor.ui
         public void ToggleExperimentPlayerUi(bool active)
         {
             testUiObject.SetActive(active);
-            testUiExperimentPlayer.SetActive(active);
         }
 
         public void UpdateLogLabelText(string text)

@@ -394,16 +394,23 @@ namespace eccon_lab.vipr.experiment.editor
             editorUI.UpdateLogLabelText("Run Experiment Test for " + experiment.ExperimentName);
         }
 
-        public void CancelExperimentTest()
-        {
-            ExperimentTestFinished(ExperimentState.Canceled.ToString());
-            experimentPlayer.DestroyElements();
-        }
-
         public void ExperimentTestFinished(string state)
         {
+            Debug.Log(state.Replace("Experiment ", ""));
+            if (state.Replace("Experiment ", "") == ExperimentState.Canceled.ToString())
+            {
+                TestCanceled();
+                return;
+            }
+            if (state.Replace("Experiment ", "") != ExperimentState.Finished.ToString()) return;
             editorUI.ToggleExperimentPlayerUi(false);
-            editorUI.UpdateLogLabelText("Experiment Test finished");
+            editorUI.UpdateLogLabelText("Experiment Test = finished");
+        }
+
+        private void TestCanceled()
+        {
+            editorUI.ToggleExperimentPlayerUi(false);
+            editorUI.UpdateLogLabelText("Experiment Test = canceled");
         }
     }
 }
