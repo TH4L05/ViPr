@@ -162,7 +162,7 @@ namespace eccon_lab.vipr.experiment.editor
 
         #region Page
 
-        public void CreateNewPage(PageType type, Color backgroundColor, TextOptions options, string name = "", string pageText = "" )
+        public void CreateNewPage(PageType type, Color backgroundColor, TextOptions options, string name = "", string pageText = "No page text entered" )
         {
             string id = CreateId();
             int pagecount = 1 + experiment.GetPageAmount();
@@ -213,16 +213,16 @@ namespace eccon_lab.vipr.experiment.editor
             experiment.UpdatePageVisibility(id);
         }
 
-        public void UpdatePageValues(string id, Color backgroundColor, TextOptions options)
+        public void UpdatePageValues(string id, string text, Color backgroundColor, TextOptions options)
         {
-            experiment.UpdatePage(id, backgroundColor, options);
+            experiment.UpdatePage(id, text, backgroundColor, options);
         }
 
         #endregion
 
         #region Question
 
-        public void CreateNewQuestion(QuestionType type, string questionText, RadioButtonOptions radioButtonOptions, SliderOptions sliderOptions)
+        public void CreateNewQuestion(QuestionType type, string questionText,TextOptions textOptions, RadioButtonOptions radioButtonOptions, SliderOptions sliderOptions)
         {
             Page p = experiment.GetPage(currentPageId);
 
@@ -236,8 +236,13 @@ namespace eccon_lab.vipr.experiment.editor
             int count = 1 + experiment.GetQuestionAmount();
             string name = "Question" + count.ToString("000");
 
-            TextOptions textOptions = experiment.DefaultTextValues;    
-            CreateQuestion(id, name, type, questionText,experiment.DefaultTextValues,  radioButtonOptions, sliderOptions, currentPageId);
+            string text = questionText;
+            if (string.IsNullOrEmpty(text))
+            {
+                text = "No question text enterd";
+            }
+
+            CreateQuestion(id, name, type, text, textOptions,  radioButtonOptions, sliderOptions, currentPageId);
         }
 
         public void CreateQuestion(string id, string name, QuestionType type, string questionText,TextOptions textValues,  RadioButtonOptions radioOptionValues, SliderOptions sliderOptions, string pageReferenceId)

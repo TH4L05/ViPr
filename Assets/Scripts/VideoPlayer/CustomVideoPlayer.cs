@@ -14,6 +14,7 @@ using TK.Util;
 using eecon_lab.XR;
 using System.Collections;
 using eecon_lab.Rendering;
+using System;
 
 namespace eecon_lab.vipr.video
 {
@@ -95,6 +96,8 @@ namespace eecon_lab.vipr.video
         private bool mainControlsToggled = false;
 
         #endregion
+
+        public Action OnVideoPlayBackFinished;
 
         #region UnityFunctions
 
@@ -216,6 +219,7 @@ namespace eecon_lab.vipr.video
                     return;
                 }
             }
+            Debug.LogError($"Cant prepare video ->  {filename} not found");
         }
 
         public void PrepareVideo()
@@ -226,6 +230,7 @@ namespace eecon_lab.vipr.video
 
         private void Prepare(string url)
         {
+            Debug.Log("Preparing Video ...");
             videoPlayer.url = url;
             videoPlayer.Prepare();
             videoPlayer.SetTargetAudioSource(0, audioSource);
@@ -291,6 +296,8 @@ namespace eecon_lab.vipr.video
             SetTotalTime(videoPlayer.length);
             defaultUiObjects.SetActive(false);
             defaultUiDirector.Stop();
+
+            mainControlsToggled = true;
             ToggleSelectionControlsVisibility();
 
             if (!xrEnabled)
@@ -311,6 +318,9 @@ namespace eecon_lab.vipr.video
                 skyboxChanger.ChangeSkybox(1);
                 ToggleMenuObjectsVisibility(false);
             }
+
+            playerControlsToggled = false;
+            TogglePlayerControlsVisibility();
             
             videoPlayer.Play();
             Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(ExperimentState.VideoPlaying);
@@ -337,16 +347,19 @@ namespace eecon_lab.vipr.video
             videoPlayer.Stop();
             Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(ExperimentState.VideoStopped);
             DestroyRenderTexture();
-            defaultUiObjects.SetActive(true);
-            defaultUiDirector.Play();
-            playerControlsToggled = true;
             videoSlider.value = 0;
-            
+            minutes = 0;
+            seconds = 0;
+
+            playerControlsToggled = true;
             TogglePlayerControlsVisibility();
+            OnVideoPlayBackFinished?.Invoke();
 
             if (!xrEnabled)
             {
                 TogglePlayer2Dobject(false);
+                defaultUiObjects.SetActive(true);
+                defaultUiDirector.Play();
                 return;
             }
             skyboxChanger.ChangeSkybox(0);
@@ -363,21 +376,9 @@ namespace eecon_lab.vipr.video
             }
 
             Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(ExperimentState.VideoFinished);
-            if (onExperiment)
-            {
-                StartCoroutine(WaitAfterVideo(60f));   
-            }
-
             directorVideoLoopPointReached.Play();
         }
-
-        IEnumerator WaitAfterVideo(float time)
-        {
-            yield return new WaitForSeconds(time);
-            TogglePlayer2Dobject(false);
-            ToggleExperimentUi(true);
-        }
-        
+      
         public void ToggleMenuObjectsVisibility(bool active)
         {
             foreach (GameObject gameObject in menuObjects)
@@ -385,8 +386,6 @@ namespace eecon_lab.vipr.video
                 gameObject.SetActive(active);
             }
         }
-
-       
 
         #endregion
 
@@ -567,9 +566,12 @@ namespace eecon_lab.vipr.video
             {
                 defaultUiObjects.SetActive(false);
                 defaultUiDirector.Stop();
+                ToggleMenuObjectsVisibility(true);
+
             }
             else
             {
+                ToggleMenuObjectsVisibility(false);
                 defaultUiObjects.SetActive(true);
                 defaultUiDirector.Play();
             }

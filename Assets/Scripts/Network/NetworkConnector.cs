@@ -52,6 +52,12 @@ namespace eecon_lab.Network
             Level.Instance.NetworkManagement.UpdateExperimentState(state, prams.Receive.SenderClientId);
         }
 
+        [Rpc(SendTo.Server)]
+        public void UpdateXrStateRPC(string state, RpcParams prams = default)
+        {
+            Level.Instance.NetworkManagement.UpdateClientXrState(state, prams.Receive.SenderClientId);
+        }
+
         [Rpc(SendTo.NotServer)]
         public void ToggleXrRPc(bool enabled)
         {
@@ -67,9 +73,9 @@ namespace eecon_lab.Network
         }
 
         [Rpc(SendTo.Server)]
-        public void SendResultsToServerRPC(string results, string experimentName)
+        public void SendResultsToServerRPC(string results, string experimentName, RpcParams prams = default)
         {
-            Level.Instance.ExperimentPlayer.SaveResultsToFile(results, experimentName);
+            Level.Instance.ExperimentPlayer.SaveResultsToFile(results, experimentName, Level.Instance.NetworkManagement.myClientData.clientName);
         }
 
         public void SentClientData(string name, string ip)

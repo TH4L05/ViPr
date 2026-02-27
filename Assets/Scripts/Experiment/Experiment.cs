@@ -136,7 +136,7 @@ namespace eccon_lab.vipr.experiment
             return amount;
         }
 
-        public void UpdatePage(string id, Color color, TextOptions options)
+        public void UpdatePage(string id, string text, Color color, TextOptions options)
         {
             foreach (Page page in pages)
             {
@@ -145,6 +145,7 @@ namespace eccon_lab.vipr.experiment
                     Debug.Log("Update Page");
                     page.SetBackgroundColor(color);
                     page.SetPageTextOptions(options);
+                    page.SetPageText(text);
                     page.SetupAssignedObject();
                     return;
                 }

@@ -114,7 +114,6 @@ namespace eecon_lab.Network
 
         private void SetHost()
         {
-            Debug.Log("H1");
             bool success = NetworkManager.Singleton.StartHost();
             Debug.Log("Network Host Start success = " + success);
 
@@ -128,7 +127,6 @@ namespace eecon_lab.Network
             UpdateClientUI();
             if (textFieldIp != null) textFieldIp.text = "IP=" + GetLocalIp();
             currentState = CustomVideoPlayer.VideoPlayerState.stopped;
-            Debug.Log("H2");
             Level.Instance.SetNetworkMode(true);
         }
 
@@ -173,8 +171,6 @@ namespace eecon_lab.Network
         private void ShowInfoText(string text)
         {
             messageHandler.AddMessage(text);
-            //textFieldInfo.text = text;
-            //textFieldInfo.gameObject.SetActive(true);
         }
 
         private void OnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
@@ -283,6 +279,19 @@ namespace eecon_lab.Network
                 if (clients[i].clientID == clientID)
                 {
                     clients[i].SetPlayerState(state.ToString());
+                }
+            }
+        }
+
+        public void UpdateClientXrState(string state, ulong clientID)
+        {
+            Debug.Log("Update XR State - Client ID=" + clientID + " / state=" + state);
+            for (int i = 0; i < clients.Count; i++)
+            {
+                if (clients[i].clientID == clientID)
+                {
+                    clients[i].SetXrState(state.ToString());
+                    ShowInfoText($"Client {clients[i].clientName} xr state = {state}");
                 }
             }
         }

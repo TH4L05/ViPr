@@ -86,12 +86,6 @@ namespace eecon_lab.Main
 
         public void SetupXR()
         {
-            if (Game.Instance.ActiveGameMode != Game.GameMode.normal)
-            {
-                XRInitFinished(false);
-                return;
-            }
-
             if (skipXrSetup)
             {
                 XRInitFinished(false);
@@ -120,12 +114,20 @@ namespace eecon_lab.Main
         {
             if (enable)
             {
-                if (Game.Instance.VRactive) return;
+                if (Game.Instance.VRactive)
+                {
+                    Debug.Log("Cant enable XR -> xr already enabled");
+                    return;
+                }
                 SetupXR();
             }
             else
             {
-                if(!Game.Instance.VRactive) return;
+                if(!Game.Instance.VRactive)
+                {
+                    Debug.Log("Cant stop XR -> xr already stopped");
+                    return;
+                }
                 xrSetup.StopXR();
             }
         }
@@ -142,6 +144,13 @@ namespace eecon_lab.Main
             if (isInitialized)
             {
                 if (testCamera != null) testCamera.SetActive(false);
+            }
+
+            if (Game.Instance.ActiveGameMode == Game.GameMode.client)
+            {
+                string state = "off";
+                if(isInitialized) state = "on";
+                networkManagement.networkConnector.UpdateXrStateRPC(state);
             }
         }
 

@@ -15,6 +15,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         [SerializeField] private GameObject inputOptionSlider;
         [SerializeField] private TMP_Dropdown createQuestionDropdownType;
         [SerializeField] private TMP_InputField textQuestionText;
+        [SerializeField] private TextOptionInspector textOptions;
         [SerializeField] private RadioButtonCreateOptions radioButtonCreateOptions;
         [SerializeField] private SliderCreateOption sliderCreateOptions;
 
@@ -41,6 +42,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
         public override void ShowWindowContent()
         {
             textQuestionText.text = string.Empty;
+            textOptions.SetTextValues(ExperimentEditor.Instance.CurrentExperiment.DefaultTextValues);
             ResetRadioButtonOptions();
             ResetSliderOptions();
             OnQuestionTypeChanged(0);
@@ -67,6 +69,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
                 default:
                     break;
             }
+            createQuestionDropdownType.value = value;
         }
 
         public void ResetRadioButtonOptions()
@@ -86,7 +89,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
             Debug.Log("Create new question");
             RadioButtonOptions radioButtonOptions = radioButtonCreateOptions.GetValues();
             radioButtonOptions.radioOptionValues[0].isDefault = true;
-            ExperimentEditor.Instance.CreateNewQuestion((QuestionType)createQuestionDropdownType.value, textQuestionText.text, radioButtonOptions, sliderCreateOptions.GetValues());
+            ExperimentEditor.Instance.CreateNewQuestion((QuestionType)createQuestionDropdownType.value, textQuestionText.text, textOptions.GetTextValues(), radioButtonOptions, sliderCreateOptions.GetValues());
         }
     }
 }

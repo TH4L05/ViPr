@@ -31,7 +31,6 @@ namespace eecon_lab.Utilities
 
         public void AnimateByCharBackward()
         {
-            Debug.Log("Start reverse");
             StartCoroutine(DisplayStringB(speed));
         }
 
@@ -47,7 +46,6 @@ namespace eecon_lab.Utilities
 
         IEnumerator DisplayStringB(float speed)
         {
-            Debug.Log("Start");
             for (int i = 0; i < characters.Length; i++)
             {
                 int index = characters.Length - 1 - i;

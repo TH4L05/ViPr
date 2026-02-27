@@ -92,8 +92,8 @@ namespace eccon_lab.vipr.experiment.editor.ui
         public void DisplayQuestionItems(Question question)
         {
             textInputItem.gameObject.SetActive(true);
-            textInputItem.SetLabelText("Question text");
             textInputItem.SetInput(question.GetQuestionText());
+            textInputItem.SetLabelText("Question text");
 
             textOptionsItem.gameObject.SetActive(true);
             textOptionsItem.SetTextOptions(question.GetTextValues());
@@ -129,7 +129,7 @@ namespace eccon_lab.vipr.experiment.editor.ui
             {
                 case EditorHierarchyItem.ItemType.Page:
                 case EditorHierarchyItem.ItemType.InfoPage:
-                    ExperimentEditor.Instance.UpdatePageValues(currentId, colorPickerItem.GetColorValue(), textOptionsItem.GetTextOptions());
+                    ExperimentEditor.Instance.UpdatePageValues(currentId, textInputItem.GetInputValue(), colorPickerItem.GetColorValue(), textOptionsItem.GetTextOptions());
                     break;
                 case EditorHierarchyItem.ItemType.Question:
                     ExperimentEditor.Instance.UpdateQuestionValues(currentId, textInputItem.GetInputValue(), textOptionsItem.GetTextOptions(), radioOptionsItem.GetRadioOptionValues(), sliderOptionsItem.GetSliderOptions());

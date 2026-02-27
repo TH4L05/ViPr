@@ -340,9 +340,21 @@ MonoBehaviour:
     m_Events:
     - m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1190465218}
-          m_TargetAssemblyTypeName: UnityEngine.Video.VideoPlayer, UnityEngine
-          m_MethodName: Stop
+        - m_Target: {fileID: 1444055326}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 1190465220}
+          m_TargetAssemblyTypeName: eecon_lab.vipr.video.CustomVideoPlayer, Assembly-CSharp
+          m_MethodName: StopVideo
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1540,10 +1552,9 @@ MonoBehaviour:
   testMode: 0
   saveResults: 1
   experiment: {fileID: 0}
-  experimentRootTransform: {fileID: 533507550}
+  experimentRootTransform: {fileID: 390791744}
   dropdown: {fileID: 0}
   fadeIn: {fileID: 0}
-  experimentState: 0
 --- !u!4 &671906442
 Transform:
   m_ObjectHideFlags: 0

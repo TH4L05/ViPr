@@ -59,6 +59,22 @@ namespace eccon_lab.vipr.experiment
 
         #endregion
 
+        private void Start()
+        {
+            if (videoPlayer != null)
+            {
+                videoPlayer.OnVideoPlayBackFinished += OnVideoPlaybackFinished;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (videoPlayer != null)
+            {
+                videoPlayer.OnVideoPlayBackFinished -= OnVideoPlaybackFinished;
+            }
+        }
+
         public void DropdownSetup()
        {
             if (dropdown == null) return;
@@ -139,6 +155,7 @@ namespace eccon_lab.vipr.experiment
                     experiment.UpdatePageVisibility(currentPageIndex);
                     break;
                 case ExperimentType.VideoPlusQuestionaire:
+                    experimentRootTransform.gameObject.SetActive(false);
                     videoPlayer.PrepareVideo(experiment.AssignedVideoFile);
                     break;
                 default:
@@ -187,6 +204,13 @@ namespace eccon_lab.vipr.experiment
             experimentRootTransform.gameObject.SetActive(false);
             DestroyElements();
             Destroy(experiment);  
+        }
+
+        public void OnVideoPlaybackFinished()
+        {
+            currentPageIndex = 0;
+            experimentRootTransform.gameObject.SetActive(true);
+            experiment.UpdatePageVisibility(currentPageIndex); 
         }
 
         public void DestroyElements()
@@ -330,7 +354,7 @@ namespace eccon_lab.vipr.experiment
             return content;
         }
 
-        public void SaveResultsToFile(string content, string name)
+        public void SaveResultsToFile(string content, string name, string additionalFileName = "")
         {
             string baseDirectoryPath = folderPath + "/Results";
 
@@ -345,7 +369,9 @@ namespace eccon_lab.vipr.experiment
                 Serialization.CreateDirectory(experimentDirPath);
             }
 
-            string resultsFilePath = experimentDirPath + "/" + "Results" + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".csv";
+            string x = "";
+            if(additionalFileName != null) x = additionalFileName + "_";
+            string resultsFilePath = experimentDirPath + "/" + "Results" + "_" + x + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".csv";
             Serialization.SaveText(content, resultsFilePath);
         }
     }
