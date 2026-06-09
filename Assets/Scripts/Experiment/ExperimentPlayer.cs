@@ -208,6 +208,7 @@ namespace eccon_lab.vipr.experiment
 
         public void OnVideoPlaybackFinished()
         {
+            if (experiment == null) return;
             currentPageIndex = 0;
             experimentRootTransform.gameObject.SetActive(true);
             experiment.UpdatePageVisibility(currentPageIndex); 

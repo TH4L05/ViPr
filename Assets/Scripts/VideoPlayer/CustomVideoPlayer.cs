@@ -329,7 +329,6 @@ namespace eecon_lab.vipr.video
         public void PauseVideo()
         {
             if (videoPlayer == null) return;
-            if (!videoPlayer.isPlaying) return;
             if (videoPlayer.isPaused)
             {
                 PlayVideo();
