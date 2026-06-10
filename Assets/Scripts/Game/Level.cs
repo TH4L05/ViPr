@@ -76,10 +76,6 @@ namespace eecon_lab.Main
         {
             Game.Instance.SetLevel(this);
             if (ingameLog != null) ingameLog.ShowLog(Game.Instance.GameOptions.GetConfig().ShowLog);
-            if (Game.Instance.ActiveGameMode == Game.GameMode.normal)
-            {
-                SetupXR();
-            }
             StartSetup();
             NetworkSetup();
         }
@@ -143,11 +139,12 @@ namespace eecon_lab.Main
             Game.Instance.VRactive = isInitialized;
             if (isInitialized)
             {
-                if (testCamera != null) testCamera.SetActive(false);
+                ToggleCamera(false);
             }
 
             if (Game.Instance.ActiveGameMode == Game.GameMode.client)
             {
+
                 string state = "off";
                 if(isInitialized) state = "on";
                 networkManagement.networkConnector.UpdateXrStateRPC(state);
@@ -157,11 +154,6 @@ namespace eecon_lab.Main
         private void StartSetup()
         {
             Debug.Log($"<color=#AF870C>Level Setup</color>");
-            if (Game.Instance.ActiveGameMode == Game.GameMode.normal)
-            {
-                if (testCamera != null) testCamera.SetActive(false);
-            }
-
             OnLevelStart?.Invoke();
             if (reflectionProbes.Count > 0)
             {
@@ -217,6 +209,13 @@ namespace eecon_lab.Main
         public void ToggleLogVisibility()
         {
             ingameLog.ChangeVisbilityState();
+        }
+
+        public void ToggleCamera(bool isActive)
+        {
+            Debug.Log("ToggleCamera");
+            if (testCamera == null) return;
+            testCamera.SetActive(isActive);
         }
 
         public void QuitApplication()

@@ -5,6 +5,7 @@ using TMPro;
 using eecon_lab.Main;
 using eecon_lab.XR;
 using eecon_lab.Main.Configuration;
+using TK.Util;
 
 namespace eecon_lab.UI
 {
@@ -20,7 +21,7 @@ namespace eecon_lab.UI
 
         #region PrivateFields
 
-        private float dt;
+        private FPS fps;
 
         #endregion
 
@@ -48,8 +49,10 @@ namespace eecon_lab.UI
         private void Setup(bool useVR)
         {
             Debug.Log("<color=#AF870C>Setup UI</color>");
+            fps = new FPS();
             dislpayFPS = Game.Instance.GameOptions.GetConfig().ShowFps;
             ShowFPS(dislpayFPS);
+
         }
         
         #endregion
@@ -71,16 +74,8 @@ namespace eecon_lab.UI
         private void UpdateFPS()
         {
             if (!dislpayFPS) return;
-            float frames = Mathf.Ceil(CalculateFPS());
+            float frames = Mathf.Ceil(fps.GetFps(Time.deltaTime));
             if (fpsTextField != null) fpsTextField.text = "FPS: " + frames.ToString();
-        }
-
-        private float CalculateFPS()
-        {
-            dt += (Time.deltaTime - dt) * 0.1f;
-            float frames = 1.0f / dt;
-            frames = Mathf.Clamp(frames, 0.0f, 999f);
-            return frames;
         }
 
         #endregion
