@@ -1543,9 +1543,9 @@ MonoBehaviour:
     m_Events:
     - m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1190465218}
-          m_TargetAssemblyTypeName: UnityEngine.Video.VideoPlayer, UnityEngine
-          m_MethodName: Stop
+        - m_Target: {fileID: 1190465220}
+          m_TargetAssemblyTypeName: eecon_lab.vipr.video.CustomVideoPlayer, Assembly-CSharp
+          m_MethodName: StopVideo
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -6836,17 +6836,41 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5426599968058957034, guid: 3a32ae7bee5f7e14daa633f8101a7490, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5426599968058957034, guid: 3a32ae7bee5f7e14daa633f8101a7490, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5426599968058957034, guid: 3a32ae7bee5f7e14daa633f8101a7490, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1776547579}
     - target: {fileID: 5426599968058957034, guid: 3a32ae7bee5f7e14daa633f8101a7490, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1776547579}
+      objectReference: {fileID: 995190172}
     - target: {fileID: 5426599968058957034, guid: 3a32ae7bee5f7e14daa633f8101a7490, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 995190172}
+    - target: {fileID: 5426599968058957034, guid: 3a32ae7bee5f7e14daa633f8101a7490, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnVideoPlayerExit
+      objectReference: {fileID: 0}
+    - target: {fileID: 5426599968058957034, guid: 3a32ae7bee5f7e14daa633f8101a7490, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayDirectorLoadSpecificScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 5426599968058957034, guid: 3a32ae7bee5f7e14daa633f8101a7490, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: TK.SceneLoading.SceneLoad, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5426599968058957034, guid: 3a32ae7bee5f7e14daa633f8101a7490, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6750995942028947187, guid: 3a32ae7bee5f7e14daa633f8101a7490, type: 3}
       propertyPath: m_Colors.m_NormalColor.b
       value: 0.2

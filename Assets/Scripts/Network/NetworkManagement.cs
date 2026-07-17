@@ -350,6 +350,15 @@ namespace eecon_lab.Network
         {
             networkConnector.ToggleXrRPc(enabled);
         }
+
+        public void OnVideoPlayerExit()
+        {
+            if (Game.Instance.ActiveGameMode == Game.GameMode.client)
+            {
+                DiconnectClient();
+                Shutdown();
+            }
+        }
     }
 }
 

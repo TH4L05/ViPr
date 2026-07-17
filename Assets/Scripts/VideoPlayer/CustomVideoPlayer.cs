@@ -372,6 +372,7 @@ namespace eecon_lab.vipr.video
             videoSlider.value = 0;
             minutes = 0;
             seconds = 0;
+            videoControlsTimeCurrentTextField.text = minutes.ToString("00") + ":" + seconds.ToString("00");
 
             playerControlsToggled = true;
             TogglePlayerControlsVisibility();
