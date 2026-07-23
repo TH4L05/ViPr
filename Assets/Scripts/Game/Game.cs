@@ -111,5 +111,11 @@ namespace eecon_lab.Main
         {
             gameMode = mode;
         }
+
+
+        private void OnDestroy()
+        {
+            gameConfig.SaveConfigValues();
+        }
     }
 }

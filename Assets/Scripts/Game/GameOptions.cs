@@ -232,6 +232,11 @@ namespace eecon_lab.Main.Configuration
             ChangeMasterVolume(volume);
         }
 
+        public void UpdateVideoPlayerLayout(int value)
+        {
+            gameConfig.SetVideoPlayerLayout(value);
+        }
+
         #endregion
 
         private bool CanUseResolution(int width, int height)

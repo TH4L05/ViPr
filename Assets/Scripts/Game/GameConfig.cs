@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using TK.Util;
+using UnityEngine.Video;
 
 namespace eecon_lab.Main.Configuration
 {
@@ -66,6 +67,9 @@ namespace eecon_lab.Main.Configuration
         [SerializeField] private string defaultNetIP = "127.0.0.1";
         [SerializeField] private ushort defaultNetPort = 7777;
 
+        [Header("Default-Videoplayer"), Space(2f)]
+        [SerializeField] private int defaultVideoPlayerLayout = 0;
+
         #endregion
 
         #region PrivateFields
@@ -89,6 +93,7 @@ namespace eecon_lab.Main.Configuration
         private GameLanguage language = GameLanguage.Ger;
         private string serverIP;
         private ushort serverPort;
+        private int videoPlayerLayout;
 
         #endregion
 
@@ -115,6 +120,7 @@ namespace eecon_lab.Main.Configuration
         public GameLanguage CurrentLanguage => language;
         public string NetIP => serverIP;
         public ushort NetPort => serverPort;
+        public int VideoPlayerLayout => videoPlayerLayout;
 
         [Space(50f)]
         public bool loadDone = false;
@@ -178,6 +184,11 @@ namespace eecon_lab.Main.Configuration
         {
             framerateLimitActive = enabled;
             framerateLimit = value;
+        }
+
+        public void SetVideoPlayerLayout(int layout)
+        {
+            videoPlayerLayout = layout;
         }
 
         #endregion
@@ -260,10 +271,12 @@ namespace eecon_lab.Main.Configuration
                 serverIP = defaultNetIP;
             }
             serverPort = ushort.TryParse(configValues[nameof(serverPort)], out ushort resultUshort) ? resultUshort : defaultNetPort;
+            videoPlayerLayout = int.TryParse(configValues[nameof(videoPlayerLayout)], out resultInt) ? resultInt : defaultVideoPlayerLayout;
         }
 
         public void SaveConfigValues()
         {
+            Debug.Log("Save config");
             string content = string.Empty;
 
             content += nameof(useVR) + "=" + Convert.ToByte(useVR) + "\n";
@@ -281,6 +294,7 @@ namespace eecon_lab.Main.Configuration
             content += nameof(antialiasingQuality) + "=" + Convert.ToByte((int)antialiasingQuality) + "\n";
             content += nameof(serverIP) + "=" + serverIP + "\n";
             content += nameof(serverPort) + "=" + serverPort.ToString() + "\n";
+            content += nameof(videoPlayerLayout) + "=" + videoPlayerLayout.ToString() + "\n";
 
             string file = configname;
             if( usePersistentDataPath )
@@ -315,6 +329,8 @@ namespace eecon_lab.Main.Configuration
 
             serverIP = defaultNetIP;
             serverPort = defaultNetPort;
+
+            videoPlayerLayout = defaultVideoPlayerLayout;
         }
 
         #endregion

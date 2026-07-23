@@ -3489,6 +3489,7 @@ MonoBehaviour:
   pauseButtonToggle: {fileID: 7768326801738329924}
   playbackSpeedTextField: {fileID: 7634876995900210182}
   volumeTextField: {fileID: 6352188164801824433}
+  layoutDropdown: {fileID: 9058705048139800303}
 --- !u!4 &1200555169 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7459366383603896465, guid: afc04aa6a49781043903756ac78dfe14, type: 3}
@@ -7550,6 +7551,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3039453896732390384}
   m_SourcePrefab: {fileID: 100100000, guid: 8ef385866279b2241bfbd3599be7b192, type: 3}
+--- !u!114 &9058705048139800303 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4516037694713727062, guid: 8ef385866279b2241bfbd3599be7b192, type: 3}
+  m_PrefabInstance: {fileID: 9058705048139800302}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

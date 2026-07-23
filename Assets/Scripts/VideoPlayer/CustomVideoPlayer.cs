@@ -78,6 +78,7 @@ namespace eecon_lab.vipr.video
         [SerializeField] private ButtonImageToggle pauseButtonToggle;
         [SerializeField] private TextMeshProUGUI playbackSpeedTextField;
         [SerializeField] private TextMeshProUGUI volumeTextField;
+        [SerializeField] private TMP_Dropdown layoutDropdown;
 
         #endregion
 
@@ -139,6 +140,11 @@ namespace eecon_lab.vipr.video
             videoSlider.value = 0;
             videoPlayer.loopPointReached += OnLoopPointReched;
             videoPlayer.prepareCompleted += StartVideo;
+
+
+            int layout = Game.Instance.GameOptions.GetConfig().VideoPlayerLayout;
+            layoutDropdown.value = layout;
+            playerMaterial.SetFloat("_Layout", layout);
 
 
             if (Game.Instance.ActiveGameMode == Game.GameMode.normal && Game.Instance.GameOptions.GetConfig().UseVR)
@@ -432,7 +438,7 @@ namespace eecon_lab.vipr.video
             minutes = Mathf.FloorToInt((float)videoPlayer.time / 60);
             videoControlsTimeCurrentTextField.text = minutes.ToString("00") + ":" + seconds.ToString("00");
 
-            if(sliderSelected) return ;
+            if(sliderSelected) return;
             UpdateVideoSlider();
         }
 
@@ -481,8 +487,6 @@ namespace eecon_lab.vipr.video
                     playbackSpeed = 2.00f;
                     break;
 
-
-
                 default:
                     break;
             }
@@ -511,7 +515,6 @@ namespace eecon_lab.vipr.video
         {
             switch (value)
             {
-
                 case 0:
                     playerMaterial.SetFloat("_ImageType", 0.0f);
                     break;
@@ -545,6 +548,7 @@ namespace eecon_lab.vipr.video
                 default:
                     break;
             }
+            Game.Instance.GameOptions.UpdateVideoPlayerLayout(value);
         }
 
         #endregion
