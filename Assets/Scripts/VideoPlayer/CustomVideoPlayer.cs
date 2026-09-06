@@ -69,6 +69,7 @@ namespace eecon_lab.vipr.video
         [Header("UI")]
         [SerializeField] private TMP_Dropdown videoSelectionDropdown;
         [SerializeField] private Button playButton;
+        [SerializeField] private TMP_InputField otreeLinkInputField;
 
         [Header("UI Controls")]
         [SerializeField] private Slider videoSlider;
@@ -404,6 +405,7 @@ namespace eecon_lab.vipr.video
                 return;
             }
 
+            if (otreeLinkInputField != null && otreeLinkInputField.text != string.Empty) Application.OpenURL(otreeLinkInputField.text);
             Level.Instance.NetworkManagement.UpdateVideoPlayerStateClient(ExperimentState.VideoFinished);
             directorVideoLoopPointReached.Play();
         }
